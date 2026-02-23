@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from 'react';
-import { OrbitControls, Stars, Ring, Text } from '@react-three/drei';
+import { OrbitControls, Stars, Ring } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { allLanguages as languages } from '../data';
 import { Planet } from './Planet';
@@ -25,12 +25,18 @@ languages.forEach((lang) => {
   
   // Inclination angle based on category
   let inclinationDeg = 0;
-  const category = lang.category || 'programing and scripts';
+  const category = (lang.category || 'Generic').toLowerCase();
   
-  if (category === 'databases') inclinationDeg = 90;
-  else if (category === 'cloud development') inclinationDeg = 18;
-  else if (category === 'web frameworks') inclinationDeg = 36;
-  else if (category === 'devs IDEs') inclinationDeg = 54;
+  if (category === 'imperative') inclinationDeg = 0;
+  else if (category === 'declarative') inclinationDeg = 10;
+  else if (category === 'procedural') inclinationDeg = 20;
+  else if (category === 'structured') inclinationDeg = 30;
+  else if (category === 'object-oriented (oop)') inclinationDeg = 40;
+  else if (category === 'functional') inclinationDeg = 50;
+  else if (category === 'logical') inclinationDeg = 60;
+  else if (category === 'reactive') inclinationDeg = 70;
+  else if (category === 'event-driven') inclinationDeg = 80;
+  else if (category === 'generic') inclinationDeg = 90;
   
   const inclinationRad = (inclinationDeg * Math.PI) / 180;
   
@@ -148,7 +154,7 @@ export function SolarSystem() {
         // Stagger the labels so they don't overlap as much
         const labelAngle = (index * Math.PI) / 4; 
         
-        const inclinations = [0, 18, 36, 54, 90];
+        const inclinations = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
 
         return (
           <group key={orbit.year}>
@@ -172,19 +178,6 @@ export function SolarSystem() {
                   >
                     <meshBasicMaterial color="#ffffff" transparent opacity={0.1} side={THREE.DoubleSide} />
                   </Ring>
-
-                  {/* Year Label */}
-                  <Text
-                    position={[labelX, labelY, labelZ]}
-                    rotation={[-Math.PI / 2 + inclinationRad, 0, 0]}
-                    fontSize={1.2}
-                    color="#aaaaaa"
-                    anchorX="center"
-                    anchorY="bottom"
-                    opacity={0.6}
-                  >
-                    {orbit.year} {orbit.gap > 0 ? `(+${orbit.gap}y)` : ''}
-                  </Text>
                 </group>
               );
             })}
