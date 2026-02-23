@@ -62,38 +62,65 @@ export function Minimap() {
       </div>
 
       {/* Legends */}
-      <div className="flex gap-6 text-xs text-gray-400 bg-black/40 p-3 rounded-xl border border-white/10 backdrop-blur-md shadow-lg w-[200px]">
-        {/* Color Legend */}
-        <div className="flex flex-col gap-2 flex-1">
-          <span className="font-semibold text-gray-300 mb-1">Docs</span>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#00ccff]"></div>
-            <span>Good</span>
+      <div className="flex flex-col gap-3 text-xs text-gray-400 bg-black/40 p-3 rounded-xl border border-white/10 backdrop-blur-md shadow-lg w-[200px]">
+        <div className="flex gap-6">
+          {/* Color Legend */}
+          <div className="flex flex-col gap-2 flex-1">
+            <span className="font-semibold text-gray-300 mb-1">Docs</span>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#00ccff]"></div>
+              <span>Good</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#806680]"></div>
+              <span>Avg</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#ff0000]"></div>
+              <span>Poor</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#806680]"></div>
-            <span>Avg</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#ff0000]"></div>
-            <span>Poor</span>
+
+          {/* Size Legend */}
+          <div className="flex flex-col gap-2 flex-1">
+            <span className="font-semibold text-gray-300 mb-1">Usage</span>
+            <div className="flex items-center gap-2">
+              <div className="w-3.5 h-3.5 rounded-full border border-gray-400 bg-white/10"></div>
+              <span>High</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full border border-gray-400 bg-white/10"></div>
+              <span>Med</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full border border-gray-400 bg-white/10"></div>
+              <span>Low</span>
+            </div>
           </div>
         </div>
 
-        {/* Size Legend */}
-        <div className="flex flex-col gap-2 flex-1">
-          <span className="font-semibold text-gray-300 mb-1">Usage</span>
+        {/* Category Legend */}
+        <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-white/10">
+          <span className="font-semibold text-gray-300 mb-1">Categories (Inclination)</span>
           <div className="flex items-center gap-2">
-            <div className="w-3.5 h-3.5 rounded-full border border-gray-400 bg-white/10"></div>
-            <span>High</span>
+            <div className="w-2 h-0.5 bg-white/50 rotate-0"></div>
+            <span>Programming (0°)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full border border-gray-400 bg-white/10"></div>
-            <span>Med</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-12"></div>
+            <span>Cloud (18°)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full border border-gray-400 bg-white/10"></div>
-            <span>Low</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[24deg]"></div>
+            <span>Web (36°)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[36deg]"></div>
+            <span>IDEs (54°)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-0.5 bg-white/50 -rotate-90"></div>
+            <span>Databases (90°)</span>
           </div>
         </div>
       </div>

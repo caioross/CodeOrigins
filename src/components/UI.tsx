@@ -117,6 +117,10 @@ export function UI() {
                     <Globe size={14} />
                     {selectedLanguage.origin}
                   </span>
+                  <span>•</span>
+                  <span className="capitalize text-indigo-300">
+                    {selectedLanguage.category || 'programing and scripts'}
+                  </span>
                 </div>
               </div>
             </div>

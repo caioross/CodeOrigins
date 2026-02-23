@@ -18,10 +18,27 @@ export const languagePositions = new Map<string, [number, number, number]>();
 languages.forEach((lang) => {
   const radius = Math.max(0, (lang.year - BASE_YEAR) * YEAR_SCALE);
   const angleRad = (lang.angle * Math.PI) / 180;
-  const x = Math.cos(angleRad) * radius;
-  const z = Math.sin(angleRad) * radius;
-  // Add a slight random Y offset to avoid perfect flatness
-  const y = (Math.random() - 0.5) * 2;
+  
+  // Base position on the XZ plane
+  const baseX = Math.cos(angleRad) * radius;
+  const baseZ = Math.sin(angleRad) * radius;
+  
+  // Inclination angle based on category
+  let inclinationDeg = 0;
+  const category = lang.category || 'programing and scripts';
+  
+  if (category === 'databases') inclinationDeg = 90;
+  else if (category === 'cloud development') inclinationDeg = 18;
+  else if (category === 'web frameworks') inclinationDeg = 36;
+  else if (category === 'devs IDEs') inclinationDeg = 54;
+  
+  const inclinationRad = (inclinationDeg * Math.PI) / 180;
+  
+  // Rotate around X axis
+  const x = baseX;
+  const y = -baseZ * Math.sin(inclinationRad) + (Math.random() - 0.5) * 2;
+  const z = baseZ * Math.cos(inclinationRad);
+  
   languagePositions.set(lang.id, [x, y, z]);
 });
 
@@ -124,41 +141,53 @@ export function SolarSystem() {
         <pointLight intensity={2} distance={50} color="#ffcc00" />
       </mesh>
 
-      {/* Orbit Rings */}
+      {/* Orbit Rings for all 5 inclinations */}
       {orbits.map((orbit, index) => {
         if (orbit.radius <= 0) return null;
         
         // Stagger the labels so they don't overlap as much
         const labelAngle = (index * Math.PI) / 4; 
-        const labelX = Math.cos(labelAngle) * orbit.radius;
-        const labelZ = Math.sin(labelAngle) * orbit.radius;
+        
+        const inclinations = [0, 18, 36, 54, 90];
 
         return (
           <group key={orbit.year}>
-            {/* The main orbit line */}
-            <Ring args={[orbit.radius, orbit.radius + 0.1, 64]} rotation={[-Math.PI / 2, 0, 0]}>
-              <meshBasicMaterial color="#ffffff" transparent opacity={0.1} side={THREE.DoubleSide} />
-            </Ring>
-            
-            {/* The gap fill to show time passed */}
-            {orbit.gap > 0 && orbit.prevRadius > 0 && (
-              <Ring args={[orbit.prevRadius, orbit.radius, 64]} rotation={[-Math.PI / 2, 0, 0]}>
-                <meshBasicMaterial color="#446688" transparent opacity={0.03} side={THREE.DoubleSide} />
-              </Ring>
-            )}
+            {inclinations.map((inclinationDeg) => {
+              const inclinationRad = (inclinationDeg * Math.PI) / 180;
+              
+              // Calculate label position based on inclination
+              const baseX = Math.cos(labelAngle) * orbit.radius;
+              const baseZ = Math.sin(labelAngle) * orbit.radius;
+              
+              const labelX = baseX;
+              const labelY = -baseZ * Math.sin(inclinationRad);
+              const labelZ = baseZ * Math.cos(inclinationRad);
 
-            {/* Year Label */}
-            <Text
-              position={[labelX, 0, labelZ]}
-              rotation={[-Math.PI / 2, 0, 0]}
-              fontSize={1.2}
-              color="#aaaaaa"
-              anchorX="center"
-              anchorY="bottom"
-              opacity={0.6}
-            >
-              {orbit.year} {orbit.gap > 0 ? `(+${orbit.gap}y)` : ''}
-            </Text>
+              return (
+                <group key={`${orbit.year}-${inclinationDeg}`}>
+                  {/* The main orbit line */}
+                  <Ring 
+                    args={[orbit.radius, orbit.radius + 0.1, 64]} 
+                    rotation={[-Math.PI / 2 + inclinationRad, 0, 0]}
+                  >
+                    <meshBasicMaterial color="#ffffff" transparent opacity={0.1} side={THREE.DoubleSide} />
+                  </Ring>
+
+                  {/* Year Label */}
+                  <Text
+                    position={[labelX, labelY, labelZ]}
+                    rotation={[-Math.PI / 2 + inclinationRad, 0, 0]}
+                    fontSize={1.2}
+                    color="#aaaaaa"
+                    anchorX="center"
+                    anchorY="bottom"
+                    opacity={0.6}
+                  >
+                    {orbit.year} {orbit.gap > 0 ? `(+${orbit.gap}y)` : ''}
+                  </Text>
+                </group>
+              );
+            })}
           </group>
         );
       })}
