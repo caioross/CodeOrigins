@@ -107,7 +107,31 @@ function CameraController() {
 }
 
 export function SolarSystem() {
-  const { selectedLanguage, hoveredLanguage } = useStore();
+  const { 
+    selectedLanguage, hoveredLanguage, 
+    showOrbits, showConnections,
+    docsFilter, usageFilter, categoryFilter
+  } = useStore();
+
+  const filteredLanguages = useMemo(() => {
+    return languages.filter(lang => {
+      if (docsFilter) {
+        if (docsFilter === 'Good' && lang.docs < 0.7) return false;
+        if (docsFilter === 'Avg' && (lang.docs < 0.4 || lang.docs >= 0.7)) return false;
+        if (docsFilter === 'Poor' && lang.docs >= 0.4) return false;
+      }
+      if (usageFilter) {
+        if (usageFilter === 'High' && lang.usage < 0.7) return false;
+        if (usageFilter === 'Med' && (lang.usage < 0.4 || lang.usage >= 0.7)) return false;
+        if (usageFilter === 'Low' && lang.usage >= 0.4) return false;
+      }
+      if (categoryFilter) {
+        const cat = lang.category || 'Generic';
+        if (cat.toLowerCase() !== categoryFilter.toLowerCase()) return false;
+      }
+      return true;
+    });
+  }, [docsFilter, usageFilter, categoryFilter]);
 
   // Generate orbit rings
   const orbits = useMemo(() => {
@@ -148,7 +172,7 @@ export function SolarSystem() {
       </mesh>
 
       {/* Orbit Rings for all 5 inclinations */}
-      {orbits.map((orbit, index) => {
+      {showOrbits && orbits.map((orbit, index) => {
         if (orbit.radius <= 0) return null;
         
         // Stagger the labels so they don't overlap as much
@@ -186,7 +210,7 @@ export function SolarSystem() {
       })}
 
       {/* Planets */}
-      {languages.map((lang) => (
+      {filteredLanguages.map((lang) => (
         <Planet 
           key={lang.id} 
           language={lang} 
@@ -195,9 +219,9 @@ export function SolarSystem() {
       ))}
 
       {/* Connections */}
-      {languages.map((lang) => {
+      {showConnections && filteredLanguages.map((lang) => {
         return lang.parents.map((parentId) => {
-          const parent = languages.find(l => l.id === parentId);
+          const parent = filteredLanguages.find(l => l.id === parentId);
           if (!parent) return null;
           
           const startPos = languagePositions.get(parentId)!;

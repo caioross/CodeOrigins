@@ -13,7 +13,7 @@ interface PlanetProps {
 export function Planet({ language, position }: PlanetProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const moonsRef = useRef<THREE.Group>(null);
-  const { setSelectedLanguage, selectedLanguage, setHoveredLanguage, hoveredLanguage } = useStore();
+  const { setSelectedLanguage, selectedLanguage, setHoveredLanguage, hoveredLanguage, showNames, showMoons } = useStore();
   
   const isSelected = selectedLanguage?.id === language.id;
   const isHovered = hoveredLanguage?.id === language.id;
@@ -66,45 +66,51 @@ export function Planet({ language, position }: PlanetProps) {
       </Sphere>
 
       {/* Label */}
-      <Text
-        position={[0, size + 0.5, 0]}
-        fontSize={0.8}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.05}
-        outlineColor="#000000"
-      >
-        {language.name}
-      </Text>
+      {showNames && (
+        <Text
+          position={[0, size + 0.5, 0]}
+          fontSize={0.8}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          outlineWidth={0.05}
+          outlineColor="#000000"
+        >
+          {language.name}
+        </Text>
+      )}
 
       {/* Moons */}
-      <group ref={moonsRef}>
-        {language.moons.map((moon, index) => {
-          const angle = (index / language.moons.length) * Math.PI * 2;
-          const distance = size + 1 + moon.usage;
-          const moonX = Math.cos(angle) * distance;
-          const moonZ = Math.sin(angle) * distance;
-          const moonSize = 0.2 + moon.usage * 0.3;
+      {showMoons && (
+        <group ref={moonsRef}>
+          {language.moons.map((moon, index) => {
+            const angle = (index / language.moons.length) * Math.PI * 2;
+            const distance = size + 1 + moon.usage;
+            const moonX = Math.cos(angle) * distance;
+            const moonZ = Math.sin(angle) * distance;
+            const moonSize = 0.2 + moon.usage * 0.3;
 
-          return (
-            <group key={moon.name} position={[moonX, 0, moonZ]}>
-              <Sphere args={[moonSize, 16, 16]}>
-                <meshStandardMaterial color="#aaaaaa" roughness={0.9} />
-              </Sphere>
-              <Text
-                position={[0, moonSize + 0.3, 0]}
-                fontSize={0.4}
-                color="#dddddd"
-                anchorX="center"
-                anchorY="middle"
-              >
-                {moon.name}
-              </Text>
-            </group>
-          );
-        })}
-      </group>
+            return (
+              <group key={moon.name} position={[moonX, 0, moonZ]}>
+                <Sphere args={[moonSize, 16, 16]}>
+                  <meshStandardMaterial color="#aaaaaa" roughness={0.9} />
+                </Sphere>
+                {showNames && (
+                  <Text
+                    position={[0, moonSize + 0.3, 0]}
+                    fontSize={0.4}
+                    color="#dddddd"
+                    anchorX="center"
+                    anchorY="middle"
+                  >
+                    {moon.name}
+                  </Text>
+                )}
+              </group>
+            );
+          })}
+        </group>
+      )}
     </group>
   );
 }
