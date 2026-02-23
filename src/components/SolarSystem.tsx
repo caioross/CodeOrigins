@@ -5,7 +5,7 @@ import { allLanguages as languages } from '../data';
 import { Planet } from './Planet';
 import { Connection } from './Connection';
 import { Particles } from './Particles';
-import { useStore } from '../store';
+import { useStore, useCameraStore } from '../store';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
@@ -27,6 +27,7 @@ languages.forEach((lang) => {
 
 function CameraController() {
   const { selectedLanguage } = useStore();
+  const { target: mapTarget, setTarget: setMapTarget } = useCameraStore();
   const { camera } = useThree();
   const controls = useThree((state) => state.controls) as OrbitControlsImpl | null;
   const [targetPos, setTargetPos] = useState<THREE.Vector3 | null>(null);
@@ -38,11 +39,21 @@ function CameraController() {
       if (pos) {
         setTargetPos(new THREE.Vector3(...pos));
         setAnimating(true);
+        setMapTarget(null);
       }
     }
-  }, [selectedLanguage]);
+  }, [selectedLanguage, setMapTarget]);
+
+  useEffect(() => {
+    if (mapTarget) {
+      setTargetPos(new THREE.Vector3(...mapTarget));
+      setAnimating(true);
+    }
+  }, [mapTarget]);
 
   useFrame(() => {
+    useCameraStore.getState().setPosition([camera.position.x, camera.position.y, camera.position.z]);
+
     if (animating && targetPos && controls) {
       // Disable user controls during animation to prevent fighting
       controls.enabled = false;
@@ -64,6 +75,7 @@ function CameraController() {
         // Re-enable user controls
         setAnimating(false);
         controls.enabled = true;
+        if (mapTarget) setMapTarget(null);
       }
     }
   });

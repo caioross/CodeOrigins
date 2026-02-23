@@ -14,3 +14,17 @@ export const useStore = create<AppState>((set) => ({
   hoveredLanguage: null,
   setHoveredLanguage: (lang) => set({ hoveredLanguage: lang }),
 }));
+
+interface CameraState {
+  position: [number, number, number];
+  setPosition: (pos: [number, number, number]) => void;
+  target: [number, number, number] | null;
+  setTarget: (pos: [number, number, number] | null) => void;
+}
+
+export const useCameraStore = create<CameraState>((set) => ({
+  position: [0, 80, 160],
+  setPosition: (pos) => set({ position: pos }),
+  target: null,
+  setTarget: (pos) => set({ target: pos }),
+}));

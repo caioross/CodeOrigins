@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, BookOpen, Globe, Search } from 'lucide-react';
+import { X, ExternalLink, BookOpen, Globe, Search, Github } from 'lucide-react';
 import { allLanguages as languages } from '../data';
+import { Minimap } from './Minimap';
 
 export function UI() {
   const { selectedLanguage, setSelectedLanguage } = useStore();
@@ -15,10 +16,13 @@ export function UI() {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center p-4">
-      {/* Header / Title */}
-      <div className="absolute top-6 left-6 text-white">
-        <h1 className="text-3xl font-bold tracking-tight">Code Origins</h1>
-        <p className="text-sm text-gray-400 mt-1">A visual history of programming languages</p>
+      {/* Header / Title & Minimap */}
+      <div className="absolute top-6 left-6 text-white flex flex-col pointer-events-none">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Code Origins</h1>
+          <p className="text-sm text-gray-400 mt-1">A visual history of programming languages</p>
+        </div>
+        <Minimap />
       </div>
 
       {/* Search Bar */}
@@ -70,9 +74,18 @@ export function UI() {
         </AnimatePresence>
       </div>
 
-      {/* Instructions */}
-      <div className="absolute bottom-6 left-6 text-gray-400 text-sm">
+      {/* Instructions & Footer */}
+      <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end text-gray-400 text-sm pointer-events-none">
         <p>Click and drag to rotate • Scroll to zoom • Click a planet to explore</p>
+        <a 
+          href="https://github.com/caioross/CodeOrigins" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="pointer-events-auto flex items-center gap-2 hover:text-white transition-colors"
+        >
+          <Github size={20} />
+          <span>View on GitHub</span>
+        </a>
       </div>
 
       <AnimatePresence>
