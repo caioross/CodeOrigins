@@ -14,7 +14,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['fortran'],
     moons: [],
-    angle: 5, category: 'Generic',
+    angle: 5, speed: 56, category: 'Generic',
   },
   {
     id: 'bcpl',
@@ -29,7 +29,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['algol60'],
     moons: [],
-    angle: 142, category: 'Generic',
+    angle: 142, speed: 60, category: 'Generic',
   },
   {
     id: 'rpg',
@@ -44,7 +44,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: [],
     moons: [],
-    angle: 55, category: 'Generic',
+    angle: 55, speed: 50, category: 'Generic',
   },
   {
     id: 'mumps',
@@ -59,7 +59,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['fortran'],
     moons: [],
-    angle: 65, category: 'Generic',
+    angle: 65, speed: 56, category: 'Generic',
   },
   {
     id: 'modula2',
@@ -74,7 +74,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['pascal'],
     moons: [],
-    angle: 108, category: 'Procedural',
+    angle: 108, speed: 59, category: 'Procedural',
   },
   {
     id: 'eiffel',
@@ -89,7 +89,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.eiffel.org/',
     parents: ['simula', 'ada'],
     moons: [],
-    angle: 115, category: 'Object-Oriented',
+    angle: 115, speed: 61, category: 'Object-Oriented',
   },
   {
     id: 'oberon',
@@ -104,7 +104,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['modula2'],
     moons: [],
-    angle: 102, category: 'Generic',
+    angle: 102, speed: 62, category: 'Generic',
   },
   {
     id: 'j',
@@ -119,7 +119,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.jsoftware.com/',
     parents: ['apl'],
     moons: [],
-    angle: 12, category: 'Generic',
+    angle: 12, speed: 50, category: 'Generic',
   },
   {
     id: 'k',
@@ -134,7 +134,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://kx.com/',
     parents: ['apl', 'lisp'],
     moons: [],
-    angle: 8, category: 'Functional',
+    angle: 8, speed: 56, category: 'Functional',
   },
   {
     id: 'rebol',
@@ -149,7 +149,7 @@ export const languages2: Language[] = [
     siteUrl: 'http://www.rebol.com/',
     parents: ['lisp', 'logo', 'forth'],
     moons: [],
-    angle: 212, category: 'Functional',
+    angle: 212, speed: 50, category: 'Functional',
   },
   {
     id: 'pike',
@@ -164,7 +164,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://pike.lysator.liu.se/',
     parents: ['c', 'cpp'],
     moons: [],
-    angle: 148, category: 'Object-Oriented',
+    angle: 148, speed: 35, category: 'Object-Oriented',
   },
   {
     id: 'autohotkey',
@@ -179,7 +179,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.autohotkey.com/',
     parents: ['c', 'cpp'],
     moons: [],
-    angle: 138, category: 'Generic',
+    angle: 138, speed: 30, category: 'Generic',
   },
   {
     id: 'applescript',
@@ -194,7 +194,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['hypertalk'],
     moons: [],
-    angle: 168, category: 'Generic',
+    angle: 168, speed: 36, category: 'Generic',
   },
   {
     id: 'hypertalk',
@@ -209,7 +209,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['pascal'],
     moons: [],
-    angle: 106, category: 'Procedural',
+    angle: 106, speed: 52, category: 'Procedural',
   },
   {
     id: 'vala',
@@ -224,7 +224,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://wiki.gnome.org/Projects/Vala',
     parents: ['csharp', 'c'],
     moons: [],
-    angle: 152, category: 'Object-Oriented',
+    angle: 152, speed: 57, category: 'Object-Oriented',
   },
   {
     id: 'ceylon',
@@ -239,7 +239,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://ceylon-lang.org/',
     parents: ['java', 'scala', 'smalltalk'],
     moons: [],
-    angle: 162, category: 'Object-Oriented',
+    angle: 162, speed: 75, category: 'Object-Oriented',
   },
   {
     id: 'fantom',
@@ -254,7 +254,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://fantom.org/',
     parents: ['java', 'csharp'],
     moons: [],
-    angle: 158, category: 'Object-Oriented',
+    angle: 158, speed: 89, category: 'Object-Oriented',
   },
   {
     id: 'red',
@@ -269,7 +269,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.red-lang.org/',
     parents: ['rebol'],
     moons: [],
-    angle: 214, category: 'Generic',
+    angle: 214, speed: 51, category: 'Generic',
   },
   {
     id: 'idris',
@@ -284,7 +284,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.idris-lang.org/',
     parents: ['haskell'],
     moons: [],
-    angle: 198, category: 'Functional',
+    angle: 198, speed: 52, category: 'Functional',
   },
   {
     id: 'agda',
@@ -299,7 +299,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://wiki.portal.chalmers.se/agda/',
     parents: ['haskell'],
     moons: [],
-    angle: 192, category: 'Functional',
+    angle: 192, speed: 69, category: 'Functional',
   },
   {
     id: 'coq',
@@ -314,7 +314,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://coq.inria.fr/',
     parents: ['ml'],
     moons: [],
-    angle: 188, category: 'Generic',
+    angle: 188, speed: 52, category: 'Generic',
   },
   {
     id: 'mercury',
@@ -329,7 +329,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://mercurylang.org/',
     parents: ['prolog', 'haskell'],
     moons: [],
-    angle: 218, category: 'Functional',
+    angle: 218, speed: 67, category: 'Functional',
   },
   {
     id: 'oz',
@@ -344,7 +344,7 @@ export const languages2: Language[] = [
     siteUrl: 'http://mozart2.org/',
     parents: ['prolog', 'lisp', 'erlang'],
     moons: [],
-    angle: 222, category: 'Object-Oriented',
+    angle: 222, speed: 51, category: 'Object-Oriented',
   },
   {
     id: 'chapel',
@@ -359,7 +359,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://chapel-lang.org/',
     parents: ['c', 'cpp', 'fortran'],
     moons: [],
-    angle: 2, category: 'Generic',
+    angle: 2, speed: 66, category: 'Generic',
   },
   {
     id: 'x10',
@@ -374,7 +374,7 @@ export const languages2: Language[] = [
     siteUrl: 'http://x10-lang.org/',
     parents: ['java', 'scala'],
     moons: [],
-    angle: 168, category: 'Generic',
+    angle: 168, speed: 68, category: 'Generic',
   },
   {
     id: 'fortress',
@@ -389,7 +389,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['fortran', 'scala'],
     moons: [],
-    angle: 4, category: 'Generic',
+    angle: 4, speed: 67, category: 'Generic',
   },
   {
     id: 'postscript',
@@ -404,7 +404,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['forth', 'lisp'],
     moons: [],
-    angle: 345, category: 'Generic',
+    angle: 345, speed: 26, category: 'Generic',
   },
   {
     id: 'vhdl',
@@ -419,7 +419,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['ada', 'pascal'],
     moons: [],
-    angle: 112, category: 'Generic',
+    angle: 112, speed: 53, category: 'Generic',
   },
   {
     id: 'verilog',
@@ -434,7 +434,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['c'],
     moons: [],
-    angle: 146, category: 'Generic',
+    angle: 146, speed: 60, category: 'Generic',
   },
   {
     id: 'systemverilog',
@@ -449,7 +449,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['verilog', 'cpp'],
     moons: [],
-    angle: 142, category: 'Generic',
+    angle: 142, speed: 58, category: 'Generic',
   },
   {
     id: 'abap',
@@ -464,7 +464,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['cobol'],
     moons: [],
-    angle: 50, category: 'Generic',
+    angle: 50, speed: 66, category: 'Generic',
   },
   {
     id: 'rpgle',
@@ -479,7 +479,7 @@ export const languages2: Language[] = [
     siteUrl: '',
     parents: ['rpg'],
     moons: [],
-    angle: 58, category: 'Generic',
+    angle: 58, speed: 56, category: 'Generic',
   },
   {
     id: 'sas',
@@ -494,7 +494,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.sas.com/',
     parents: ['pl1'],
     moons: [],
-    angle: 62, category: 'Generic',
+    angle: 62, speed: 54, category: 'Generic',
   },
   {
     id: 'stata',
@@ -509,7 +509,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.stata.com/',
     parents: ['c'],
     moons: [],
-    angle: 132, category: 'Generic',
+    angle: 132, speed: 61, category: 'Generic',
   },
   {
     id: 'spss',
@@ -524,7 +524,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.ibm.com/products/spss-statistics',
     parents: ['fortran'],
     moons: [],
-    angle: 18, category: 'Generic',
+    angle: 18, speed: 67, category: 'Generic',
   },
   {
     id: 'labview',
@@ -539,7 +539,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.ni.com/en-us/shop/labview.html',
     parents: ['c'],
     moons: [],
-    angle: 128, category: 'Generic',
+    angle: 128, speed: 64, category: 'Generic',
   },
   {
     id: 'simulink',
@@ -554,7 +554,7 @@ export const languages2: Language[] = [
     siteUrl: 'https://www.mathworks.com/products/simulink.html',
     parents: ['matlab'],
     moons: [],
-    angle: 16, category: 'Generic',
+    angle: 16, speed: 41, category: 'Generic',
   },
   {
     id: 'q',
@@ -569,6 +569,6 @@ export const languages2: Language[] = [
     siteUrl: 'https://kx.com/',
     parents: ['k', 'sql'],
     moons: [],
-    angle: 10, category: 'Generic',
+    angle: 10, speed: 54, category: 'Generic',
   }
 ];

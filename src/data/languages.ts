@@ -20,6 +20,7 @@ export interface Language {
   moons: Moon[];
   angle: number; // 0 to 360 degrees, for positioning
   category?: Category;
+  speed: number; // 1 to 100
 }
 
 export const languages: Language[] = [
@@ -36,7 +37,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: [],
     moons: [{ name: 'x86', usage: 0.9 }, { name: 'ARM', usage: 0.8 }],
-    angle: 340, category: 'Imperative',
+    angle: 340, speed: 100, category: 'Imperative',
   },
   {
     id: 'fortran',
@@ -51,7 +52,7 @@ export const languages: Language[] = [
     siteUrl: 'https://fortran-lang.org/',
     parents: ['assembly'],
     moons: [],
-    angle: 0, category: 'Structured',
+    angle: 0, speed: 87, category: 'Structured',
   },
   {
     id: 'lisp',
@@ -66,7 +67,7 @@ export const languages: Language[] = [
     siteUrl: 'https://lisp-lang.org/',
     parents: ['assembly', 'fortran'],
     moons: [],
-    angle: 200, category: 'Generic',
+    angle: 200, speed: 36, category: 'Generic',
   },
   {
     id: 'cobol',
@@ -81,7 +82,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.ibm.com/topics/cobol',
     parents: ['assembly', 'fortran'],
     moons: [],
-    angle: 45, category: 'Generic',
+    angle: 45, speed: 79, category: 'Generic',
   },
   {
     id: 'algol60',
@@ -96,7 +97,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['fortran', 'assembly'],
     moons: [],
-    angle: 90, category: 'Imperative',
+    angle: 90, speed: 61, category: 'Imperative',
   },
   {
     id: 'apl',
@@ -111,7 +112,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['fortran', 'assembly'],
     moons: [],
-    angle: 10, category: 'Functional',
+    angle: 10, speed: 53, category: 'Functional',
   },
   {
     id: 'basic',
@@ -126,7 +127,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['fortran', 'algol60'],
     moons: [],
-    angle: 30, category: 'Structured',
+    angle: 30, speed: 67, category: 'Structured',
   },
   {
     id: 'pl1',
@@ -141,7 +142,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['fortran', 'cobol', 'algol60'],
     moons: [],
-    angle: 60, category: 'Procedural',
+    angle: 60, speed: 54, category: 'Procedural',
   },
   {
     id: 'simula',
@@ -156,7 +157,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['algol60'],
     moons: [],
-    angle: 120, category: 'Object-Oriented',
+    angle: 120, speed: 62, category: 'Object-Oriented',
   },
   {
     id: 'logo',
@@ -171,7 +172,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['lisp'],
     moons: [],
-    angle: 210, category: 'Functional',
+    angle: 210, speed: 64, category: 'Functional',
   },
   {
     id: 'b',
@@ -186,7 +187,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['assembly', 'fortran'],
     moons: [],
-    angle: 145, category: 'Generic',
+    angle: 145, speed: 51, category: 'Generic',
   },
   {
     id: 'pascal',
@@ -201,7 +202,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.freepascal.org/',
     parents: ['algol60', 'fortran'],
     moons: [],
-    angle: 105, category: 'Procedural',
+    angle: 105, speed: 50, category: 'Procedural',
   },
   {
     id: 'forth',
@@ -216,7 +217,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['assembly', 'lisp'],
     moons: [],
-    angle: 350, category: 'Imperative',
+    angle: 350, speed: 58, category: 'Imperative',
   },
   {
     id: 'c',
@@ -231,7 +232,7 @@ export const languages: Language[] = [
     siteUrl: 'https://en.cppreference.com/w/c',
     parents: ['b', 'assembly', 'algol60'],
     moons: [{ name: 'POSIX', usage: 0.8 }, { name: 'Linux Kernel', usage: 0.9 }, { name: 'OpenGL', usage: 0.7 }],
-    angle: 150, category: 'Procedural',
+    angle: 150, speed: 100, category: 'Procedural',
   },
   {
     id: 'smalltalk',
@@ -246,7 +247,7 @@ export const languages: Language[] = [
     siteUrl: 'http://www.smalltalk.org/',
     parents: ['simula', 'lisp', 'logo'],
     moons: [],
-    angle: 180, category: 'Object-Oriented',
+    angle: 180, speed: 39, category: 'Object-Oriented',
   },
   {
     id: 'prolog',
@@ -261,7 +262,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.swi-prolog.org/',
     parents: ['lisp', 'fortran'],
     moons: [],
-    angle: 220, category: 'Functional',
+    angle: 220, speed: 58, category: 'Functional',
   },
   {
     id: 'ml',
@@ -276,7 +277,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['lisp', 'algol60'],
     moons: [],
-    angle: 190, category: 'Functional',
+    angle: 190, speed: 67, category: 'Functional',
   },
   {
     id: 'sql',
@@ -291,7 +292,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['cobol'],
     moons: [{ name: 'PostgreSQL', usage: 0.8 }, { name: 'MySQL', usage: 0.9 }, { name: 'SQLite', usage: 0.95 }],
-    angle: 80, category: 'Generic'
+    angle: 80, speed: 65, category: 'Generic'
   },
   {
     id: 'scheme',
@@ -306,7 +307,7 @@ export const languages: Language[] = [
     siteUrl: 'https://schemers.org/',
     parents: ['lisp', 'algol60'],
     moons: [],
-    angle: 205, category: 'Functional',
+    angle: 205, speed: 50, category: 'Functional',
   },
   {
     id: 'awk',
@@ -321,7 +322,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['c'],
     moons: [],
-    angle: 140, category: 'Generic',
+    angle: 140, speed: 62, category: 'Generic',
   },
   {
     id: 'ada',
@@ -336,7 +337,7 @@ export const languages: Language[] = [
     siteUrl: 'https://ada-lang.io/',
     parents: ['pascal', 'algol60', 'lisp'],
     moons: [],
-    angle: 110, category: 'Object-Oriented',
+    angle: 110, speed: 57, category: 'Object-Oriented',
   },
   {
     id: 'objectivec',
@@ -351,7 +352,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['c', 'smalltalk'],
     moons: [{ name: 'Cocoa', usage: 0.8 }, { name: 'Foundation', usage: 0.9 }],
-    angle: 170, category: 'Object-Oriented',
+    angle: 170, speed: 62, category: 'Object-Oriented',
   },
   {
     id: 'matlab',
@@ -366,7 +367,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.mathworks.com/products/matlab.html',
     parents: ['fortran', 'apl', 'c'],
     moons: [{ name: 'Simulink', usage: 0.7 }],
-    angle: 15, category: 'Generic',
+    angle: 15, speed: 59, category: 'Generic',
   },
   {
     id: 'cpp',
@@ -381,7 +382,7 @@ export const languages: Language[] = [
     siteUrl: 'https://isocpp.org/',
     parents: ['c', 'simula', 'algol60'],
     moons: [{ name: 'Qt', usage: 0.7 }, { name: 'Unreal Engine', usage: 0.8 }, { name: 'Boost', usage: 0.6 }],
-    angle: 135, category: 'Object-Oriented',
+    angle: 135, speed: 100, category: 'Object-Oriented',
   },
   {
     id: 'erlang',
@@ -396,7 +397,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.erlang.org/',
     parents: ['prolog', 'lisp'],
     moons: [],
-    angle: 225, category: 'Functional',
+    angle: 225, speed: 68, category: 'Functional',
   },
   {
     id: 'perl',
@@ -411,7 +412,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.perl.org/',
     parents: ['c', 'awk', 'bash', 'lisp'],
     moons: [],
-    angle: 270, category: 'Generic',
+    angle: 270, speed: 30, category: 'Generic',
   },
   {
     id: 'tcl',
@@ -426,7 +427,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.tcl.tk/',
     parents: ['c', 'lisp', 'awk', 'bash'],
     moons: [],
-    angle: 135, category: 'Generic',
+    angle: 135, speed: 32, category: 'Generic',
   },
   {
     id: 'bash',
@@ -441,7 +442,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.gnu.org/software/bash/',
     parents: ['c', 'awk'],
     moons: [{ name: 'GNU Coreutils', usage: 0.9 }],
-    angle: 125, category: 'Generic',
+    angle: 125, speed: 18, category: 'Generic',
   },
   {
     id: 'haskell',
@@ -456,7 +457,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.haskell.org/',
     parents: ['ml', 'lisp', 'apl'],
     moons: [{ name: 'Yesod', usage: 0.4 }, { name: 'Pandoc', usage: 0.6 }],
-    angle: 195, category: 'Functional',
+    angle: 195, speed: 62, category: 'Functional',
   },
   {
     id: 'python',
@@ -471,7 +472,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.python.org/',
     parents: ['c', 'cpp', 'bash', 'lisp'],
     moons: [{ name: 'Django', usage: 0.8 }, { name: 'Flask', usage: 0.7 }, { name: 'NumPy', usage: 0.9 }, { name: 'TensorFlow', usage: 0.85 }, { name: 'Pandas', usage: 0.9 }],
-    angle: 300, category: 'Generic',
+    angle: 300, speed: 30, category: 'Generic',
   },
   {
     id: 'visualbasic',
@@ -486,7 +487,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['basic', 'cpp'],
     moons: [],
-    angle: 35, category: 'Event-Driven',
+    angle: 35, speed: 59, category: 'Event-Driven',
   },
   {
     id: 'lua',
@@ -501,7 +502,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.lua.org/',
     parents: ['scheme', 'cpp', 'fortran'],
     moons: [{ name: 'LÖVE', usage: 0.6 }, { name: 'Roblox', usage: 0.8 }],
-    angle: 215, category: 'Functional',
+    angle: 215, speed: 70, category: 'Functional',
   },
   {
     id: 'r',
@@ -516,7 +517,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.r-project.org/',
     parents: ['scheme', 'c', 'fortran'],
     moons: [{ name: 'ggplot2', usage: 0.9 }, { name: 'Shiny', usage: 0.7 }, { name: 'dplyr', usage: 0.8 }],
-    angle: 200, category: 'Functional',
+    angle: 200, speed: 30, category: 'Functional',
   },
   {
     id: 'ruby',
@@ -531,7 +532,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.ruby-lang.org/en/',
     parents: ['perl', 'smalltalk', 'lisp', 'cpp'],
     moons: [{ name: 'Ruby on Rails', usage: 0.9 }, { name: 'Sinatra', usage: 0.6 }, { name: 'RSpec', usage: 0.7 }],
-    angle: 240, category: 'Functional',
+    angle: 240, speed: 30, category: 'Functional',
   },
   {
     id: 'java',
@@ -546,7 +547,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.java.com/',
     parents: ['cpp', 'smalltalk', 'objectivec'],
     moons: [{ name: 'Spring', usage: 0.9 }, { name: 'Hibernate', usage: 0.8 }, { name: 'Android SDK', usage: 0.95 }, { name: 'Maven', usage: 0.85 }],
-    angle: 165, category: 'Object-Oriented',
+    angle: 165, speed: 85, category: 'Object-Oriented',
   },
   {
     id: 'javascript',
@@ -561,7 +562,7 @@ export const languages: Language[] = [
     siteUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
     parents: ['scheme', 'java', 'c', 'awk'],
     moons: [{ name: 'React', usage: 1.0 }, { name: 'Node.js', usage: 0.95 }, { name: 'Vue', usage: 0.8 }, { name: 'Angular', usage: 0.75 }, { name: 'jQuery', usage: 0.6 }],
-    angle: 330, category: 'Functional',
+    angle: 330, speed: 70, category: 'Functional',
   },
   {
     id: 'php',
@@ -576,7 +577,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.php.net/',
     parents: ['c', 'perl', 'java'],
     moons: [{ name: 'Laravel', usage: 0.85 }, { name: 'WordPress', usage: 0.95 }, { name: 'Symfony', usage: 0.7 }],
-    angle: 280, category: 'Generic',
+    angle: 280, speed: 30, category: 'Generic',
   },
   {
     id: 'delphi',
@@ -591,7 +592,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.embarcadero.com/products/delphi',
     parents: ['pascal', 'cpp'],
     moons: [],
-    angle: 100, category: 'Procedural',
+    angle: 100, speed: 61, category: 'Procedural',
   },
   {
     id: 'coldfusion',
@@ -606,7 +607,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.adobe.com/products/coldfusion-family.html',
     parents: ['c', 'cpp'],
     moons: [],
-    angle: 285, category: 'Functional',
+    angle: 285, speed: 50, category: 'Functional',
   },
   {
     id: 'ocaml',
@@ -621,7 +622,7 @@ export const languages: Language[] = [
     siteUrl: 'https://ocaml.org/',
     parents: ['ml'],
     moons: [],
-    angle: 185, category: 'Object-Oriented',
+    angle: 185, speed: 68, category: 'Object-Oriented',
   },
   {
     id: 'actionscript',
@@ -636,7 +637,7 @@ export const languages: Language[] = [
     siteUrl: '',
     parents: ['javascript', 'java', 'cpp'],
     moons: [],
-    angle: 325, category: 'Object-Oriented',
+    angle: 325, speed: 62, category: 'Object-Oriented',
   },
   {
     id: 'csharp',
@@ -651,7 +652,7 @@ export const languages: Language[] = [
     siteUrl: 'https://docs.microsoft.com/en-us/dotnet/csharp/',
     parents: ['cpp', 'java', 'delphi', 'visualbasic'],
     moons: [{ name: '.NET', usage: 0.95 }, { name: 'Unity', usage: 0.85 }, { name: 'Blazor', usage: 0.6 }],
-    angle: 150, category: 'Object-Oriented',
+    angle: 150, speed: 85, category: 'Object-Oriented',
   },
   {
     id: 'd',
@@ -666,7 +667,7 @@ export const languages: Language[] = [
     siteUrl: 'https://dlang.org/',
     parents: ['cpp', 'java', 'csharp', 'c'],
     moons: [],
-    angle: 140, category: 'Generic',
+    angle: 140, speed: 68, category: 'Generic',
   },
   {
     id: 'groovy',
@@ -681,7 +682,7 @@ export const languages: Language[] = [
     siteUrl: 'https://groovy-lang.org/',
     parents: ['java', 'python', 'ruby', 'smalltalk'],
     moons: [{ name: 'Grails', usage: 0.5 }],
-    angle: 170, category: 'Object-Oriented',
+    angle: 170, speed: 80, category: 'Object-Oriented',
   },
   {
     id: 'scala',
@@ -696,7 +697,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.scala-lang.org/',
     parents: ['java', 'haskell', 'ml', 'erlang'],
     moons: [{ name: 'Play', usage: 0.5 }, { name: 'Akka', usage: 0.6 }, { name: 'Spark', usage: 0.8 }],
-    angle: 175, category: 'Object-Oriented',
+    angle: 175, speed: 85, category: 'Object-Oriented',
   },
   {
     id: 'haxe',
@@ -711,7 +712,7 @@ export const languages: Language[] = [
     siteUrl: 'https://haxe.org/',
     parents: ['actionscript', 'java', 'ocaml', 'cpp'],
     moons: [],
-    angle: 315, category: 'Generic',
+    angle: 315, speed: 51, category: 'Generic',
   },
   {
     id: 'fsharp',
@@ -726,7 +727,7 @@ export const languages: Language[] = [
     siteUrl: 'https://fsharp.org/',
     parents: ['ocaml', 'csharp', 'haskell'],
     moons: [],
-    angle: 160, category: 'Object-Oriented',
+    angle: 160, speed: 76, category: 'Object-Oriented',
   },
   {
     id: 'powershell',
@@ -741,7 +742,7 @@ export const languages: Language[] = [
     siteUrl: 'https://github.com/PowerShell/PowerShell',
     parents: ['csharp', 'bash', 'perl', 'sql'],
     moons: [],
-    angle: 155, category: 'Generic',
+    angle: 155, speed: 77, category: 'Generic',
   },
   {
     id: 'clojure',
@@ -756,7 +757,7 @@ export const languages: Language[] = [
     siteUrl: 'https://clojure.org/',
     parents: ['lisp', 'java', 'haskell', 'ruby'],
     moons: [{ name: 'Ring', usage: 0.5 }, { name: 'Reagent', usage: 0.6 }],
-    angle: 190, category: 'Functional',
+    angle: 190, speed: 76, category: 'Functional',
   },
   {
     id: 'scratch',
@@ -771,7 +772,7 @@ export const languages: Language[] = [
     siteUrl: 'https://scratch.mit.edu/',
     parents: ['logo', 'smalltalk', 'actionscript'],
     moons: [],
-    angle: 215, category: 'Generic',
+    angle: 215, speed: 65, category: 'Generic',
   },
   {
     id: 'nim',
@@ -786,7 +787,7 @@ export const languages: Language[] = [
     siteUrl: 'https://nim-lang.org/',
     parents: ['python', 'ada', 'lisp', 'cpp'],
     moons: [],
-    angle: 295, category: 'Generic',
+    angle: 295, speed: 100, category: 'Generic',
   },
   {
     id: 'go',
@@ -801,7 +802,7 @@ export const languages: Language[] = [
     siteUrl: 'https://go.dev/',
     parents: ['c', 'python', 'pascal'],
     moons: [{ name: 'Docker', usage: 0.9 }, { name: 'Kubernetes', usage: 0.95 }, { name: 'Gin', usage: 0.7 }],
-    angle: 145, category: 'Generic',
+    angle: 145, speed: 85, category: 'Generic',
   },
   {
     id: 'rust',
@@ -816,7 +817,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.rust-lang.org/',
     parents: ['cpp', 'ocaml', 'haskell', 'ruby'],
     moons: [{ name: 'Cargo', usage: 0.95 }, { name: 'Tokio', usage: 0.8 }, { name: 'Tauri', usage: 0.6 }],
-    angle: 130, category: 'Functional',
+    angle: 130, speed: 100, category: 'Functional',
   },
   {
     id: 'dart',
@@ -831,7 +832,7 @@ export const languages: Language[] = [
     siteUrl: 'https://dart.dev/',
     parents: ['java', 'javascript', 'smalltalk', 'erlang'],
     moons: [{ name: 'Flutter', usage: 0.9 }],
-    angle: 320, category: 'Generic',
+    angle: 320, speed: 70, category: 'Generic',
   },
   {
     id: 'kotlin',
@@ -846,7 +847,7 @@ export const languages: Language[] = [
     siteUrl: 'https://kotlinlang.org/',
     parents: ['java', 'scala', 'csharp', 'groovy'],
     moons: [{ name: 'Android Jetpack', usage: 0.85 }, { name: 'Ktor', usage: 0.6 }, { name: 'Compose', usage: 0.8 }],
-    angle: 160, category: 'Generic',
+    angle: 160, speed: 85, category: 'Generic',
   },
   {
     id: 'elixir',
@@ -861,7 +862,7 @@ export const languages: Language[] = [
     siteUrl: 'https://elixir-lang.org/',
     parents: ['erlang', 'ruby', 'clojure'],
     moons: [{ name: 'Phoenix', usage: 0.8 }, { name: 'Ecto', usage: 0.7 }],
-    angle: 230, category: 'Functional',
+    angle: 230, speed: 54, category: 'Functional',
   },
   {
     id: 'typescript',
@@ -876,7 +877,7 @@ export const languages: Language[] = [
     siteUrl: 'https://www.typescriptlang.org/',
     parents: ['javascript', 'csharp', 'java'],
     moons: [{ name: 'NestJS', usage: 0.7 }, { name: 'Deno', usage: 0.6 }],
-    angle: 340, category: 'Generic',
+    angle: 340, speed: 70, category: 'Generic',
   },
   {
     id: 'julia',
@@ -891,7 +892,7 @@ export const languages: Language[] = [
     siteUrl: 'https://julialang.org/',
     parents: ['lisp', 'python', 'ruby', 'matlab', 'r'],
     moons: [],
-    angle: 290, category: 'Functional',
+    angle: 290, speed: 85, category: 'Functional',
   },
   {
     id: 'elm',
@@ -906,7 +907,7 @@ export const languages: Language[] = [
     siteUrl: 'https://elm-lang.org/',
     parents: ['haskell', 'ml', 'fsharp'],
     moons: [],
-    angle: 195, category: 'Functional',
+    angle: 195, speed: 52, category: 'Functional',
   },
   {
     id: 'swift',
@@ -921,7 +922,7 @@ export const languages: Language[] = [
     siteUrl: 'https://swift.org/',
     parents: ['objectivec', 'rust', 'ruby', 'python', 'csharp'],
     moons: [{ name: 'SwiftUI', usage: 0.85 }, { name: 'UIKit', usage: 0.9 }, { name: 'Vapor', usage: 0.5 }],
-    angle: 165, category: 'Functional',
+    angle: 165, speed: 85, category: 'Functional',
   },
   {
     id: 'crystal',
@@ -936,7 +937,7 @@ export const languages: Language[] = [
     siteUrl: 'https://crystal-lang.org/',
     parents: ['ruby', 'c', 'rust', 'go'],
     moons: [],
-    angle: 245, category: 'Object-Oriented',
+    angle: 245, speed: 85, category: 'Object-Oriented',
   },
   {
     id: 'hack',
@@ -951,7 +952,7 @@ export const languages: Language[] = [
     siteUrl: 'https://hacklang.org/',
     parents: ['php', 'ocaml', 'haskell'],
     moons: [],
-    angle: 275, category: 'Generic',
+    angle: 275, speed: 50, category: 'Generic',
   },
   {
     id: 'solidity',
@@ -966,7 +967,7 @@ export const languages: Language[] = [
     siteUrl: 'https://soliditylang.org/',
     parents: ['cpp', 'python', 'javascript'],
     moons: [],
-    angle: 310, category: 'Object-Oriented',
+    angle: 310, speed: 67, category: 'Object-Oriented',
   },
   {
     id: 'zig',
@@ -981,7 +982,7 @@ export const languages: Language[] = [
     siteUrl: 'https://ziglang.org/',
     parents: ['c', 'cpp', 'rust', 'go'],
     moons: [],
-    angle: 135, category: 'Imperative',
+    angle: 135, speed: 100, category: 'Imperative',
   },
   {
     id: 'reason',
@@ -996,7 +997,7 @@ export const languages: Language[] = [
     siteUrl: 'https://reasonml.github.io/',
     parents: ['ocaml', 'javascript', 'rust'],
     moons: [],
-    angle: 180, category: 'Functional',
+    angle: 180, speed: 66, category: 'Functional',
   },
   {
     id: 'v',
@@ -1011,6 +1012,6 @@ export const languages: Language[] = [
     siteUrl: 'https://vlang.io/',
     parents: ['go', 'rust', 'swift', 'c'],
     moons: [],
-    angle: 140, category: 'Generic',
+    angle: 140, speed: 81, category: 'Generic',
   }
 ];
