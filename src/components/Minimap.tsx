@@ -212,8 +212,8 @@ export function Minimap() {
             <span>Structured (30°)</span>
           </div>
           <div 
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Object-Oriented (OOP)' ? 'text-white font-bold' : ''}`}
-            onClick={() => setCategoryFilter(categoryFilter === 'Object-Oriented (OOP)' ? null : 'Object-Oriented (OOP)')}
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Object-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => setCategoryFilter(categoryFilter === 'Object-Oriented' ? null : 'Object-Oriented')}
           >
             <div className="w-2 h-0.5 bg-white/50 -rotate-[40deg]"></div>
             <span>Object-Oriented (40°)</span>
