@@ -55,6 +55,29 @@ export function Minimap() {
   const camX = ((position[0] / MAX_RADIUS) + 1) * 50;
   const camZ = ((position[2] / MAX_RADIUS) + 1) * 50;
 
+  const planetRefs = React.useRef<Map<string, HTMLDivElement>>(new Map());
+
+  React.useEffect(() => {
+    let animationFrameId: number;
+    
+    const updatePositions = () => {
+      planetRefs.current.forEach((el, id) => {
+        const pos = languagePositions.get(id);
+        if (pos) {
+          const left = ((pos[0] / MAX_RADIUS) + 1) * 50;
+          const top = ((pos[2] / MAX_RADIUS) + 1) * 50;
+          el.style.left = `${left}%`;
+          el.style.top = `${top}%`;
+        }
+      });
+      animationFrameId = requestAnimationFrame(updatePositions);
+    };
+    
+    updatePositions();
+    
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
   return (
     <div className="pointer-events-auto mt-4 flex flex-col gap-3">
       <div 
@@ -78,6 +101,10 @@ export function Minimap() {
           return (
             <div 
               key={lang.id}
+              ref={(el) => {
+                if (el) planetRefs.current.set(lang.id, el);
+                else planetRefs.current.delete(lang.id);
+              }}
               className="absolute w-1 h-1 bg-indigo-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 opacity-60"
               style={{ left: `${left}%`, top: `${top}%` }}
               title={lang.name}

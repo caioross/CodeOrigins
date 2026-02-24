@@ -1,16 +1,17 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 import { Language } from '../data/languages';
 import { useStore } from '../store';
+import { languagePositions, YEAR_SCALE, BASE_YEAR } from './SolarSystem';
 
 interface PlanetProps {
   language: Language;
-  position: [number, number, number];
 }
 
-export function Planet({ language, position }: PlanetProps) {
+export function Planet({ language }: PlanetProps) {
+  const groupRef = useRef<THREE.Group>(null);
   const meshRef = useRef<THREE.Mesh>(null);
   const moonsRef = useRef<THREE.Group>(null);
   const { setSelectedLanguage, selectedLanguage, setHoveredLanguage, hoveredLanguage, showNames, showMoons } = useStore();
@@ -28,17 +29,60 @@ export function Planet({ language, position }: PlanetProps) {
     return marsColor.lerp(earthColor, language.docs);
   }, [language.docs]);
 
-  useFrame(() => {
+  // Initial random Y offset
+  const randomY = useMemo(() => (Math.random() - 0.5) * 2, []);
+
+  useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.005;
     }
     if (moonsRef.current) {
       moonsRef.current.rotation.y -= 0.01; // Moons orbit
     }
+    
+    if (groupRef.current) {
+      const time = state.clock.getElapsedTime();
+      const radius = Math.max(0, (language.year - BASE_YEAR) * YEAR_SCALE);
+      
+      // Speed from 1 to 100 -> map to angular velocity
+      // 100 -> fast, 1 -> slow
+      const speedFactor = (language.speed || 50) / 100;
+      const angularVelocity = speedFactor * 0.1; // Adjust multiplier for overall speed
+      
+      const currentAngleRad = (language.angle * Math.PI) / 180 + time * angularVelocity;
+      
+      const baseX = Math.cos(currentAngleRad) * radius;
+      const baseZ = Math.sin(currentAngleRad) * radius;
+      
+      let inclinationDeg = 0;
+      const category = (language.category || 'Generic').toLowerCase();
+      
+      if (category === 'imperative') inclinationDeg = 0;
+      else if (category === 'declarative') inclinationDeg = 10;
+      else if (category === 'procedural') inclinationDeg = 20;
+      else if (category === 'structured') inclinationDeg = 30;
+      else if (category === 'object-oriented') inclinationDeg = 40;
+      else if (category === 'functional') inclinationDeg = 50;
+      else if (category === 'logical') inclinationDeg = 60;
+      else if (category === 'reactive') inclinationDeg = 70;
+      else if (category === 'event-driven') inclinationDeg = 80;
+      else if (category === 'generic') inclinationDeg = 90;
+      
+      const inclinationRad = (inclinationDeg * Math.PI) / 180;
+      
+      const x = baseX;
+      const y = -baseZ * Math.sin(inclinationRad) + randomY;
+      const z = baseZ * Math.cos(inclinationRad);
+      
+      groupRef.current.position.set(x, y, z);
+      
+      // Update global map for Connections and Minimap
+      languagePositions.set(language.id, [x, y, z]);
+    }
   });
 
   return (
-    <group position={position}>
+    <group ref={groupRef}>
       <Sphere
         ref={meshRef}
         args={[size, 32, 32]}

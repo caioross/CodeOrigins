@@ -10,8 +10,8 @@ import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
 // Calculate positions for all languages
-const YEAR_SCALE = 3.0;
-const BASE_YEAR = 1950;
+export const YEAR_SCALE = 3.0;
+export const BASE_YEAR = 1950;
 
 export const languagePositions = new Map<string, [number, number, number]>();
 
@@ -214,7 +214,6 @@ export function SolarSystem() {
         <Planet 
           key={lang.id} 
           language={lang} 
-          position={languagePositions.get(lang.id)!} 
         />
       ))}
 
@@ -223,9 +222,6 @@ export function SolarSystem() {
         return lang.parents.map((parentId) => {
           const parent = filteredLanguages.find(l => l.id === parentId);
           if (!parent) return null;
-          
-          const startPos = languagePositions.get(parentId)!;
-          const endPos = languagePositions.get(lang.id)!;
           
           const isHighlighted = 
             selectedLanguage?.id === lang.id || 
@@ -236,8 +232,8 @@ export function SolarSystem() {
           return (
             <Connection 
               key={`${parentId}-${lang.id}`}
-              start={startPos}
-              end={endPos}
+              startId={parentId}
+              endId={lang.id}
               strength={lang.usage * parent.usage} // Arbitrary strength
               isHighlighted={isHighlighted}
             />
