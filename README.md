@@ -20,7 +20,7 @@ CodeOrigins visualizes the universe of programming languages as a **3D solar sys
 | Property | Meaning |
 |----------|---------|
 | **Orbital radius** | Year of creation — older languages orbit closer to the center (1950 baseline) |
-| **Orbital inclination** | Programming paradigm — Imperative (0°), Object-Oriented (20°), Scripting (35°), Functional (50°), Generic (90°), etc. |
+| **Orbital inclination** | Programming paradigm — Imperative (0°), Procedural (20°), Object-Oriented (40°), Functional (50°), Generic (90°), etc. |
 | **Connection lines** | Language lineage — C → C++ → Java, ML → Haskell → Scala |
 | **Planet size** | Estimated usage/popularity |
 
@@ -118,4 +118,4 @@ src/
 | Zoom | Scroll wheel |
 | Select language | Click on a planet |
 | Navigate via minimap | Click anywhere on the minimap |
-| Toggle overlays | Use the HUD buttons in the top-right corner |
+| Toggle overlays | Use the HUD buttons in the top-left corner |
