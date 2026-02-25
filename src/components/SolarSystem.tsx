@@ -153,11 +153,15 @@ export function SolarSystem() {
   const { 
     selectedLanguage, hoveredLanguage, 
     showOrbits, showConnections,
-    docsFilter, usageFilter, categoryFilter
+    docsFilter, usageFilter, categoryFilter,
+    yearRange
   } = useStore();
 
   const filteredLanguages = useMemo(() => {
     return languages.filter(lang => {
+      if (lang.year < yearRange[0] || lang.year > yearRange[1]) {
+        return false;
+      }
       if (docsFilter) {
         if (docsFilter === 'Good' && lang.docs < 0.7) return false;
         if (docsFilter === 'Avg' && (lang.docs < 0.4 || lang.docs >= 0.7)) return false;
@@ -174,7 +178,7 @@ export function SolarSystem() {
       }
       return true;
     });
-  }, [docsFilter, usageFilter, categoryFilter]);
+  }, [docsFilter, usageFilter, categoryFilter, yearRange]);
 
   // Generate orbit rings
   const orbits = useMemo(() => {

@@ -20,6 +20,8 @@ interface AppState {
   setUsageFilter: (filter: string | null) => void;
   categoryFilter: string | null;
   setCategoryFilter: (filter: string | null) => void;
+  yearRange: [number, number];
+  setYearRange: (range: [number, number]) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -41,6 +43,8 @@ export const useStore = create<AppState>((set) => ({
   setUsageFilter: (filter) => set({ usageFilter: filter }),
   categoryFilter: null,
   setCategoryFilter: (filter) => set({ categoryFilter: filter }),
+  yearRange: [1950, new Date().getFullYear()],
+  setYearRange: (range) => set({ yearRange: range }),
 }));
 
 interface CameraState {

@@ -5,6 +5,8 @@ import { X, ExternalLink, BookOpen, Globe, Search, Github } from 'lucide-react';
 import { allLanguages as languages } from '../data';
 import { Minimap } from './Minimap';
 
+import { TimelineSlider } from './TimelineSlider';
+
 export function UI() {
   const { selectedLanguage, setSelectedLanguage } = useStore();
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,6 +25,11 @@ export function UI() {
           <p className="text-sm text-gray-400 mt-1">A visual history of programming languages</p>
         </div>
         <Minimap />
+      </div>
+
+      {/* Timeline Slider */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 w-1/2 max-w-2xl pointer-events-auto">
+        <TimelineSlider />
       </div>
 
       {/* Search Bar */}
