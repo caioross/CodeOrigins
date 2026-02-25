@@ -49,57 +49,100 @@ languages.forEach((lang) => {
 });
 
 function CameraController() {
-  const { selectedLanguage } = useStore();
+  const { selectedLanguage, setSelectedLanguage } = useStore();
   const { target: mapTarget, setTarget: setMapTarget } = useCameraStore();
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
   const controls = useThree((state) => state.controls) as OrbitControlsImpl | null;
-  const [targetPos, setTargetPos] = useState<THREE.Vector3 | null>(null);
-  const [animating, setAnimating] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Track the ID of the language we are animating towards
+  const [animationTargetId, setAnimationTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     if (selectedLanguage) {
-      const pos = languagePositions.get(selectedLanguage.id);
-      if (pos) {
-        setTargetPos(new THREE.Vector3(...pos));
-        setAnimating(true);
-        setMapTarget(null);
-      }
+      setIsAnimating(true);
+      setAnimationTargetId(selectedLanguage.id);
+      setMapTarget(null);
+    } else if (!mapTarget) {
+      setIsAnimating(false);
+      setAnimationTargetId(null);
     }
   }, [selectedLanguage, setMapTarget]);
 
   useEffect(() => {
     if (mapTarget) {
-      setTargetPos(new THREE.Vector3(...mapTarget));
-      setAnimating(true);
+      setIsAnimating(true);
+      // We don't have a language ID for map targets, so we can use a special value
+      setAnimationTargetId('map_target'); 
+    } else if (!selectedLanguage) {
+      setIsAnimating(false);
+      setAnimationTargetId(null);
     }
   }, [mapTarget]);
+
+  // Effect to handle user interruption
+  useEffect(() => {
+    const onInteraction = () => {
+      if (isAnimating) {
+        setIsAnimating(false);
+        setAnimationTargetId(null);
+        setSelectedLanguage(null);
+        setMapTarget(null);
+      }
+    };
+
+    const domElement = gl.domElement;
+    domElement.addEventListener('pointerdown', onInteraction);
+    domElement.addEventListener('wheel', onInteraction);
+
+    return () => {
+      domElement.removeEventListener('pointerdown', onInteraction);
+      domElement.removeEventListener('wheel', onInteraction);
+    };
+  }, [isAnimating, gl.domElement, setSelectedLanguage, setMapTarget]);
 
   useFrame(() => {
     useCameraStore.getState().setPosition([camera.position.x, camera.position.y, camera.position.z]);
 
-    if (animating && targetPos && controls) {
-      // Disable user controls during animation to prevent fighting
-      controls.enabled = false;
-      
-      controls.target.lerp(targetPos, 0.05);
-      
-      const desiredCamPos = targetPos.clone().add(new THREE.Vector3(5, 5, 12));
-      camera.position.lerp(desiredCamPos, 0.05);
-      
-      controls.update();
-      
-      // Check if we're close enough to the target
-      if (controls.target.distanceTo(targetPos) < 0.1 && camera.position.distanceTo(desiredCamPos) < 0.1) {
-        // Snap to exact position to finish animation cleanly
-        controls.target.copy(targetPos);
-        camera.position.copy(desiredCamPos);
-        controls.update();
-        
-        // Re-enable user controls
-        setAnimating(false);
-        controls.enabled = true;
-        if (mapTarget) setMapTarget(null);
+    if (isAnimating && controls) {
+      let currentTargetPos: THREE.Vector3 | undefined;
+
+      if (animationTargetId === 'map_target' && mapTarget) {
+        currentTargetPos = new THREE.Vector3(...mapTarget);
+      } else if (animationTargetId) {
+        const posArray = languagePositions.get(animationTargetId);
+        if (posArray) {
+          currentTargetPos = new THREE.Vector3(...posArray);
+        }
       }
+
+      if (currentTargetPos) {
+        controls.enabled = false;
+        controls.target.lerp(currentTargetPos, 0.05);
+
+        const desiredCamPos = currentTargetPos.clone().add(new THREE.Vector3(5, 5, 12));
+        camera.position.lerp(desiredCamPos, 0.05);
+
+        controls.update();
+
+        if (controls.target.distanceTo(currentTargetPos) < 0.1 && camera.position.distanceTo(desiredCamPos) < 0.1) {
+          controls.target.copy(currentTargetPos);
+          camera.position.copy(desiredCamPos);
+          controls.update();
+          
+          setIsAnimating(false);
+          setAnimationTargetId(null);
+          controls.enabled = true;
+          if (mapTarget) setMapTarget(null);
+        }
+      } else {
+        // Target position not found, stop animating
+        setIsAnimating(false);
+        setAnimationTargetId(null);
+        controls.enabled = true;
+      }
+    } else if (controls) {
+      controls.enabled = true;
     }
   });
 

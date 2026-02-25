@@ -1,6 +1,6 @@
 import { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text, Sphere } from '@react-three/drei';
+import { Text, Sphere, Billboard } from '@react-three/drei';
 import * as THREE from 'three';
 import { Language } from '../data/languages';
 import { useStore } from '../store';
@@ -47,7 +47,7 @@ export function Planet({ language }: PlanetProps) {
       // Speed from 1 to 100 -> map to angular velocity
       // 100 -> fast, 1 -> slow
       const speedFactor = (language.speed || 50) / 100;
-      const angularVelocity = speedFactor * 0.1; // Adjust multiplier for overall speed
+      const angularVelocity = speedFactor * 0.05; // Adjust multiplier for overall speed
       
       const currentAngleRad = (language.angle * Math.PI) / 180 + time * angularVelocity;
       
@@ -111,17 +111,19 @@ export function Planet({ language }: PlanetProps) {
 
       {/* Label */}
       {showNames && (
-        <Text
-          position={[0, size + 0.5, 0]}
-          fontSize={0.8}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.05}
-          outlineColor="#000000"
-        >
-          {language.name}
-        </Text>
+        <Billboard>
+          <Text
+            position={[0, size + 0.5, 0]}
+            fontSize={0.8}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.05}
+            outlineColor="#000000"
+          >
+            {language.name}
+          </Text>
+        </Billboard>
       )}
 
       {/* Moons */}
@@ -140,15 +142,17 @@ export function Planet({ language }: PlanetProps) {
                   <meshStandardMaterial color="#aaaaaa" roughness={0.9} />
                 </Sphere>
                 {showNames && (
-                  <Text
-                    position={[0, moonSize + 0.3, 0]}
-                    fontSize={0.4}
-                    color="#dddddd"
-                    anchorX="center"
-                    anchorY="middle"
-                  >
-                    {moon.name}
-                  </Text>
+                  <Billboard>
+                    <Text
+                      position={[0, moonSize + 0.3, 0]}
+                      fontSize={0.4}
+                      color="#dddddd"
+                      anchorX="center"
+                      anchorY="middle"
+                    >
+                      {moon.name}
+                    </Text>
+                  </Billboard>
                 )}
               </group>
             );
