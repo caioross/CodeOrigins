@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, BookOpen, Globe, Search, Github } from 'lucide-react';
-import { allLanguages as languages } from '../data';
+import { X, ExternalLink, BookOpen, Globe, Search, Github, ChevronLeft, ChevronRight } from 'lucide-react';
+import { allLanguages as languages, Language } from '../data';
 import { Minimap } from './Minimap';
 
 import { TimelineSlider } from './TimelineSlider';
@@ -15,6 +15,19 @@ export function UI() {
   const filteredLanguages = languages.filter(l => 
     l.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const { parentLanguages, childLanguages } = useMemo(() => {
+    if (!selectedLanguage) return { parentLanguages: [], childLanguages: [] };
+
+    const parents = selectedLanguage.parents
+      .map(pId => languages.find(l => l.id === pId))
+      .filter((l): l is Language => l !== undefined);
+
+    const children = languages.filter(l => l.parents.includes(selectedLanguage.id));
+
+    return { parentLanguages: parents, childLanguages: children };
+  }, [selectedLanguage]);
+
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center p-4">
@@ -102,102 +115,125 @@ export function UI() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="pointer-events-auto relative w-full max-w-md overflow-hidden rounded-2xl bg-black/80 p-6 text-white shadow-2xl backdrop-blur-xl border border-white/10"
+            className="pointer-events-auto relative w-full max-w-md"
           >
-            <button
-              onClick={() => setSelectedLanguage(null)}
-              className="absolute right-4 top-4 rounded-full p-1 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
-            >
-              <X size={20} />
-            </button>
+            {/* Main Card */}
+            <div className="overflow-hidden rounded-2xl bg-black/80 p-6 text-white shadow-2xl backdrop-blur-xl border border-white/10">
+              <button
+                onClick={() => setSelectedLanguage(null)}
+                className="absolute right-4 top-4 rounded-full p-1 text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
 
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-xl font-bold shadow-lg">
-                {selectedLanguage.name.charAt(0)}
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-xl font-bold shadow-lg">
+                  {selectedLanguage.name.charAt(0)}
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold">{selectedLanguage.name}</h2>
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <span>{selectedLanguage.year}</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      <Globe size={14} />
+                      {selectedLanguage.origin}
+                    </span>
+                    <span>•</span>
+                    <span className="capitalize text-indigo-300">
+                      {selectedLanguage.category || 'programing and scripts'}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h2 className="text-2xl font-bold">{selectedLanguage.name}</h2>
-                <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <span>{selectedLanguage.year}</span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1">
-                    <Globe size={14} />
-                    {selectedLanguage.origin}
-                  </span>
-                  <span>•</span>
-                  <span className="capitalize text-indigo-300">
-                    {selectedLanguage.category || 'programing and scripts'}
-                  </span>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">About</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">
+                    {selectedLanguage.description}
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">Connections</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">
+                    {selectedLanguage.connectionsExplanation}
+                  </p>
+                </div>
+
+                {selectedLanguage.moons.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">Ecosystem (Moons)</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedLanguage.moons.map(moon => (
+                        <span key={moon.name} className="rounded-full bg-white/10 px-3 py-1 text-xs">
+                          {moon.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-4 flex gap-3 border-t border-white/10">
+                  {selectedLanguage.docsUrl && (
+                    <a
+                      href={selectedLanguage.docsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium hover:bg-indigo-500 transition-colors"
+                    >
+                      <BookOpen size={16} />
+                      Docs
+                    </a>
+                  )}
+                  {selectedLanguage.siteUrl && (
+                    <a
+                      href={selectedLanguage.siteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/20 transition-colors"
+                    >
+                      <ExternalLink size={16} />
+                      Website
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">About</h3>
-                <p className="text-sm leading-relaxed text-gray-300">
-                  {selectedLanguage.description}
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">Connections</h3>
-                <p className="text-sm leading-relaxed text-gray-300">
-                  {selectedLanguage.connectionsExplanation}
-                </p>
-              </div>
-
-              {selectedLanguage.parents.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">Evolved From</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedLanguage.parents.map(parentId => (
-                      <span key={parentId} className="rounded-full bg-white/10 px-3 py-1 text-xs">
-                        {parentId.toUpperCase()}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {selectedLanguage.moons.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">Ecosystem (Moons)</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedLanguage.moons.map(moon => (
-                      <span key={moon.name} className="rounded-full bg-white/10 px-3 py-1 text-xs">
-                        {moon.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="pt-4 flex gap-3 border-t border-white/10">
-                {selectedLanguage.docsUrl && (
-                  <a
-                    href={selectedLanguage.docsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium hover:bg-indigo-500 transition-colors"
+            {/* Left Ear - Parents */}
+            {parentLanguages.length > 0 && (
+              <div className="absolute -left-4 top-1/2 -translate-y-1/2 -translate-x-full flex flex-col gap-2 items-end">
+                <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Evolved From</span>
+                {parentLanguages.map(p => (
+                  <button 
+                    key={p.id}
+                    onClick={() => setSelectedLanguage(p)}
+                    className="w-max bg-black/80 backdrop-blur-xl border border-white/10 rounded-lg px-3 py-1 text-sm text-white hover:bg-indigo-600 transition-colors flex items-center gap-2"
                   >
-                    <BookOpen size={16} />
-                    Docs
-                  </a>
-                )}
-                {selectedLanguage.siteUrl && (
-                  <a
-                    href={selectedLanguage.siteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/20 transition-colors"
-                  >
-                    <ExternalLink size={16} />
-                    Website
-                  </a>
-                )}
+                     <ChevronLeft size={16} /> {p.name}
+                  </button>
+                ))}
               </div>
-            </div>
+            )}
+
+            {/* Right Ear - Children */}
+            {childLanguages.length > 0 && (
+              <div className="absolute -right-4 top-1/2 -translate-y-1/2 translate-x-full flex flex-col gap-2 items-start">
+                <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Influenced</span>
+                {childLanguages.map(c => (
+                  <button 
+                    key={c.id}
+                    onClick={() => setSelectedLanguage(c)}
+                    className="w-max bg-black/80 backdrop-blur-xl border border-white/10 rounded-lg px-3 py-1 text-sm text-white hover:bg-indigo-600 transition-colors flex items-center gap-2"
+                  >
+                    {c.name} <ChevronRight size={16} />
+                  </button>
+                ))}
+              </div>
+            )}
+
           </motion.div>
         )}
       </AnimatePresence>
