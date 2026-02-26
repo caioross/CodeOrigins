@@ -21,6 +21,8 @@ export interface Language {
   angle: number; // 0 to 360 degrees, for positioning
   category?: Category;
   speed: number; // 1 to 100
+  curious_fact?: string;
+  example?: string;
 }
 
 export const languages: Language[] = [
