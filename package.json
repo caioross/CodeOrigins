@@ -17,6 +17,7 @@
     "@react-three/fiber": "^9.5.0",
     "@tailwindcss/vite": "^4.1.14",
     "@types/three": "^0.183.1",
+    "@vercel/analytics": "^1.6.1",
     "@vitejs/plugin-react": "^5.0.4",
     "better-sqlite3": "^12.4.1",
     "dotenv": "^17.2.3",
