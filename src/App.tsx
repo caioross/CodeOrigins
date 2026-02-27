@@ -7,6 +7,7 @@ import { Canvas } from '@react-three/fiber';
 import { SolarSystem } from './components/SolarSystem';
 import { UI } from './components/UI';
 import { Timeline } from './components/Timeline';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <SolarSystem />
         </Canvas>
       </div>
+      <Analytics />
     </div>
   );
 }
