@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, BookOpen, Globe, Search, Github, ChevronLeft, ChevronRight, Code, Loader2, Play, Pause, FastForward } from 'lucide-react';
+import { X, ExternalLink, BookOpen, Globe, Search, Github, ChevronLeft, ChevronRight, Code, Loader2, Play, Pause, FastForward, Book, Download, Linkedin } from 'lucide-react';
 import { Language } from '../data';
 import { Minimap } from './Minimap';
 import { TimelineSlider } from './TimelineSlider';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { loadLocaleData } from '../services/localeLoader';
+import { DocsPopup } from './DocsPopup';
 
 const translations: Record<string, Record<string, string>> = {
   en: {
@@ -73,6 +74,17 @@ export function UI() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [showLocales, setShowLocales] = useState(false);
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
+
+  const handleDownload = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(languages, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", `languages_${currentLocale}.json`);
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
 
   const filteredLanguages = languages.filter(l =>
     l.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -251,16 +263,42 @@ export function UI() {
 
       {/* Instructions & Footer */}
       <div className="absolute bottom-4 left-6 right-6 flex justify-between items-end text-gray-400 text-xs pointer-events-none">
-        <p>{t.instructions}</p>
-        <a
-          href="https://github.com/caioross/CodeOrigins"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="pointer-events-auto flex items-center gap-2 hover:text-white transition-colors text-sm"
-        >
-          <Github size={16} />
-          <span>{t.viewOnGithub}</span>
-        </a>
+        <p className="max-w-[50%]">{t.instructions}</p>
+        <div className="pointer-events-auto flex items-center gap-3">
+          <button
+            onClick={() => setIsDocsOpen(true)}
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
+            title="Docs"
+          >
+            <Book size={16} />
+          </button>
+          <button
+            onClick={handleDownload}
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
+            title="Download JSON"
+          >
+            <Download size={16} />
+          </button>
+          <a
+            href="https://www.linkedin.com/in/caiorossi/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
+            title="About Creator"
+          >
+            <Linkedin size={16} />
+          </a>
+          <div className="w-[1px] h-4 bg-white/20 mx-1"></div>
+          <a
+            href="https://github.com/caioross/CodeOrigins"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-white transition-colors text-sm bg-white/5 hover:bg-white/20 px-3 py-1.5 rounded-full"
+          >
+            <Github size={16} />
+            <span className="hidden sm:inline">{t.viewOnGithub}</span>
+          </a>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -418,6 +456,8 @@ export function UI() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <DocsPopup isOpen={isDocsOpen} onClose={() => setIsDocsOpen(false)} />
     </div>
   );
 }
