@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeOrigins JSON Editor</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --glass-bg: rgba(33, 37, 41, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --brand-color: #6c5ce7;
+            --brand-hover: #5b4bc4;
+        }
+
+        [data-bs-theme="light"] {
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bs-body-bg);
+            transition: background-color 0.3s ease;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 100, 100, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 100, 100, 0.8);
+        }
+
+        /* Custom UI Elements */
+        .glass-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1030;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: var(--glass-bg);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 70px);
+        }
+
+        .main-content {
+            flex: 1;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            position: relative;
+            background: var(--bs-tertiary-bg);
+        }
+
+        .brand-text {
+            background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .list-item-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .list-item-card:hover {
+            background-color: var(--bs-secondary-bg);
+        }
+
+        .list-item-card.active {
+            background-color: var(--bs-secondary-bg);
+            border-left-color: var(--brand-color);
+        }
+
+        /* Language Badges Toolbar */
+        .lang-toolbar {
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .lang-badge {
+            cursor: pointer;
+            transition: transform 0.2s;
+            user-select: none;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .lang-badge:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Editor Card */
+        .editor-card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--bs-body-bg);
+        }
+
+        /* Status Colors */
+        .status-ok {
+            background-color: var(--bs-success) !important;
+            color: white !important;
+        }
+
+        .status-warning {
+            background-color: var(--bs-warning) !important;
+            color: black !important;
+        }
+
+        /* Slide-over Translation Panel */
+        .translation-panel {
+            position: fixed;
+            top: 70px;
+            right: -400px;
+            width: 400px;
+            height: calc(100vh - 70px);
+            background: var(--bs-body-bg);
+            border-left: 1px solid var(--glass-border);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1040;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .translation-panel.open {
+            right: 0;
+        }
+
+        .translate-loader {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="glass-header d-flex align-items-center justify-content-between px-4 py-3 shadow-sm"
+        style="height: 70px;">
+        <div class="d-flex align-items-center gap-3">
+            <div class="fs-4 text-primary"><i class="fa-solid fa-code"></i></div>
+            <div>
+                <h5 class="mb-0 brand-text">CodeOrigins JSON Editor</h5>
+                <small class="text-muted fw-bold" id="status-text">Waiting for directory...</small>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-outline-secondary btn-sm rounded-circle" onclick="toggleTheme()"
+                title="Toggle Theme">
+                <i class="fa-solid fa-moon d-none d-sm-inline" id="theme-icon-moon"></i>
+                <i class="fa-solid fa-sun d-inline d-sm-none" id="theme-icon-sun"></i>
+            </button>
+            <div class="vr"></div>
+            <button class="btn btn-primary btn-sm fw-bold" onclick="openDirectory()">
+                <i class="fa-solid fa-folder-open me-2"></i>Open Folder
+            </button>
+            <button class="btn btn-success btn-sm fw-bold disabled" id="btn-save" onclick="saveAllFiles()">
+                <i class="fa-solid fa-floppy-disk me-2"></i>Save All
+            </button>
+        </div>
+    </header>
+
+    <div class="d-flex w-100">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="p-3 border-bottom border-secondary-subtle">
+                <ul class="nav nav-pills nav-fill mb-3" id="sidebar-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active py-1 fw-bold" id="dash-tab" data-bs-toggle="pill"
+                            data-bs-target="#dash-view" type="button" role="tab"
+                            onclick="switchMainView('dashboard')">Dashboard</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-1 fw-bold" id="edit-tab" data-bs-toggle="pill"
+                            data-bs-target="#edit-view" type="button" role="tab"
+                            onclick="switchMainView('editor')">Editor</button>
+                    </li>
+                </ul>
+                <div class="input-group input-group-sm" id="search-container" style="display: none;">
+                    <span class="input-group-text bg-body-tertiary"><i class="fa-solid fa-search"></i></span>
+                    <input type="text" class="form-control" id="search-box" placeholder="Search ID or Name..."
+                        onkeyup="filterList()">
+                    <button class="btn btn-primary" type="button" onclick="addNewRecord()" title="Add New Record"><i
+                            class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+
+            <!-- Empty State Sidebar -->
+            <div id="sidebar-empty"
+                class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-muted p-4 text-center">
+                <i class="fa-regular fa-folder-open display-4 mb-3 opacity-50"></i>
+                <small>Select a folder containing your project's JSON translation files.</small>
+            </div>
+
+            <!-- List View -->
+            <div id="item-list" class="flex-grow-1 overflow-auto d-none p-2">
+                <!-- Items generated via JS -->
+            </div>
+
+            <div class="p-2 border-top border-secondary-subtle text-center text-muted" style="font-size: 0.75rem;">
+                <span id="record-count">0</span> records total
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content p-4 p-md-5" id="main-content">
+
+            <!-- Welcome View -->
+            <div id="view-welcome"
+                class="h-100 d-flex flex-column align-items-center justify-content-center text-center">
+                <div class="mb-4 text-primary" style="font-size: 5rem;">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <h2 class="fw-bold brand-text mb-3">Welcome to CodeOrigins Editor</h2>
+                <p class="text-muted lead mb-4 max-w-500">
+                    A powerful, local-first JSON translation manager designed for seamless multi-language
+                    synchronization, intelligent dashboards, and advanced data visualization.
+                </p>
+                <button class="btn btn-primary btn-lg shadow-sm px-4 rounded-pill fw-bold" onclick="openDirectory()">
+                    <i class="fa-solid fa-folder-open me-2"></i>Open Data Directory
+                </button>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="d-none animate__animated animate__fadeIn">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-bold mb-0">Analytics Dashboard</h3>
+                </div>
+
+                <!-- Top Stats -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-4">
+                        <div class="card h-100 editor-card border-0">
+                            <div class="card-body d-flex align-items-center gap-3">
+                                <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-cubes fs-3"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted mb-1 fw-bold text-uppercase" style="font-size: 0.75rem;">Total
+                                        Entities</h6>
+                                    <h2 class="mb-0 fw-bold" id="dash-records">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 editor-card border-0">
+                            <div class="card-body d-flex align-items-center gap-3">
+                                <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-globe fs-3"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted mb-1 fw-bold text-uppercase" style="font-size: 0.75rem;">
+                                        Active Languages</h6>
+                                    <h2 class="mb-0 fw-bold" id="dash-langs">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 editor-card border-0">
+                            <div class="card-body d-flex align-items-center gap-3">
+                                <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-stopwatch fs-3"></i>
+                                </div>
+                                <div>
+                                    <h6 class="text-muted mb-1 fw-bold text-uppercase" style="font-size: 0.75rem;">Avg
+                                        Speed Metric</h6>
+                                    <h2 class="mb-0 fw-bold" id="dash-speed">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <div class="card editor-card border-0 h-100">
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-4">Categories Distribution</h6>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="categoryChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card editor-card border-0 h-100">
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-4">Creation Year Timeline (Evolution)</h6>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="yearChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor View -->
+            <div id="view-editor" class="d-none h-100 d-flex flex-column">
+
+                <div id="editor-empty-state"
+                    class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="bg-body-secondary p-4 rounded-circle mb-3">
+                        <i class="fa-solid fa-hand-pointer fs-1 text-muted"></i>
+                    </div>
+                    <h5 class="fw-bold">No Record Selected</h5>
+                    <p class="text-muted">Choose a record from the sidebar to begin editing.</p>
+                </div>
+
+                <div id="editor-active-state" class="d-none flex-grow-1 d-flex flex-column">
+                    <!-- Top Toolbar for Languages -->
+                    <div class="card editor-card border-0 mb-4 flex-shrink-0">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="fw-bold small text-muted text-uppercase mb-0">Current Item Languages
+                                    Status</label>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteCurrentRecord()">
+                                    <i class="fa-solid fa-trash me-1"></i> Delete Entity
+                                </button>
+                            </div>
+                            <!-- Badges container -->
+                            <div class="d-flex lang-toolbar" id="lang-badges-container">
+                                <!-- Generated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Form (Base Language) -->
+                    <div class="card editor-card border-0 flex-grow-1 overflow-hidden d-flex flex-column">
+                        <div
+                            class="card-header bg-body border-bottom pt-3 pb-2 px-4 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold" id="editor-title">Editing: Base Entity</h5>
+                            <span class="badge bg-primary px-3 py-2" id="editor-base-badge">EN (Base)</span>
+                        </div>
+                        <div class="card-body p-4 overflow-auto" id="main-editor-form">
+                            <!-- Generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Sliding Translation Panel (Target Languages) -->
+        <div id="translation-panel" class="translation-panel">
+            <div
+                class="p-3 border-bottom border-secondary-subtle bg-body-tertiary d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0 fw-bold text-uppercase d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-language text-primary"></i> Translate to: <span id="trans-target-lbl"
+                            class="badge bg-warning text-dark">ES</span>
+                    </h6>
+                </div>
+                <button type="button" class="btn-close" aria-label="Close" onclick="closeTranslationPanel()"></button>
+            </div>
+            <div class="p-4 flex-grow-1 overflow-auto" id="translation-form-container">
+                <!-- Generated by JS -->
+            </div>
+            <div class="p-3 border-top border-secondary-subtle bg-body-tertiary text-end">
+                <button class="btn btn-secondary btn-sm" onclick="closeTranslationPanel()">Close</button>
+            </div>
+        </div>
+    </div> <!-- End d-flex wrapper -->
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header border-0 pb-0">
+                <i class="fa-solid fa-circle-check text-success me-2" id="toast-icon"></i>
+                <strong class="me-auto" id="toast-title">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body pt-1" id="toast-message">
+                Operation completed.
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- MAIN APP SCRIPT -->
+    <script>
+        // --- Core State ---
+        let dirHandle = null;
+        let languageFiles = {};
+        let groupedData = {};
+        let orderedIds = [];
+        let originalBaseHash = {}; // To detect when base fields change
+
+        // Settings
+        const BASE_LANG = 'en'; // Hardcoded base expectation based on requirements.
+        let selectedId = null;
+        let activeMainTab = 'welcome';
+        let searchTerm = '';
+        let charts = {};
+
+        const TRANSLATABLE_FIELDS = ['description', 'connectionsExplanation', 'curious_fact'];
+
+        // --- Bootstrap Components ---
+        const toastEl = document.getElementById('liveToast');
+        const bsToast = new bootstrap.Toast(toastEl, { delay: 3000 });
+
+        // --- UI & Theme Setup ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-bs-theme', newTheme);
+
+            document.getElementById('theme-icon-moon').classList.toggle('d-none');
+            document.getElementById('theme-icon-sun').classList.toggle('d-none');
+
+            // Re-render charts to adapt colors
+            if (activeMainTab === 'dashboard') updateDashboard();
+        }
+
+        // Basic theme init check based on class or OS preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            toggleTheme(); // Starts dark, switch to light if OS prefers light
+        }
+
+        function switchMainView(viewId) {
+            activeMainTab = viewId;
+            document.getElementById('view-welcome').classList.add('d-none');
+            document.getElementById('view-dashboard').classList.add('d-none');
+            document.getElementById('view-editor').classList.add('d-none');
+
+            if (dirHandle) {
+                document.getElementById(`view-${viewId}`).classList.remove('d-none');
+                if (viewId === 'dashboard') updateDashboard();
+                if (viewId === 'editor') {
+                    // Try to re-render editor if there is a selected id
+                    if (selectedId) renderEditor();
+                }
+            } else {
+                document.getElementById('view-welcome').classList.remove('d-none');
+            }
+        }
+
+        // --- File System Logic ---
+        async function openDirectory() {
+            try {
+                if (!window.showDirectoryPicker) {
+                    showToast("System Error", "Your browser does not support the File System Access API. Please use Chrome or Edge.", "danger");
+                    return;
+                }
+                dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+                await loadAllFiles();
+            } catch (e) {
+                if (e.name !== 'AbortError') showToast("Error", "Failed to open directory: " + e.message, "danger");
+            }
+        }
+
+        async function loadAllFiles() {
+            languageFiles = {};
+            groupedData = {};
+            orderedIds = [];
+            originalBaseHash = {};
+
+            document.getElementById('status-text').innerText = "Parsing files...";
+
+            try {
+                for await (const entry of dirHandle.values()) {
+                    if (entry.kind === 'file' && entry.name.endsWith('.json')) {
+                        const file = await entry.getFile();
+                        const text = await file.text();
+                        try {
+                            const json = JSON.parse(text);
+                            const langCode = entry.name.replace('.json', '');
+                            languageFiles[langCode] = { handle: entry, data: json };
+                        } catch (err) { console.error(`Failed parsing ${entry.name}`); }
+                    }
+                }
+
+                if (!languageFiles[BASE_LANG]) {
+                    showToast("Structure Error", `Could not find the base file '${BASE_LANG}.json'.`, "danger");
+                    dirHandle = null;
+                    return;
+                }
+
+                // Parse Base Data
+                const baseData = languageFiles[BASE_LANG].data;
+                baseData.forEach(item => {
+                    if (item.id) { orderedIds.push(item.id); groupedData[item.id] = {}; }
+                });
+
+                Object.keys(languageFiles).forEach(lang => {
+                    languageFiles[lang].data.forEach(item => {
+                        if (item.id && orderedIds.includes(item.id)) {
+                            groupedData[item.id][lang] = item;
+                        } else if (item.id && !orderedIds.includes(item.id)) {
+                            orderedIds.push(item.id);
+                            groupedData[item.id] = { [lang]: item };
+                        }
+                    });
+                });
+
+                // Update UI state
+                document.getElementById('status-text').innerText = `${Object.keys(languageFiles).length} languages loaded`;
+                document.getElementById('btn-save').classList.remove('disabled');
+
+                document.getElementById('sidebar-empty').classList.add('d-none');
+                document.getElementById('item-list').classList.remove('d-none');
+                document.getElementById('search-container').style.display = 'flex';
+
+                // Show dashboard tab initially after load
+                const dashTab = new bootstrap.Tab(document.getElementById('dash-tab'));
+                dashTab.show();
+                switchMainView('dashboard');
+
+                renderList();
+                showToast("Success", `${Object.keys(languageFiles).length} files parsed correctly.`);
+
+            } catch (e) {
+                console.error(e);
+                showToast("System Error", "An error occurred while parsing files.", "danger");
+            }
+        }
+
+        async function saveAllFiles() {
+            if (!dirHandle) return;
+            const btn = document.getElementById('btn-save');
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Saving...`;
+            btn.classList.add('disabled');
+
+            try {
+                // Save current base edit logic
+                saveBaseFormContent();
+                saveTranslationFormContent();
+
+                const langs = Object.keys(languageFiles);
+                for (const lang of langs) {
+                    const outData = [];
+                    orderedIds.forEach(id => {
+                        if (groupedData[id][lang]) {
+                            outData.push(groupedData[id][lang]);
+                        } else if (lang !== BASE_LANG && groupedData[id][BASE_LANG]) {
+                            // Clone base but nullify translation strings
+                            const clone = JSON.parse(JSON.stringify(groupedData[id][BASE_LANG]));
+                            TRANSLATABLE_FIELDS.forEach(f => { if (typeof clone[f] === 'string') clone[f] = ""; });
+                            groupedData[id][lang] = clone;
+                            outData.push(clone);
+                        }
+                    });
+
+                    const handle = languageFiles[lang].handle;
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify(outData, null, 2));
+                    await writable.close();
+                }
+
+                // Once saved, the current state of Base becomes the new truth. Reset hash.
+                updateOriginalHash();
+                renderLangBadges(); // Refresh badges
+
+                showToast("Saved", "All files written to disk successfully.", "success");
+            } catch (e) {
+                console.error(e);
+                showToast("Error", "Failed to save files. Have you granted permission?", "danger");
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-floppy-disk me-2"></i>Save All`;
+                btn.classList.remove('disabled');
+            }
+        }
+
+        // --- Sidebar & Navigation ---
+        function filterList() {
+            searchTerm = document.getElementById('search-box').value.toLowerCase();
+            renderList();
+        }
+
+        function renderList() {
+            const list = document.getElementById('item-list');
+            list.innerHTML = '';
+            let count = 0;
+
+            orderedIds.forEach(id => {
+                const baseItem = groupedData[id][BASE_LANG] || Object.values(groupedData[id])[0];
+                const title = baseItem.name || id;
+
+                if (searchTerm && !title.toLowerCase().includes(searchTerm) && !id.toLowerCase().includes(searchTerm)) return;
+                count++;
+
+                const li = document.createElement('div');
+                li.className = `list-item-card p-3 mb-2 rounded border ${selectedId === id ? 'active' : ''}`;
+
+                // Compute minor issue indicator (is any translation missing/outdated?)
+                let needsUpdate = false;
+                const baseHashLocal = generateHash(groupedData[id][BASE_LANG]);
+                // Simplified check: does any language miss a field or is marked diff?
+                Object.keys(languageFiles).forEach(l => {
+                    if (l === BASE_LANG) return;
+                    if (!groupedData[id][l] || !groupedData[id][l].description || groupedData[id][l].description.trim() === '') {
+                        needsUpdate = true;
+                    }
+                });
+
+                const indicatorHtml = needsUpdate
+                    ? `<span class="badge bg-warning text-dark p-1 rounded-circle" title="Missing/Outdated Translations"><i class="fa-solid fa-exclamation mt-0" style="font-size:8px;"></i></span>`
+                    : `<span class="badge bg-success p-1 rounded-circle" title="Up to date"><i class="fa-solid fa-check mt-0" style="font-size:8px;"></i></span>`;
+
+                li.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong class="text-truncate" style="max-width: 80%; font-size: 0.9rem;">${title}</strong>
+                        ${indicatorHtml}
+                    </div>
+                    <div class="text-muted font-monospace text-truncate" style="font-size: 0.75rem;">${id}</div>
+                `;
+                li.onclick = () => {
+                    selectRecord(id);
+                };
+                list.appendChild(li);
+            });
+
+            document.getElementById('record-count').innerText = count;
+        }
+
+        function selectRecord(id) {
+            // Save current form content before switching
+            if (activeMainTab === 'editor') {
+                saveBaseFormContent();
+            }
+
+            selectedId = id;
+            updateOriginalHash(); // Create baseline for comparison
+            closeTranslationPanel();
+
+            const editTab = new bootstrap.Tab(document.getElementById('edit-tab'));
+            editTab.show();
+            switchMainView('editor');
+
+            renderList(); // Update sidebar active state
+            renderEditor();
+        }
+
+        function addNewRecord() {
+            const newIdInput = prompt("Enter a unique Kebab-Case ID for the new JSON record:");
+            if (!newIdInput || !newIdInput.trim()) return;
+            const newId = newIdInput.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
+
+            if (orderedIds.includes(newId)) {
+                showToast("Duplicate Error", "This ID already exists.", "danger"); return;
+            }
+
+            orderedIds.unshift(newId);
+            groupedData[newId] = {};
+
+            // Base Template
+            const template = { id: newId, name: "New Programming Language", year: new Date().getFullYear(), category: "Imperative", speed: 50 };
+            Object.keys(languageFiles).forEach(lang => {
+                groupedData[newId][lang] = JSON.parse(JSON.stringify(template));
+            });
+
+            searchTerm = '';
+            document.getElementById('search-box').value = '';
+
+            selectRecord(newId);
+            document.getElementById('item-list').scrollTop = 0;
+            showToast("Created", `New record '${newId}' initialized.`, "success");
+        }
+
+        function deleteCurrentRecord() {
+            if (!selectedId) return;
+            if (confirm(`Are you absolutely sure you want to delete '${selectedId}' from all files?`)) {
+                orderedIds = orderedIds.filter(i => i !== selectedId);
+                delete groupedData[selectedId];
+                selectedId = null;
+                renderList();
+                if (activeMainTab === 'dashboard') updateDashboard();
+                else {
+                    document.getElementById('editor-active-state').classList.add('d-none');
+                    document.getElementById('editor-empty-state').classList.remove('d-none');
+                }
+                closeTranslationPanel();
+                showToast("Deleted", "Record removed. Click 'Save All' to apply to disk.", "success");
+            }
+        }
+
+        // --- Translation Hash & Sync Logic ---
+        function generateHash(obj) {
+            if (!obj) return "";
+            return TRANSLATABLE_FIELDS.map(f => obj[f] || '').join('|||');
+        }
+
+        function updateOriginalHash() {
+            if (!selectedId || !groupedData[selectedId][BASE_LANG]) return;
+            originalBaseHash[selectedId] = generateHash(groupedData[selectedId][BASE_LANG]);
+        }
+
+        function isBaseModified() {
+            if (!selectedId || !groupedData[selectedId][BASE_LANG]) return false;
+            // First save DOM to memory to compare
+            saveBaseFormContent();
+            const currentHash = generateHash(groupedData[selectedId][BASE_LANG]);
+            return originalBaseHash[selectedId] !== currentHash;
+        }
+
+        // --- Editor Base Form ---
+        function renderEditor() {
+            if (!selectedId) return;
+
+            document.getElementById('editor-empty-state').classList.add('d-none');
+            document.getElementById('editor-active-state').classList.remove('d-none');
+            document.getElementById('editor-active-state').classList.add('d-flex');
+
+            const baseObj = groupedData[selectedId][BASE_LANG];
+            document.getElementById('editor-title').innerText = baseObj.name || selectedId;
+
+            const container = document.getElementById('main-editor-form');
+            container.innerHTML = '';
+
+            // Generate form dynamically based on keys in the base object
+            // Use a Bootstrap grid to organize the layout better
+            const gridContainer = document.createElement('div');
+            gridContainer.className = "row g-3";
+            container.appendChild(gridContainer);
+
+            // Define categories for the dropdown
+            const CATEGORIES = ["Imperative", "Object-Oriented", "Functional", "Logic", "Scripting", "Markup", "Query", "Systems", "Other"];
+
+            for (const key in baseObj) {
+                const val = baseObj[key];
+
+                const col = document.createElement('div');
+
+                // Determine column width based on field type
+                if (['name', 'id', 'category', 'year', 'speed', 'usage', 'docs'].includes(key)) {
+                    col.className = "col-md-6";
+                } else if (['siteurl', 'docsurl'].includes(key)) {
+                    col.className = "col-md-6";
+                } else {
+                    col.className = "col-12"; // Text areas and arrays take full width
+                }
+
+                const wrap = document.createElement('div');
+                wrap.className = "mb-2";
+
+                const l = document.createElement('label');
+                l.className = "form-label fw-bold text-uppercase small text-muted mb-1";
+                l.innerText = key.replace(/_/g, ' ');
+
+                let input;
+                let inputGroup = null;
+
+                if (key === 'id') {
+                    input = document.createElement('input');
+                    input.type = 'text'; input.value = val;
+                    input.className = "form-control bg-body-secondary text-muted";
+                    input.readOnly = true;
+                } else if (key === 'year') {
+                    input = document.createElement('input');
+                    input.type = 'number';
+                    input.min = 1700;
+                    input.max = new Date().getFullYear();
+                    input.value = val;
+                    input.className = "form-control";
+                    input.dataset.type = 'number';
+                } else if (key === 'speed') {
+                    input = document.createElement('input');
+                    input.type = 'number';
+                    input.min = 1;
+                    input.max = 100;
+                    input.value = val;
+                    input.className = "form-control";
+                    input.dataset.type = 'number';
+                } else if (key === 'usage' || key === 'docs') {
+                    input = document.createElement('input');
+                    input.type = 'number';
+                    input.min = 0;
+                    input.max = 1;
+                    input.step = 0.01;
+                    input.value = val !== undefined ? val : 0;
+                    input.className = "form-control";
+                    input.dataset.type = 'float';
+                } else if (key === 'category') {
+                    input = document.createElement('select');
+                    input.className = "form-select";
+                    CATEGORIES.forEach(cat => {
+                        const opt = document.createElement('option');
+                        opt.value = cat;
+                        opt.text = cat;
+                        if (val === cat) opt.selected = true;
+                        input.appendChild(opt);
+                    });
+                    // Allow existing values not in list
+                    if (val && !CATEGORIES.includes(val)) {
+                        const opt = document.createElement('option');
+                        opt.value = val;
+                        opt.text = val;
+                        opt.selected = true;
+                        input.appendChild(opt);
+                    }
+                } else if (['siteurl', 'docsurl'].includes(key)) {
+                    inputGroup = document.createElement('div');
+                    inputGroup.className = "input-group";
+
+                    const span = document.createElement('span');
+                    span.className = "input-group-text bg-body-tertiary";
+                    span.innerHTML = key === 'siteurl' ? '<i class="fa-solid fa-globe"></i>' : '<i class="fa-solid fa-book"></i>';
+
+                    input = document.createElement('input');
+                    input.type = 'url';
+                    input.value = val ? val : "https://";
+                    input.className = "form-control";
+
+                    inputGroup.appendChild(span);
+                    inputGroup.appendChild(input);
+                } else if (key === 'origin') {
+                    input = document.createElement('input');
+                    input.type = 'text';
+                    // Handle array to comma string back to array
+                    input.value = Array.isArray(val) ? val.join(', ') : val;
+                    input.className = "form-control";
+                    input.placeholder = "US, JP, NZ (comma separated)";
+                    input.dataset.type = 'array';
+                } else if (key === 'example') {
+                    input = document.createElement('textarea');
+                    input.rows = 5;
+                    // Arrays of strings (like code) should be joined by newline for easy editing
+                    input.value = Array.isArray(val) ? val.join('\n') : val;
+                    input.className = "form-control font-monospace bg-dark text-light border-0";
+                    input.style.fontSize = "0.85rem";
+                    input.dataset.type = 'code_array';
+                } else if (typeof val === 'string' && (val.length > 50 || TRANSLATABLE_FIELDS.includes(key))) {
+                    input = document.createElement('textarea');
+                    input.rows = 3; input.value = val;
+                    input.className = "form-control";
+                    input.dataset.translatable = TRANSLATABLE_FIELDS.includes(key) ? 'true' : 'false';
+                } else if (Array.isArray(val) || typeof val === 'object') {
+                    input = document.createElement('textarea');
+                    input.rows = 3; input.value = JSON.stringify(val, null, 2);
+                    input.className = "form-control font-monospace";
+                    input.style.fontSize = "0.85rem";
+                    input.dataset.type = 'json';
+                } else {
+                    input = document.createElement('input');
+                    input.type = 'text'; input.value = val;
+                    input.className = "form-control";
+                }
+
+                input.dataset.key = key;
+                input.id = `base-input-${key}`;
+
+                // Add listener to trigger badge updates if translatable fields change
+                input.addEventListener('input', () => {
+                    saveBaseFormContent(); // sync memory immediately
+                    document.getElementById('editor-title').innerText = groupedData[selectedId][BASE_LANG].name || selectedId;
+                    renderLangBadges();    // update top bar logic
+                });
+
+                wrap.appendChild(l);
+                if (inputGroup) {
+                    wrap.appendChild(inputGroup);
+                } else {
+                    wrap.appendChild(input);
+                }
+
+                col.appendChild(wrap);
+                gridContainer.appendChild(col);
+            }
+
+            renderLangBadges();
+        }
+
+        function saveBaseFormContent() {
+            if (!selectedId || !groupedData[selectedId] || !groupedData[selectedId][BASE_LANG]) return;
+            const container = document.getElementById('main-editor-form');
+            if (!container || container.innerHTML.trim() === '') return;
+
+            const obj = groupedData[selectedId][BASE_LANG];
+            container.querySelectorAll('[data-key]').forEach(el => {
+                const k = el.dataset.key;
+                const t = el.dataset.type;
+
+                if (t === 'number') {
+                    obj[k] = Number(el.value);
+                } else if (t === 'float') {
+                    obj[k] = parseFloat(el.value) || 0;
+                } else if (t === 'json') {
+                    try { obj[k] = JSON.parse(el.value); } catch (e) { }
+                } else if (t === 'array') {
+                    // Split by comma, trim, remove empty
+                    obj[k] = el.value.split(',').map(s => s.trim()).filter(s => s !== '');
+                } else if (t === 'code_array') {
+                    // Split by newline
+                    obj[k] = el.value.split('\n').map(s => s.trimEnd()).filter(s => s !== '');
+                } else {
+                    obj[k] = el.value;
+                }
+            });
+        }
+
+        // --- Active Languages Toolbar Logic ---
+        function renderLangBadges() {
+            const container = document.getElementById('lang-badges-container');
+            container.innerHTML = '';
+
+            const baseChanged = isBaseModified();
+
+            Object.keys(languageFiles).forEach(lang => {
+                if (lang === BASE_LANG) return; // Skip base
+
+                const badge = document.createElement('div');
+                badge.className = "lang-badge card p-2 shadow-sm border-0";
+
+                const transObj = groupedData[selectedId][lang] || {};
+
+                // Check if warning needed: Base has changed since last save OR it's missing entirely/empty description
+                let hasWarning = baseChanged;
+                if (!hasWarning) {
+                    if (!transObj.description || transObj.description.trim() === '') hasWarning = true;
+                }
+
+                if (hasWarning) {
+                    badge.classList.add('status-warning');
+                    // Custom data attr to hint translation panel what's up
+                    badge.dataset.status = 'warning';
+                } else {
+                    badge.classList.add('status-ok');
+                    badge.classList.add('bg-body-secondary'); // muted ok style depending on theme
+                    badge.dataset.status = 'ok';
+                }
+
+                badge.innerHTML = `<span class="fw-bold d-block">${lang.toUpperCase()}</span>
+                                    <i class="fa-solid fa-${hasWarning ? 'exclamation-triangle' : 'check'} small opacity-75"></i>`;
+
+                badge.onclick = () => openTranslationPanel(lang);
+                container.appendChild(badge);
+            });
+        }
+
+        // --- Sliding Translation Panel ---
+        let currentTargetLang = null;
+
+        function openTranslationPanel(langCode) {
+            currentTargetLang = langCode;
+            document.getElementById('trans-target-lbl').innerText = langCode.toUpperCase();
+
+            const container = document.getElementById('translation-form-container');
+            container.innerHTML = '';
+
+            // Build the translation form for translatable fields ONLY, plus non-translatable sync warning if needed
+            const baseObj = groupedData[selectedId][BASE_LANG];
+            if (!groupedData[selectedId][langCode]) {
+                groupedData[selectedId][langCode] = JSON.parse(JSON.stringify(baseObj));
+            }
+            const tgtObj = groupedData[selectedId][langCode];
+
+            // Sync non-translatable fields implicitly
+            for (const key in baseObj) {
+                if (!TRANSLATABLE_FIELDS.includes(key)) {
+                    tgtObj[key] = typeof baseObj[key] === 'object' ? JSON.parse(JSON.stringify(baseObj[key])) : baseObj[key];
+                }
+            }
+
+            const intro = document.createElement('div');
+            intro.className = "alert alert-secondary small mb-4";
+            intro.innerHTML = "<i class='fa-solid fa-info-circle me-1'></i> Showing only <strong>translatable textual fields</strong>. Structural arrays and numbers are synced automatically from Base.";
+            container.appendChild(intro);
+
+            TRANSLATABLE_FIELDS.forEach(key => {
+                if (baseObj[key] === undefined) return;
+
+                const wrap = document.createElement('div');
+                wrap.className = "card border-0 shadow-sm mb-4";
+
+                const header = document.createElement('div');
+                header.className = "card-header bg-transparent border-bottom-0 pt-3 pb-0 d-flex justify-content-between align-items-center";
+                header.innerHTML = `<label class="fw-bold text-muted text-uppercase small mb-0">${key.replace(/_/g, ' ')}</label>`;
+
+                // Translate Btn
+                const btn = document.createElement('button');
+                btn.className = "btn btn-sm btn-outline-primary fw-bold";
+                btn.innerHTML = `<i class="fa-solid fa-robot me-1"></i> Auto`;
+                btn.onclick = () => autoTranslate(key, baseObj[key], BASE_LANG, langCode);
+                header.appendChild(btn);
+
+                const body = document.createElement('div');
+                body.className = "card-body";
+
+                // Show Base reference block
+                const ref = document.createElement('div');
+                ref.className = "p-2 bg-body-tertiary rounded text-muted mb-3 fst-italic lh-sm";
+                ref.style.fontSize = "0.85rem";
+                ref.innerText = baseObj[key] || '(Empty)';
+                body.appendChild(ref);
+
+                // Target Input
+                const input = document.createElement('textarea');
+                input.className = "form-control";
+                input.rows = 4;
+                input.value = tgtObj[key] || '';
+                input.dataset.tkey = key;
+                input.id = `tgt-input-${key}`;
+
+                input.addEventListener('input', () => { tgtObj[key] = input.value; });
+
+                body.appendChild(input);
+                wrap.appendChild(header);
+                wrap.appendChild(body);
+                container.appendChild(wrap);
+            });
+
+            document.getElementById('translation-panel').classList.add('open');
+        }
+
+        function closeTranslationPanel() {
+            saveTranslationFormContent();
+            document.getElementById('translation-panel').classList.remove('open');
+            currentTargetLang = null;
+            renderLangBadges(); // Refresh badges after translation closes
+        }
+
+        function saveTranslationFormContent() {
+            if (!currentTargetLang || !selectedId || !groupedData[selectedId][currentTargetLang]) return;
+            const container = document.getElementById('translation-form-container');
+            if (!container) return;
+
+            container.querySelectorAll('[data-tkey]').forEach(el => {
+                groupedData[selectedId][currentTargetLang][el.dataset.tkey] = el.value;
+            });
+        }
+
+        async function autoTranslate(key, text, sl, tl) {
+            if (!text || text.trim() === '') return;
+            const input = document.getElementById(`tgt-input-${key}`);
+            const og = input.value;
+            input.disabled = true;
+            input.value = "Translating via MyMemory API...";
+
+            try {
+                const s = sl.split('-')[0];
+                const t = tl.split('-')[0];
+                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${s}|${t}`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data.responseData && data.responseData.translatedText) {
+                    input.value = data.responseData.translatedText;
+                    input.dispatchEvent(new Event('input')); // save state
+                    showToast("Success", "Translation fetched successfully.", "success");
+                } else {
+                    input.value = og;
+                    showToast("Warning", "API returned empty or error.", "warning");
+                }
+            } catch (e) {
+                input.value = og;
+                showToast("Network Error", "Translation request failed.", "danger");
+            } finally {
+                input.disabled = false;
+            }
+        }
+
+        // --- Dashboard / ChartLogic ---
+        function updateDashboard() {
+            if (orderedIds.length === 0) return;
+
+            document.getElementById('dash-records').innerText = orderedIds.length;
+            document.getElementById('dash-langs').innerText = Object.keys(languageFiles).length;
+
+            // Compute Averages & Distributions from Base Language Data
+            const catCounts = {};
+            const yearCounts = {};
+            let totalSpeed = 0, speedCount = 0;
+
+            orderedIds.forEach(id => {
+                const item = groupedData[id][BASE_LANG];
+                if (!item) return;
+
+                // Categories
+                if (item.category) {
+                    catCounts[item.category] = (catCounts[item.category] || 0) + 1;
+                }
+
+                // Speed
+                if (typeof item.speed === 'number') {
+                    totalSpeed += item.speed; speedCount++;
+                }
+
+                // Years (group by decade for cleaner chart if too many, but let's try raw years first)
+                if (item.year && item.year > 1000) {
+                    yearCounts[item.year] = (yearCounts[item.year] || 0) + 1;
+                }
+            });
+
+            if (speedCount > 0) {
+                document.getElementById('dash-speed').innerText = Math.round(totalSpeed / speedCount);
+            }
+
+            // Theme Detection for charts
+            const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+            const textColor = isDark ? '#adb5bd' : '#6c757d';
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+
+            Chart.defaults.color = textColor;
+            Chart.defaults.font.family = "'Segoe UI', Roboto, sans-serif";
+
+            // Category Chart (Doughnut)
+            if (charts.cat) charts.cat.destroy();
+            const ctxCat = document.getElementById('categoryChart').getContext('2d');
+            charts.cat = new Chart(ctxCat, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(catCounts),
+                    datasets: [{
+                        data: Object.values(catCounts),
+                        backgroundColor: ['#6c5ce7', '#00b894', '#0984e3', '#e84393', '#fdcb6e', '#e17055', '#00cec9', '#636e72', '#d63031'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '70%' }
+            });
+
+            // Year Timeline Chart (Line)
+            if (charts.year) charts.year.destroy();
+            const ctxYear = document.getElementById('yearChart').getContext('2d');
+
+            // Sort years ascending
+            const sortedYears = Object.keys(yearCounts).map(Number).sort((a, b) => a - b);
+            const yearDataList = sortedYears.map(y => yearCounts[y]);
+
+            charts.year = new Chart(ctxYear, {
+                type: 'line',
+                data: {
+                    labels: sortedYears,
+                    datasets: [{
+                        label: 'Languages Created',
+                        data: yearDataList,
+                        borderColor: '#00b894',
+                        backgroundColor: 'rgba(0, 184, 148, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#00b894',
+                        pointRadius: 3
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { beginAtZero: true, grid: { color: gridColor }, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+        }
+
+        function showToast(title, msg, type = "success") {
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-message').innerText = msg;
+
+            const icon = document.getElementById('toast-icon');
+            if (type === 'danger') {
+                icon.className = "fa-solid fa-circle-exclamation text-danger me-2";
+            } else if (type === 'warning') {
+                icon.className = "fa-solid fa-triangle-exclamation text-warning me-2";
+            } else {
+                icon.className = "fa-solid fa-circle-check text-success me-2";
+            }
+
+            bsToast.show();
+        }
+
+    </script>
+</body>
+
+</html>
