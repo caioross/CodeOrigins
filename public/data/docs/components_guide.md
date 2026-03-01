@@ -1,26 +1,26 @@
-# O Guia Completo dos Componentes (Sonda Espacial)
+# The Complete Components Guide (Space Probe)
 
-Um mergulho na hierarquia de construção dentro da pasta `src/components/`, explicando as engrenagens principais envolvidas na renderização entre o sistema DOM puro e a engine Fiber/ThreeJS. Esta é a visão "Por Trás Das Lentes" de como agrupamos o espaço renderizável.
+A deep dive into the build hierarchy inside the `src/components/` folder, explaining the main gears involved in the rendering between the pure DOM system and the Fiber/ThreeJS engine. This is the "Behind the Lenses" view of how we group the renderable space.
 
-## 🌌 `SolarSystem.tsx` (Root System/Motor)
-O ecossistema Primário. Ele é a `Mesh` montagem central que gerencia os planetas, não em si apenas os elementos, mas as configurações de Luz e a Lógica de Raycasting profunda.
-- **Função:** Atua como um Canvas wrapper imenso da Galáxia. Dentro dele são instaciados luzes ambientes, `Stars` (Point-lights microscópicas) e repassado via iterador a lista massiva do Global State de "linguagens válidas ativas do momento".
-- **Comportamento Específico:** Observa diretamente as datas do `Zustand` para renderizar se as linhas conectores da Genealogia estarão atômicas ou ocultas à visão geral.
+## 🌌 `SolarSystem.tsx` (Root System/Engine)
+The Primary ecosystem. It is the central mounting `Mesh` that manages planets, not just the elements themselves, but the Light configurations and the deep Raycasting Logic.
+- **Function:** Acts as a huge Canvas wrapper of the Galaxy. Inside it, ambient lights, `Stars` (microscopic Point-lights) are instantiated and the massive list of the Global State of "currently active valid languages" is passed via iterator.
+- **Specific Behavior:** Looks directly at the `Zustand` dates to render whether the Genealogy connector lines will be atomic or hidden from the general view.
 
-## 🌎 `Planet.tsx` / `InstancedPlanet.tsx` (Corpos Celestes Físicos)
-O invólucro unitário do material computado. O `Planet` desenha uma Textura circular (`<sphereGeometry />`), define um Shader Material (`<meshStandardMaterial />` e suas emissões).
-- **O Click/Hover:** Cada Planeta carrega consigo detecção de intersecção nativa da API WebGL (`onPointerOver`, `onClick`), permitindo a retroalimentação imersiva em HTML e disparando atualizações na store Global do Zustand ("Usuário Focou Planeta Alpha").
-- **Versões *Instanced*:** São utilizadas quando o `SolarSystem` decide despachar listas pesadas sob um mesmo vetor computacional invés do Render Unitário de árvore R3F, prevenindo afogamento de CallStacks.
+## 🌎 `Planet.tsx` / `InstancedPlanet.tsx` (Physical Celestial Bodies)
+The unitary wrapper of the computed material. The `Planet` draws a circular Texture (`<sphereGeometry />`), defines a Shader Material (`<meshStandardMaterial />` and its emissions).
+- **The Click/Hover:** Each Planet carries with it the WebGL API's native intersection detection (`onPointerOver`, `onClick`), allowing immersive HTML feedback and triggering updates in the Zustand Global store ("User Focused Alpha Planet").
+- ***Instanced* Versions:** Used when `SolarSystem` decides to dispatch heavy lists under the same computational vector instead of the Unitary R3F tree Render, preventing CallStacks suffocation.
 
-## 🔍 O Radar Naval: `Minimap.tsx`
-Construído inteiramente em React Nativo (HTML e Tailwind). Repousando no esqueleto de UI em absolute position. 
-- Ele varre as coordenadas 3D globais (`x,y,z`), projeta as distâncias tridimensionais achatando-as num canavial HUD transparente de 2 dimensões. Ele escuta constantemente o `State.SelectedNodes` e exibe pontos luminescentes vermelhos quando "Mirados" por pesquisas do Radar Sidebar.
+## 🔍 The Naval Radar: `Minimap.tsx`
+Built entirely in Native React (HTML and Tailwind). Resting on the UI skeleton in absolute position. 
+- It sweeps the global 3D coordinates (`x,y,z`), projects the three-dimensional distances flattening them into a 2-dimensional transparent HUD canvas. It constantly listens to `State.SelectedNodes` and displays luminescent red dots when "Aimed" by Sidebar Radar searches.
 
 ## ⏳ `Timeline.tsx` / `TimelineSlider.tsx`
-Painel Slider UI encapsulado, renderiza do Radix/UI moderno ou sliders HTML puros reagíveis. 
-- Tem o simples propósito interativo de registrar posições do polegar ou mouse arrastando nos marcadores de anos (1950 - 2025). Mas seus efeitos engatilham chamadas pesadas Zustand filtrando a listagem de Arrays dos arrays de "Dados" para a visualização sideral. Retrocessão de Timeline afeta imediações pesadas de render.
+Encapsulated UI Slider Panel, renders from modern Radix/UI or reactive pure HTML sliders. 
+- Has the simple interactive purpose of registering thumb or mouse drag positions on the years markers (1950 - 2025). But its effects trigger heavy Zustand calls filtering the Data arrays listing for sidereal visualization. Timeline rewinding affects heavy rendering surroundings.
 
-## 📖 Janelas Descritivas: `DocsPopup.tsx` e `UI.tsx`
-Esses componentes empurram layouts em Overlay em volta do Canavial WebGL 3D.
-- Responsáveis por puxar o locale ativado (`pt`, `en`, `es`) do serviço Loader (`localeLoader.ts`), montam a interface de leitor de Markdown flutuante, e tratam todas as informações humanas legíveis traduzidas daquele planeta selecionado pela matriz.
-- É aqui onde os utilitários TailwindCSS e os keyframing fluídos do *Framer Motion* realmente brilham para animar telas holográficas suaves subindo ao clique.
+## 📖 Descriptive Windows: `DocsPopup.tsx` and `UI.tsx`
+These components push Overlay layouts around the 3D WebGL Canvas.
+- Responsible for pulling the activated locale (`en`, `pt`, `es`) from the Loader service (`localeLoader.ts`), they mount the floating Markdown reader interface, and handle all translated human-readable information of that planet selected by the matrix.
+- This is where the TailwindCSS utilities and the smooth keyframing of *Framer Motion* really shine to animate smooth holographic screens popping up on click.

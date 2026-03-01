@@ -11,7 +11,17 @@ interface DocsPopupProps {
 
 const docsPages = [
     { id: 'intro', title: 'Introduction', path: '/data/docs/intro.md' },
-    { id: 'architecture', title: 'Architecture', path: '/data/docs/architecture.md' }
+    { id: 'lore', title: 'Lore & Narrative', path: '/data/docs/lore.md' },
+    { id: 'architecture', title: 'Architecture', path: '/data/docs/architecture.md' },
+    { id: 'tech_stack', title: 'Tech Stack', path: '/data/docs/tech_stack.md' },
+    { id: 'features', title: 'Features', path: '/data/docs/features.md' },
+    { id: 'mechanics', title: 'Mechanics & Navigation', path: '/data/docs/mechanics.md' },
+    { id: 'data_structure', title: 'Data Structure', path: '/data/docs/data_structure.md' },
+    { id: 'components_guide', title: 'Components Guide', path: '/data/docs/components_guide.md' },
+    { id: 'i18n', title: 'Internationalization (i18n)', path: '/data/docs/i18n.md' },
+    { id: 'contributing', title: 'Contributing', path: '/data/docs/contributing.md' },
+    { id: 'community', title: 'Community & License', path: '/data/docs/community.md' },
+    { id: 'faq', title: 'FAQ', path: '/data/docs/faq.md' }
 ];
 
 export function DocsPopup({ isOpen, onClose }: DocsPopupProps) {

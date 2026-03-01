@@ -1,35 +1,35 @@
-# O Lore e as Motivações do CodeOrigins
+# Lore and Motivations of CodeOrigins
 
-O universo não surgiu do nada, e a engenharia de software atual também não. O **CodeOrigins** baseia-se fortemente em metapho-física computacional, o nosso *"Lore"*, para explicar e justificar as decisões de UI e UX do sistema.
+The universe didn't emerge from nothing, and neither did modern software engineering. **CodeOrigins** relies heavily on computational metapho-physics, our *"Lore"*, to explain and justify the system's UI and UX decisions.
 
-## O Big Bang do Software
+## The Software Big Bang
 
-Na nossa simulação, as décadas iniciais da computação moderna (anos 1940 a 1950) são tratadas como o nosso **Big Bang**. Antes desse período, tínhamos o vazio do processamento mecânico puro ou conceitos ultra-primitivos.
+In our simulation, the early decades of modern computing (1940s to 1950s) are treated as our **Big Bang**. Before this period, we had the void of pure mechanical processing or ultra-primitive concepts.
 
-Quando o controlador de **Timeline Temporal** é ativado, os corpos celestes "nascem" na simulação em tempo real, acompanhando a evolução cronológica. A tela inicialmente deserta ganha poeira estelar: primeiro Assembly, depois Fortran, LISP, COBOL... simulando a expansão veloz da engenharia.
+When the **Temporal Timeline** controller is activated, celestial bodies are "born" in the simulation in real-time, following chronological evolution. The initially deserted screen gains stardust: first Assembly, then Fortran, LISP, COBOL... simulating the rapid expansion of engineering.
 
-## A "Gravidade" como Influência Histórica
+## "Gravity" as Historical Influence
 
-Por que algumas linguagens são imensamente maiores que as outras no CodeOrigins?
+Why are some languages immensely larger than others in CodeOrigins?
 
-Nós introduzimos o conceito de **"Massa Gravitacional Histórica"**. 
-A massa física do modelo 3D de um planeta (linguagem) não é determinada aleatoriamente, nem pelo quão popular ela é hoje (isso flutua com tendências comerciais da Terra).
-A "massa" de uma linguagem no simulador é determinada matematicamente com base em seu **peso arquitetural e matrizes de influência**.
+We introduced the concept of **"Historical Gravitational Mass"**. 
+The physical mass of a 3D model of a planet (language) is not determined randomly, nor by how popular it is today (as this fluctuates with Earth's commercial trends).
+The "mass" of a language in the simulator is determined mathematically based on its **architectural weight and arrays of influence**.
 
-- **Sóis Soberanos:** Uma linguagem como `C` influenciou centenas de outras (C++, Java, C#, PHP, Rust). Logo, ela acumula tanta massa no sistema que entra em fusão estelar. Ela é massiva na tela.
-- **Órbitas:** Se `Python` foi influenciada por `C` e `ABC`, nosso laboratório orbital traça linhas (conexões) físicas arrastando a órbita de Python para redor destas arquiteturas progenitoras.
-- **Sistemas Livres:** Linguagens exóticas ou linguagens de consulta ultra-específicas (Asteroides de SQL) flutuam conectadas apenas aos seus criadores corpóreos diretos.
+- **Sovereign Suns:** A language like `C` influenced hundreds of others (C++, Java, C#, PHP, Rust). Therefore, it accumulates so much mass in the system that it enters stellar fusion. It is massive on the screen.
+- **Orbits:** If `Python` was influenced by `C` and `ABC`, our orbital laboratory draws physical lines (connections) dragging Python's orbit around these progenitor architectures.
+- **Free Systems:** Exotic languages or ultra-specific query languages (SQL Asteroids) float connected only to their direct corporeal creators.
 
-## Classificações Astrofísicas da Simulação
+## Astrophysical Classifications of the Simulation
 
-| Paradigma/Status na Terra | Classificação Celeste (Shape) |
+| Paradigm/Status on Earth | Celestial Classification (Shape) |
 |---|---|
-| Múltiplos Paradigmas | Planetas rochosos ricos e habitáveis |
-| Linguagens Funcionais (Puras) | Planetas gasosos ou de anéis exóticos |
-| Linguagens Descontinuadas/Mortas | Red Anãs, Estrelas de Nêutrons apagadas ou ruínas |
-| Assembly / Máquinas de Código | O núcleo ardente (Estrelas base) |
+| Multi-Paradigm | Rich and habitable rocky planets |
+| Functional Languages (Pure) | Gas planets or with exotic rings |
+| Discontinued/Dead Languages | Red Dwarfs, faded Neutron Stars or ruins |
+| Assembly / Machine Code | The burning core (Base stars) |
 
 > [!NOTE] 
-> O Lore não é apenas poético, ele afeta diretamente as variáveis matemáticas que renderizam os materiais em `Three.js` (tamanho e *Emissive Power*).
+> The Lore is not just poetic, it directly affects the mathematical variables that render materials in `Three.js` (size and *Emissive Power*).
 
-Através dessas alegorias, transformar o entendimento denso de 70 anos de história de software em uma exploração planetária torna-se uma jornada épica no CodeOrigins.
+Through these allegories, transforming the dense understanding of 70 years of software history into a planetary exploration becomes an epic journey in CodeOrigins.

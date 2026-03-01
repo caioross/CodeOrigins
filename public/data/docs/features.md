@@ -1,27 +1,27 @@
-# Catálogo de Funcionalidades
+# Features Catalog
 
-O CodeOrigins é uma enciclopédia expansiva equipada com as mais altas tecnologias de interação UI/WebGL disponíveis no navegador. A navegação pelo mapa histórico é sustentada pelos seguintes pilares de funcionalidade:
+CodeOrigins is an expansive encyclopedia equipped with the highest UI/WebGL interaction technologies available in the browser. Navigation through the historical map is supported by the following pillars of functionality:
 
 ## 🧭 HUD (Heads-Up Display)
-O painel frontal do usuário fornece o acesso rápido a todos os menus vitais através de *glassmorphism* flutuando sobre a simulação tridimensional. A interface reage de forma orgânica e assíncrona enquanto o universo gira por trás.
+The user's front panel provides quick access to all vital menus through *glassmorphism* floating over the three-dimensional simulation. The interface reacts organically and asynchronously while the universe spins behind it.
 
-## ⏱️ Máquina do Tempo (Timeline Slider)
-Com a Timeline, em vez de ler parágrafos num artigo da Wikipedia, você **assiste ao desenrolar da história do desenvolvimento do software**.
-*   **Controle de Ano/Século:** Você desliza um knob inferior do ano atual retrocedendo até a década de 1950.
-*   **O "Big Bang":** Retroceder completamente apaga o universo até que as linguagens pioneiras (Fortran, Lisp, COBOL, Assembly base) apareçam lentamente à medida que você avança para a direita.
-*   **Popups Evolucionais:** Planetas mais modernos só entram na matriz visual assim que você atingir o ano cronológico de seu parto real.
+## ⏱️ Time Machine (Timeline Slider)
+With the Timeline, instead of reading paragraphs on a Wikipedia article, you **watch the history of software development unfold**.
+*   **Year/Century Control:** You slide a bottom knob of the current year, rewinding back to the 1950s.
+*   **The "Big Bang":** Rewinding completely erases the universe until pioneer languages (Fortran, Lisp, COBOL, base Assembly) slowly appear as you move to the right.
+*   **Evolutionary Popups:** More modern planets only enter the visual matrix once you reach their actual chronological birth year.
 
-## 🕸️ Genealogia Visível (Grafo Espacial)
-Se a linguagem C foi a pedra fundamental do C++ e de Objective-C, um "Laboratório Orbital" liga fisicamente essas linguagens através de curvas celestes ("OrbitLines") que ajudam o usuário a mapear emissores e receptores.
-* Você pode visualizar as órbitas dinamicamente desativando ou iluminando essas trilhas nos menus laterais, entendendo de antemão de onde vem os paradigmas que cada linguagem herda do seu criador parente.
+## 🕸️ Visible Genealogy (Spatial Graph)
+If the C language was the cornerstone of C++ and Objective-C, an "Orbital Laboratory" physically links these languages through celestial curves ("OrbitLines") that help the user map emitters and receivers.
+* You can dynamically view orbits by disabling or illuminating these trails in the side menus, understanding beforehand where the paradigms each language inherits from its parent creator come from.
 
-## 🗺 Radar Top-Down (O Minimapa)
-O CodeOrigins se alinha muito a jogos estratégicos. A tela principal pode exibir milhares de anos-luz (espaço 3D distante). Quando o viajante se perde, ele utiliza o Minimapa 2D.
-*   **Zoom de Radar:** Ele varre a constelação inteira vista de cima, marcando pequenos pontos (PingRadar) das linguagens renderizadas num Grid holográfico. 
-*   **Navegação Rápida:** Um simples clique no Minimapa reposiciona o `OrbitControls` da câmera principal imediatamente de frente para a galáxia adjacente a aquele ponto focado, com transições em "Easing". Efeito prático: Viagem Rápida.
+## 🗺 Top-Down Radar (The Minimap)
+CodeOrigins aligns closely with strategic games. The main screen can display thousands of light-years (distant 3D space). When the traveler gets lost, they use the 2D Minimap.
+*   **Radar Zoom:** It sweeps the entire constellation seen from above, marking small dots (PingRadar) of the rendered languages on a holographic Grid.
+*   **Fast Navigation:** A simple click on the Minimap immediately repositions the main camera's `OrbitControls` facing the galaxy adjacent to that focused point, with "Easing" transitions. Practical effect: Fast Travel.
 
-## ⚙️ Filtros e Lentes Avançadas (Sidebar)
-O espaço pode ficar confuso. Por isso, a aplicação permite ocultar ou buscar grupos inteiros usando os Filtros:
--   **Filtros de Parâmetros:** Isolamento de linguagens por Paradigma (Você pode optar por ver *Apenas Linguagens Puramente Funcionais* apangando o resto na hora).
--   **Pesquisa Nominal:** Spotlight search. Comece a digitar "Java" e tudo menos os ecossistemas parecidos e relacionados a Java se vaporizará em opacidade reduzida, destacando o alvo no universo.
--   **Highlight Mode:** Destaca e ilumina com bloom intenso somente o caminho originador da rota da linguagem que o usuário acaba de focalizar, isolando seus decendentes e quem as precedeu (suas raízes de influência históricas).
+## ⚙️ Filters and Advanced Lenses (Sidebar)
+Space can get confusing. Therefore, the application allows hiding or searching entire groups using Filters:
+-   **Parameter Filters:** Isolation of languages by Paradigm (You can choose to see *Only Purely Functional Languages*, erasing the rest on the fly).
+-   **Nominal Search:** Spotlight search. Start typing "Java" and everything except the Java-like and related ecosystems will vaporize in reduced opacity, highlighting the target in the universe.
+-   **Highlight Mode:** Highlights and illuminates with intense bloom only the originating path of the language the user just focused on, isolating its descendants and those who preceded it (its historical influence roots).

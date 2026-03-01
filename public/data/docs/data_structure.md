@@ -1,37 +1,37 @@
-# Gestão de Dados (A Matéria Oscura da Aplicação)
+# Data Management (The Dark Matter of the Application)
 
-Para um motor gráfico projetar as linguagens como planetas, é preciso traduzir os traços históricos e de semântica abstrata em pura matemática serializável. Esses dados estruturados vivem centralmente espalhados por constantes nos arquivos `src/data/languages.ts` ou equivalentes listados em blocos imensos da matriz JSON.
+For a graphics engine to project languages as planets, it is necessary to translate historical traits and abstract semantics into pure serializable mathematics. These structured data live centrally spread across constants in the `src/data/languages.ts` files or equivalents listed in huge blocks of the JSON matrix.
 
-## Esquema Universal da Linguagem
+## Universal Language Schema
 
-Cada planeta no CodeOrigins é renderizado a partir de um objeto padronizado com campos mandatórios. Considere a seguinte interface vital TypeScript (ou JSON subjacente):
+Each planet in CodeOrigins is rendered from a standardized object with mandatory fields. Consider the following vital TypeScript (or underlying JSON) interface:
 
 ```typescript
 export interface LanguageData {
-  id: string;              // "c", "python", "php" (Sempre minúsculo em Kebab/Snake case como Chave Primária)
-  name: string;            // Nome real capitalizado: "C", "Python", "PHP"
-  year: number;            // O Big Bang do Elemento - 1972, 1991, 1995. Eixo controlador de Timeline
+  id: string;              // "c", "python", "php" (Always lowercase Kebab/Snake case as Primary Key)
+  name: string;            // Capitalized real name: "C", "Python", "PHP"
+  year: number;            // The Element's Big Bang - 1972, 1991, 1995. Timeline controller axis
   creators: string[];      // ["Dennis Ritchie", "Guido van Rossum"]
-  paradigms: string[];     // ["Imperative", "Procedural", "Object-Oriented"] - Governa a Cor e Textura do material 3D
-  influencedBy: string[];  // ["b", "algol-68"] - Os Array Strings atrelados ao sistema de criação das Orbit Lines
-  website: string | null;  // Aterragem opcional do site original da ref. externa
-  github: string | null;   // Se possuir repositório vitalício indexado.
-  // Propriedades Espaciais Computadas (Para o Modelo Drei):
-  mass: number;            // Controla a BoundingBox Radius do planeta R3F. Valores de 1.0 (Satélite modesto) à 8.0/10.0 (Estrelas do tipo C, Java).
-  color?: string;          // Usado nas partículas visuais HUD hexadecimais em UI ou fallbacks de material.
+  paradigms: string[];     // ["Imperative", "Procedural", "Object-Oriented"] - Governs 3D material Color and Texture
+  influencedBy: string[];  // ["b", "algol-68"] - The String Arrays linked to the Orbit Lines creation system
+  website: string | null;  // Optional landing of the original external ref site
+  github: string | null;   // If it has an indexed lifetime repository.
+  // Computed Spatial Properties (For the Drei Model):
+  mass: number;            // Controls the planet's R3F BoundingBox Radius. Values from 1.0 (Modest satellite) to 8.0/10.0 (C, Java type Stars).
+  color?: string;          // Used in UI hexadecimal HUD visual particles or material fallbacks.
 }
 ```
 
-## A Metrificação de Dados
+## Data Metrification
 
-*   **A Matriz de Influência (Órbitas):** O campo `influencedBy` determina para onde o R3F deve apontar os raios/fios conectores durante o layout principal. Um array contendo cinco IDs causará ao Render três nós tubulares traçando geometria cúbica na simulação apontada para o Centro dos IDs mencionados.
-*   **Massas Relativas:** Definida "na mão" nas compilações atuais baseadas livremente na adoção e tempo da linguagem, refletindo sua popularidade gravídica. Aumentar excessivamente a `mass` de uma linguagem a escalona imensamente dentro do vetor `useFrame()`.
-*   **Categorias baseadas no Ano:** Para o sistema *Timeline do Ano* não falhar num frame vazio e parar, um conjunto de Array de anos chaves (`1950, 1960, ... 2025`) processa internamente e injeta quais objetos com `year: < T` podem ficar Visíveis=`true`. 
+*   **The Influence Matrix (Orbits):** The `influencedBy` field determines where R3F should point the connector rays/wires during the main layout. An array containing five IDs will cause the Render to trace three tubular nodes tracing cubic geometry in the simulation pointed towards the Center of the mentioned IDs.
+*   **Relative Masses:** Defined "by hand" in current compilations loosely based on the language's adoption and time, reflecting its gravitational popularity. Excessively increasing a language's `mass` immensely scales it within the `useFrame()` vector.
+*   **Categories based on Year:** For the *Year Timeline* system not to fail on an empty frame and stop, an Array set of key years (`1950, 1960, ... 2025`) processes internally and injects which objects with `year: < T` can become Visible=`true`. 
 
-## Inserindo Novas Linguagens
+## Inserting New Languages
 
-Um Engenheiro Espacial querendo adicionar uma Linguagem `FooBar` nascida hoje, teria de:
-1. Ir na fonte local dentro da pasta de Dados.
-2. Adicionar o bloco padrão com Nome `foobar`, Data `1985`, e *influenciada por* `x`.
-3. Certificar-se que o Objeto pai *já existe* ativamente antes. Inserir órbitas de objetos (no `influencedBy`) apontando para um ID fantasma sem dados fará a rota quebrar nas cordas conectáveis ao renderizar o grafo.
-4. Consequentemente as Locales dinâmicas teriam que possuir chaves mapeando a história dessa inserção.
+A Space Engineer wanting to add a `FooBar` Language born today, would have to:
+1. Go to the local source inside the Data folder.
+2. Add the standard block with Name `foobar`, Date `1985`, and *influenced by* `x`.
+3. Make sure that the parent Object *already actively exists* before. Inserting object orbits (in `influencedBy`) pointing to a ghost ID with no data will break the route on the connectable strings when rendering the graph.
+4. Consequently the dynamic Locales would have to have keys mapping the history of that insertion.

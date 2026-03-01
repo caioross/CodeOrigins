@@ -1,18 +1,18 @@
-# Código Aberto, Cosmos Livre (Community)
+# Open Code, Free Cosmos (Community)
 
-Bem-vindo à órbita diplomática. CodeOrigins não tem fins comerciais em suas diretrizes fundacionais, operando como uma homenagem profunda, complexa, aos bilhões e bilhões de bits codificados que nos trouxeram aonde estamos.
+Welcome to the diplomatic orbit. CodeOrigins has no commercial purposes in its foundational guidelines, operating as a deep, complex homage to the billions and billions of encoded bits that brought us to where we are.
 
-## Filosofia Open Source
-A história do software *é* a história do agrupamento de entidades dissecando e compartilhando dados. Criadores de linguagens cederam paradigmas aos mundos à frente sem nada em troca; em respeito a isto, **CodeOrigins segue a diretiva Open Source.**
-Todo o motor de pesquisa gerado, componentes e mapeamentos do R3F encontram-se expostos para dissecagem em laboratórios públicos do GitHub.
+## Open Source Philosophy
+The history of software *is* the history of grouping entities dissecting and sharing data. Language creators yielded paradigms to the worlds ahead with nothing in return; out of respect for this, **CodeOrigins follows the Open Source directive.**
+The entire generated search engine, R3F components, and mappings are exposed for dissection in public GitHub laboratories.
 
-## Licença (Apache 2.0)
-Nós abrigamos este mapa sob a licença [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
-Isto signfica livre uso, redistribuição, re-empacotation e alteração da fonte estelar contanto que fornecida a isenção de garantias e registro explícitos sobre alterações das maravilhas modificadas, preservando créditos nas documentações adjacentes.
+## License (Apache 2.0)
+We house this map under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
+This means free use, redistribution, repackaging, and alteration of the stellar source as long as explicit warranties waiver and registration of alterations to modified marvels are provided, preserving credits in the adjacent documentation.
 
-## Espécime Social (Canais Livres)
-Atualmente exploradores mantêm discussões intelectuais pelo painel de **Issues do GitHub**. Esse é o quadro de transmissão universal.
--   **Encontrou buracos de minhoca (Bugs)?** Abra uma Issue catalogando as especificações do Chrome/Firefox e SO que experimentou perda de FPS ou texturas rosas piscantes.
--   **Tem pedidos em andamento?** Rotule-os como `enhancement` e proponha a sua visão filosófica.
+## Social Specimen (Free Channels)
+Currently, explorers hold intellectual discussions via the **GitHub Issues** panel. This is the universal transmission board.
+-   **Found wormholes (Bugs)?** Open an Issue cataloging the Chrome/Firefox specifications and OS that experienced an FPS drop or flashing pink textures.
+-   **Have ongoing requests?** Label them as `enhancement` and propose your philosophical vision.
 
-Respeite a gravidade mútua. As diretrizes de "Boa Conduta" são elementares: tratamentos agressivos, desrespeitosos ou imaturos num sistema tão grandioso refletem a ignorância de quem os emite. Mantenham as comunicações calmas, factuais e cooperativas.
+Respect mutual gravity. The "Good Conduct" guidelines are elementary: aggressive, disrespectful, or immature treatment in such a grandiose system reflects the ignorance of those emitting them. Keep communications calm, factual, and cooperative.

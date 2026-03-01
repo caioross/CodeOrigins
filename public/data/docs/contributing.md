@@ -1,13 +1,13 @@
-# Guia de Engenheiros Estelares (Como Contribuir)
+# Stellar Engineers Guide (How to Contribute)
 
-Seja expandindo constelações (adicionando linguagens não mapeadas), consertando buracos negros (resolvendo bugs do State) ou reticulando texturas 3D, a sua contribuição expande fisicamente este cosmos. 
+Whether expanding constellations (adding unmapped languages), fixing black holes (resolving State bugs), or reticulating 3D textures, your contribution physically expands this cosmos. 
 
-## Ambiente de Desenvolvimento e Clone
+## Development Environment and Clone
 
-1. **Faça o Fork:** Inicie bifurcando ("Forking") o repositório principal no GitHub para o seu porto seguro de desenvolvimento.
-2. **Boot da Sonda Local:**
+1. **Fork It:** Start by forking the main repository on GitHub to your safe development haven.
+2. **Local Probe Boot:**
    ```bash
-   git clone https://github.com/SeuUsername/CodeOrigins.git
+   git clone https://github.com/YourUsername/CodeOrigins.git
    cd CodeOrigins
    npm install
    ```
@@ -16,28 +16,28 @@ Seja expandindo constelações (adicionando linguagens não mapeadas), consertan
    npm run dev
    ```
 
-A aplicação agora reside no `http://localhost:3000`. Alterações nos scripts React engatilham o *Hot-Reload* re-renderizando o canvas dinamicamente sem perdas pesadas de estado em cena.
+The application now resides at `http://localhost:3000`. Changes to React scripts trigger *Hot-Reload* re-rendering the canvas dynamically without heavy loss of state in the scene.
 
-## Expandindo o Universo (Processo Padrão)
+## Expanding the Universe (Standard Process)
 
-A maior demanda colaborativa em CodeOrigins é **Acurácia Histórica**. Nossos logs temporais podem apresentar equívocos (ex: Errar quem influenciou quem nos anos 80). Se você quer adicionar linguagens ou consertar pesos/texturas, mexa especificamente nos arquivos contidos em `src/data/`.
+The biggest collaborative demand in CodeOrigins is **Historical Accuracy**. Our temporal logs may present mistakes (e.g., erring on who influenced whom in the 80s). If you want to add languages or fix weights/textures, mess specifically with the files contained in `src/data/`.
 
-*   `languages.ts` (ou derivados divididos `languages2.ts`, `languages3.ts` para aliviar o ast e tempo de type-checking).
-*   Abastecer a matriz do `src/lang/` com a chave `description` referente aquela alteração no inglês fundamental.
+*   `languages.ts` (or mapped derivatives `languages2.ts`, `languages3.ts` to alleviate the ast and type-checking time).
+*   Supply the matrix in `src/lang/` with the `description` key referring to that change in fundamental English.
 
-## Utilitários de Terraformação Automática (Scripts)
+## Automatic Terraforming Utilities (Scripts)
 
-O repositório root possui dois scripts NodeJS pesados criados para auto-população, caso o contribuidor esteja manuseando milhares de dados em formato bruto. (Embora sejam de uso avançado estrito de manutenções primárias do mantenedor).
-*   `update_categories.js`: Escaneia e aplica auto-filtro referencial nos arrays do JSON das dependências (Atuando como um categorizador pesado para salvar tempo manual).
-*   `add_speed.js`: Utiliza injeções massivas de dados via processamento sequencial Node (e acesso raw via regex ou parsers) para alterar em batch matrizes inteiras.
+The root repository has two heavy NodeJS scripts created for auto-population, in case the contributor is handling thousands of data points in raw format. (Although they are for strict advanced use by the maintainer's primary maintenance).
+*   `update_categories.js`: Scans and applies auto-referential filtering on the dependency JSON arrays (Acting as a heavy categorizer to save manual time).
+*   `add_speed.js`: Uses massive data injections via sequential Node processing (and raw access via regex or parsers) to batch alter entire matrices.
 
 > [!WARNING]
-> Tenha cuidado usando os *Scripts Node* puros na root. É necessário rodá-los isoladamente (`node script.js`) antes da build para gerar novas constantes geradas.
+> Be careful using pure *Node Scripts* in the root. It is necessary to run them in isolation (`node script.js`) before the build to generate the newly generated constants.
 
-## Abrindo o Contato Aberto (Pull Requests)
+## Opening Open Contact (Pull Requests)
 
-- Crie Branchs significativas: `git checkout -b feature/update-ruby-relations`.
-- Comite microscopicamente: Suas descrições ajudam os auditores a entender as mudanças físicas no cosmos.
-- Abra um **PR (Pull Request)** contra o braço `main` principal e anexe capturas de tela se tiver alterado a renderização ou HUD.
+- Create meaningful Branches: `git checkout -b feature/update-ruby-relations`.
+- Commit microscopically: Your descriptions help auditors understand physical changes in the cosmos.
+- Open a **PR (Pull Request)** against the main `main` branch and attach screenshots if you've altered the render or HUD.
 
-Nós avaliamos velocidade. Renderizar um novo shader nos anéis de um Planeta não pode afetar em declínio o FPS geral.
+We evaluate speed. Rendering a new shader on a Planet's rings cannot result in a decline in overall FPS.

@@ -1,42 +1,42 @@
-# Engenharia e Arquitetura do Espaço Sideral
+# Engineering and Outer Space Architecture
 
-Construir o CodeOrigins exige manter milhares de objetos processados no canvas 3D e, simultaneamente, permitir que sistemas HUD e ferramentas complexas HTML respondam instantaneamente. A arquitetura principal foca em **desacoplamento severo da UI e motor WebGL**.
+Building CodeOrigins requires maintaining thousands of objects processed in the 3D canvas and, simultaneously, allowing complex HTML HUDs and tools to respond instantly. The main architecture focuses on a **severe decoupling of the UI and the WebGL engine**.
 
-## Visão Geral do Sistema
+## System Overview
 
-CodeOrigins é uma Single Page Application desenvolvida em **React** e **Vite**, operando em duas camadas fundamentais que nunca devem interromper a thread uma da outra:
+CodeOrigins is a Single Page Application developed in **React** and **Vite**, operating in two fundamental layers that must never interrupt each other's thread:
 
-1. **Camada Atmosférica (UI / DOM):** Contém os painéis de Tailwind, botões, barras deslizantes temporais e o Minimapa interativo.
-2. **Camada Sideral (WebGL/Canvas):** A simulação pura via `Three.js` + `@react-three/fiber` gerindo toda a renderização densa de malhas 3D e vértices.
+1. **Atmospheric Layer (UI / DOM):** Contains the Tailwind panels, buttons, temporal sliders, and the interactive Minimap.
+2. **Sidereal Layer (WebGL/Canvas):** The pure simulation via `Three.js` + `@react-three/fiber` managing all the dense rendering of 3D meshes and vertices.
 
-### A Ponte de Einstein-Rosen (Zustand)
+## The Einstein-Rosen Bridge (Zustand)
 
-O React sofre de cascatas de re-renderização quando as props mudam no topo da árvore. Se um slider HTML atualizasse o estado central do React que encapsula a engine 3D, ocorreria gaguejo extremo (stuttering) e queda repentina de FPS toda vez que você mexesse o mouse.
+React suffers from rendering cascades when props change at the top of the tree. If an HTML slider updated the central React state encapsulating the 3D engine, extreme stuttering and sudden FPS drops would occur every time you moved the mouse.
 
-**Para combater isso, usamos o `Zustand`.**
-Ele age como a nossa store central e, mais importante, de modo não reativo direto na hierarquia principal:
-- **Painéis UI** leem (via hooks Zustand) e escrevem ações na Store.
-- O **Motor 3D**, principalmente através dós hooks assíncronos `useFrame()`, espiona a Store por fora do ciclo de vida React (*transient updates*).
+**To combat this, we use `Zustand`.**
+It acts as our central store and, most importantly, in a non-reactive way right in the main hierarchy:
+- **UI Panels** read (via Zustand hooks) and write actions to the Store.
+- The **3D Engine**, mainly through asynchronous `useFrame()` hooks, spies on the Store from outside the React lifecycle (*transient updates*).
 
-Dessa forma, a navegação flui sem re-painters custosos do DOM. O Canvas gira a maravilhosos 60FPS a 144FPS contínuos.
+This way, navigation flows without expensive DOM repainters. The Canvas orbits at a wonderful continuous 60FPS to 144FPS.
 
-## O Desafio da Performance 3D (InstancedMesh)
+## The 3D Performance Challenge (InstancedMesh)
 
-O maior gargalo potencial da nossa sonda seria renderizar ~3.000 instâncias de um componente React `<Planet />` usando nós `<mesh />` elementares na pipeline. Para o navegador, isso causaria *drawcalls* fatais para a CPU.
+The biggest potential bottleneck of our probe would be rendering ~3,000 instances of a React `<Planet />` component using elementary `<mesh />` nodes in the pipeline. For the browser, this would cause fatal *drawcalls* for the CPU.
 
-A solução na Arquitetura é **Instanced Rendering**.
-Ao invés de processar o Planeta 'Ruby' e o Planeta 'PHP' separadamente do zero, invocamos malhas *Instanced* (várias cópias da mesma geometria base orbitando coordenadas espaciais distópicas) em lotes volumosos (`<instancedMesh>`). 
+The architectural solution is **Instanced Rendering**.
+Instead of processing Planet 'Ruby' and Planet 'PHP' separately from scratch, we invoke *Instanced* meshes (multiple copies of the same base geometry orbiting dystopian spatial coordinates) in massive batches (`<instancedMesh>`). 
 
-Isso agrupa milhares de corpos num subconjunto singular enviado ao buffer da placa de vídeo (GPU) *de uma só vez*! 
+This groups thousands of bodies into a singular subset sent to the video card (GPU) buffer *all at once*! 
 
-## Fluxo de Estado Visual:
+## Visual State Flow:
 ```
-[Interação do Minimapa UI (Click HTML)] 
-  👉 [Ação Executada no Zustand Store] 
-    👉 [Zustand dispara notificação atômica] 
-      👉 [Componente SolarSystem WebGL repara a variável com let/ref] 
-        👉 [Threejs Hook usa easing matemático e voa Câmera 3D ao Alvo]
+[Minimap UI Interaction (HTML Click)] 
+  👉 [Action Executed in Zustand Store] 
+    👉 [Zustand triggers atomic notification] 
+      👉 [WebGL SolarSystem Component patches variable with let/ref] 
+        👉 [Threejs Hook uses mathematical easing and flies 3D Camera to Target]
 ```
 
-## Roteador (Single Page Navigation)
-Atualmente, a navegação entre HUDs na UI é inteiramente ancorada por um painel de estado (ex: "showDocs", "selectedPlanetId", "hudMode"). Assim, a cena 3D ao fundo permanece constante, enquanto as "telas" são abertas sobrepostas pela engine React de interface.
+## Router (Single Page Navigation)
+Currently, navigation between HUDs in the UI is entirely anchored by a state panel (e.g., "showDocs", "selectedPlanetId", "hudMode"). Thus, the 3D scene in the background remains constant, while the "screens" are opened overlaid by the interface's React engine.

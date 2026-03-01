@@ -1,18 +1,18 @@
-# FAQs: Dúvidas Frequentes da Tripulação
+# FAQs: Frequent Questions from the Crew
 
-**1. O CodeOrigins Roda no Celular? 📱**
-Sim. A otimização do React-Three-Fiber e uso pesado do *Canvas HTML5 WebGL* em CodeOrigins permite que rodemos o grafo tridimensional em dispositivos ARM modernos (iPhones recentes e flagships Android). Há contenções de framerates devido a throttling térmico no aparelho, mas os controles (Pinch zoom) funcionam ativamente de forma nativa.
+**1. Does CodeOrigins Run on Mobile? 📱**
+Yes. The optimization of React-Three-Fiber and heavy use of the *HTML5 WebGL Canvas* in CodeOrigins allows us to run the three-dimensional graph on modern ARM devices (recent iPhones and Android flagships). There are framerate contentions due to thermal throttling on the device, but the controls (Pinch zoom) function actively natively.
 
-**2. A Tela ficou preta ou meu FPS está beirando 12! O que fazer? 🐢**
-- Hardware Acceleration: Confirme com absoluta certeza que o **Aceleração de Hardware do Navegador (Hardware Acceleration)** não foi desativada equivocadamente no Chrome/Firefox. Canvas WebGL sem a GPU morre asfixiado renderizando via CPU pura.
-- Limpeza de Browser: Feche outras abas complexas renderizando 3D ou extensões gráficas conflitantes. O CodeOrigins lida diretamente com memória WebGL bruta instanciada.
+**2. The Screen went black or my FPS is bordering 12! What to do? 🐢**
+- Hardware Acceleration: Confirm with absolute certainty that **Browser Hardware Acceleration** has not been mistakenly disabled in Chrome/Firefox. WebGL Canvas without the GPU dies asphyxiated rendering via pure CPU.
+- Browser Cleanup: Close other complex tabs rendering 3D or conflicting graphics extensions. CodeOrigins deals directly with instantiated raw WebGL memory.
 
-**3. Discordo violentamente de que {Linguagem X} influenciou a {Linguagem Y}! O mapa mente! 😡**
-Como dissecadores historiadores em software, montamos o mapa via agregação coletânea manual (Wikipedia, compêndios, blogs dos criadores, manifestos estritos). A história de influências não é binária. Pode ocorrer intercessão semântica e discordância na comunidade (ex: quem inventou realmente o modelo Objeto padrão ouro funcional).
-Se você possui provas de que uma rota (`influencedBy`) está gravemente atrelada de forma equivocada e historicamente fictícia, abra um [Pull Request](contributing.md) retificando a constante JSON. Nós amamos a verdade!
+**3. I violently disagree that {Language X} influenced {Language Y}! The map a lie! 😡**
+As dissecting historians in software, we assembled the map via manual aggregated colletions (Wikipedia, compendiums, creator blogs, strict manifestos). The history of influences is not binary. Semantic intersection and disagreement in the community can occur (e.g., who really invented the gold standard functional Object model).
+If you have proof that a route (`influencedBy`) is severely linked in a mistaken and historically fictitious manner, open a [Pull Request](contributing.md) rectifying the JSON constant. We love the truth!
 
-**4. Posso embutir CodeOrigins em projetos visuais com um Iframe? 🖼️**
-Sim. Pode necessitar de supressão forçada no CORS caso sua distribuição bloqueie renderização externa WebGL por segurança cruzada.
+**4. Can I embed CodeOrigins in visual projects with an Iframe? 🖼️**
+Yes. You may need forced CORS suppression if your distribution blocks external cross-origin WebGL rendering security.
 
-**5. Por que as estrelas do fundo ficam coloridas e mudam? 🌟**
-Você ativou os Globos Filtradores, ou a timeline (Máquina do tempo) pulou décadas! É o sistema dinâmico refletindo nas partículas menores no cenário espacial.
+**5. Why do the stars in the background become colorful and change? 🌟**
+You activated the Filtering Globes, or the timeline (Time Machine) skipped decades! It's the dynamic system reflecting on the smaller particles in the space scenery.

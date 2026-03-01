@@ -1,23 +1,23 @@
-# Mecânicas de Navegação e Interação
+# Navigation and Interaction Mechanics
 
-Para compreender totalmente como explorar a "vastidão espacial" renderizada pelas lentes WebGL do CodeOrigins, listamos os comandos basais e mecânicas da câmera simuladora:
+To fully understand how to explore the "spatial vastness" rendered by the CodeOrigins WebGL lenses, we list the basal commands and mechanics of the simulator camera:
 
-## Dinâmica de Vôo e Controles (Câmera Orbicular)
+## Flight Dynamics and Controls (Orbicular Camera)
 
-A navegação interage primariamente com o mouse/trackpad operando sob a doutrina de "Controles Arbitrários Orbitais" alimentadas pelo `@react-three/drei` (`OrbitControls`).
+Navigation primarily interacts with the mouse/trackpad operating under the doctrine of "Arbitrary Orbital Controls" powered by `@react-three/drei` (`OrbitControls`).
 
-1.  **Rotação Cilíndrica:** Segure o **botão Esquerdo** do mouse e arraste sobre qualquer ponto vazio do universo. Isso não muda a posição absoluta da câmera, mas gira sobre o Alvo (Centro Atual/Pivot Point).
-2.  **Zoom FTL:** O Scroll do mouse (Roda), ou as pinças duplas no Mac OS Trackpad e Celulares. Aproxima vertiginosamente, transformando sóis grandes em planetas titânicos, e se afastando até virarem ínfimas poeiras estelares na teia panorâmica.
-3.  **Pan Espacial Tracking:** Pressionando o clique **Direito** e puxando altera as diretrizes esféricas centrais X/Y da câmera. Em outras palavras, "arrastar o universo horizontal/verticalmente". Permite navegar longas distâncias sem rotacionar.
+1.  **Cylindrical Rotation:** Hold the **Left button** of the mouse and drag over any empty point in the universe. This does not change the camera's absolute position, but rotates around the Target (Current Center/Pivot Point).
+2.  **FTL Zoom:** The mouse Scroll (Wheel), or double pinch on Mac OS Trackpad and Mobile phones. Zooms in vertiginously, transforming large suns into titanic planets, and zooms out until they become tiny stardust in the panoramic web.
+3.  **Spatial Tracking Pan:** Pressing the **Right** click and pulling alters the central spherical X/Y guidelines of the camera. In other words, "dragging the universe horizontally/vertically". It allows navigating long distances without rotating.
 
-## Sistema de Focalização de Planetas (Raycasting)
-Não se usa botões engessados de links web padrão para selecionar planetas. 
-A física de seleção dentro do Three.js usa **Raycasting**. A placa do monitor projeta um "Raio Invisível" (Laser) milimétrico partindo de onde o curslor do mouse repousa até esbarrar a caixa colisora (Bounding Box) do Planeta renderizado no Grid.
+## Planet Focusing System (Raycasting)
+Rigid standard web link buttons are not used to select planets.
+The selection physics inside Three.js uses **Raycasting**. The monitor board projects a millimeter "Invisible Ray" (Laser) starting from where the mouse cursor rests until bumping into the bounding box of the Rendered Planet on the Grid.
 
-Ao clicar validamente em um Planeta:
-1.  **Enquadramento (Easing Camera):** A Câmera automaticamente computa posições de distância (`lerp()`), assumindo uma posição lateral cinematográfica perto do planeta selecionado. O *Pivot Point* muda de "Livre", tornando-se esse planeta específico.
-2.  **Pop-up do Banco de Dados:** A HUD atende via Zustand que algo foi selecionado. Imediatamente a gravidade da UI baixa o Painel lateral de "Banco de Dados da Linguagem", com uma janela recheada das descrições i18n traduzidas em HTML.
-3.  **Sistema "Focar Pai/Criador":** Dentro dessa enciclopédia frontal, links para outras linguagens (Ex: clicar que C é pai do C++) fazem o `OrbitControls` usar viagem-rápida, girando e varrendo o espaço físico 3D na velocidade da luz de onde a câmera estava até a localização em `vec3(x,y,z)` recém-computada do planeta do C.
+Upon validly clicking a Planet:
+1.  **Framing (Easing Camera):** The Camera automatically computes framing distances (`lerp()`), assuming a cinematic side position near the selected planet. The *Pivot Point* changes from "Free", becoming that specific planet.
+2.  **Database Pop-up:** The HUD acknowledges via Zustand that something has been selected. Immediately the UI gravity lowers the "Language Database" side Panel, with a window filled with HTML translated i18n descriptions.
+3.  **"Focus Parent/Creator" System:** Inside this frontal encyclopedia, links to other languages (E.g.: clicking that C is the parent of C++) make `OrbitControls` use fast-travel, rotating and sweeping 3D physical space at the speed of light from where the camera was to the newly computed local `vec3(x,y,z)` position of the C planet.
 
-## Painéis Sobrepostos (Z-Index Escalonado)
-Os popups flutuam acima do elemento WebGL. Você pode arrastá-los (dependendo do painel principal de logs) ou fechá-los livremente nos botões em formato `X` do neon superior, restaurando a vista periférica completa intergaláctica (Zen Mode) sem poluição HTML.
+## Overlapping Panels (Scaled Z-Index)
+The popups float above the WebGL element. You can freely drag them (depending on the main logs panel) or close them on the `X` format buttons of the top neon, restoring the full intergalactic peripheral view (Zen Mode) without HTML pollution.

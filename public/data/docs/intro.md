@@ -1,28 +1,28 @@
-# Introdução ao CodeOrigins
+# Introduction to CodeOrigins
 
-Bem-vindo à documentação oficial do **CodeOrigins**. 
+Welcome to the official documentation for **CodeOrigins**. 
 
-O CodeOrigins é uma experiência 3D interativa, rodando no seu navegador, que atua como um mapa estelar documentando milhares de linguagens de programação. Em vez de listas monótonas ou gráficos 2D complexos, nós transformamos a extensa e rica história da computação em um **universo tangível e explorável**.
+CodeOrigins is an interactive 3D experience running right in your browser, acting as a massive star map that documents thousands of programming languages. Instead of monotonous lists or complex 2D graphs, we have transformed the extensive and rich history of computing into a **tangible and explorable universe**.
 
-## A Visão
+## The Vision
 
-Imagine se cada linguagem de programação fosse um corpo celeste:
-- Linguagens fundamentais e densas (como C ou Lisp) são verdadeiros sóis governando sistemas solares de influência.
-- Linguagens modernas e derivadas são planetas orbitando seus criadores ou influenciadores diretos.
-- Pequenos sub-projetos, DSLs ou linguagens de nicho são cinturões de asteróides ou satélites naturais.
+Imagine if every programming language were a celestial body:
+- Fundamental and dense languages (like C or Lisp) are true suns governing solar systems of influence.
+- Modern and derivative languages are planets orbiting their direct creators or influencers.
+- Small sub-projects, DSLs, or niche languages are asteroid belts or natural satellites.
 
-O objetivo do CodeOrigins é permitir que estudantes, historiadores da tecnologia e engenheiros de software naveguem pela **genealogia do código**, compreendendo não apenas *quando* uma linguagem surgiu, mas *por que* ela surgiu e *quem* a influenciou.
+The goal of CodeOrigins is to allow students, technology historians, and software engineers to navigate through the **genealogy of code**, understanding not just *when* a language emerged, but *why* it emerged and *who* influenced it.
 
-## O Que Você Encontrará Aqui
+## What You'll Find Here
 
-Esta documentação foi projetada para cobrir todos os aspectos da sonda. Seja você um explorador casual tentando entender a interface, ou um Engenheiro Estelar querendo contribuir com o código base, os tópicos a seguir guiarão sua jornada:
+This documentation is designed to cover all aspects of the probe. Whether you are a casual explorer trying to understand the interface, or a Stellar Engineer wanting to contribute to the codebase, the following topics will guide your journey:
 
-1. **[Lore e Narrativa](./lore.md):** Entenda a poesia por trás das mecânicas de gravidade e evolução.
-2. **[Guias de Funcionalidades](./features.md):** Como usar a Timeline Temporal, Minimapa e Filtros.
-3. **[Mecânicas de Navegação](./mechanics.md):** Controles de câmera e interação espacial.
-4. **[Arquitetura e Engenharia](./architecture.md):** Como mantemos 60 FPS no espaço sideral.
-5. **[E muito mais...](./)** Explore o menu lateral (ou os links do diretório) para aterrissar em tópicos específicos.
+1. **[Lore and Narrative](./lore.md):** Understand the poetry behind the mechanics of gravity and evolution.
+2. **[Features Guide](./features.md):** How to use the Temporal Timeline, Minimap, and Filters.
+3. **[Navigation Mechanics](./mechanics.md):** Camera controls and spatial interaction.
+4. **[Architecture and Engineering](./architecture.md):** How we maintain 60 FPS in outer space.
+5. **[And much more...](./)** Explore the sidebar menu (or the directory links) to land on specific topics.
 
-> *“A exploração é o motor da inovação. O código que escrevemos hoje orbita nas fundações estabelecidas ontem.”*
+> *"Exploration is the engine of innovation. The code we write today orbits the foundations established yesterday."*
 
-Prepare seus propulsores e boa exploração!
+Prepare your thrusters and happy exploring!
