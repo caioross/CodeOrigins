@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, BookOpen, Globe, Search, Github, ChevronLeft, ChevronRight, Code, Loader2, Play, Pause, FastForward, Book, Download, Linkedin } from 'lucide-react';
+import { X, ExternalLink, BookOpen, Globe, Search, Github, ChevronLeft, ChevronRight, Code, Loader2, Play, Pause, FastForward, Book, Download, HelpCircle } from 'lucide-react';
 import { Language } from '../data';
 import { Minimap } from './Minimap';
 import { TimelineSlider } from './TimelineSlider';
@@ -286,7 +286,7 @@ export function UI() {
             className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
             title="About Creator"
           >
-            <Linkedin size={16} />
+            <HelpCircle size={16} />
           </a>
           <div className="w-[1px] h-4 bg-white/20 mx-1"></div>
           <a

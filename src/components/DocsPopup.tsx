@@ -37,7 +37,7 @@ export function DocsPopup({ isOpen, onClose }: DocsPopupProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:p-6"
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:p-6 pointer-events-auto"
             >
                 <motion.div
                     initial={{ scale: 0.95, y: 20 }}
@@ -57,8 +57,8 @@ export function DocsPopup({ isOpen, onClose }: DocsPopupProps) {
                                     key={page.id}
                                     onClick={() => setActivePage(page)}
                                     className={`px-3 py-2 text-sm text-left rounded-lg transition-colors ${activePage.id === page.id
-                                            ? 'bg-indigo-600 text-white'
-                                            : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                        ? 'bg-indigo-600 text-white'
+                                        : 'text-gray-400 hover:bg-white/5 hover:text-white'
                                         }`}
                                 >
                                     {page.title}
