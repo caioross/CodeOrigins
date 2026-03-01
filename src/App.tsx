@@ -6,11 +6,24 @@
 import { Canvas } from '@react-three/fiber';
 import { SolarSystem } from './components/SolarSystem';
 import { UI } from './components/UI';
-import { Timeline } from './components/Timeline';
+import { LoadingScreen } from './components/LoadingScreen';
+import { useEffect } from 'react';
+import { useStore } from './store';
+import { getAvailableLocales, loadLocaleData } from './services/localeLoader';
 
 export default function App() {
+  const setAvailableLocales = useStore(state => state.setAvailableLocales);
+
+  useEffect(() => {
+    const locales = getAvailableLocales();
+    setAvailableLocales(locales);
+    // Load default language initially
+    loadLocaleData('en');
+  }, [setAvailableLocales]);
+
   return (
     <div className="relative h-screen w-full bg-black overflow-hidden flex flex-col">
+      <LoadingScreen />
       <UI />
       <div className="flex-grow">
         <Canvas camera={{ position: [0, 80, 160], fov: 45 }}>

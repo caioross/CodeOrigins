@@ -1,20 +1,80 @@
 import { useMemo, useState } from 'react';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, BookOpen, Globe, Search, Github, ChevronLeft, ChevronRight, Code } from 'lucide-react';
-import { allLanguages as languages, Language } from '../data';
+import { X, ExternalLink, BookOpen, Globe, Search, Github, ChevronLeft, ChevronRight, Code, Loader2, Play, Pause, FastForward } from 'lucide-react';
+import { Language } from '../data';
 import { Minimap } from './Minimap';
 import { TimelineSlider } from './TimelineSlider';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { loadLocaleData } from '../services/localeLoader';
+
+const translations: Record<string, Record<string, string>> = {
+  en: {
+    subtitle: 'A visual history of programming languages',
+    searchPlaceholder: 'Search languages...',
+    noLanguagesFound: 'No languages found.',
+    instructions: 'Click and drag to rotate • Scroll to zoom • Click a planet to explore',
+    viewOnGithub: 'View on GitHub',
+    about: 'About',
+    curiousFact: 'Curious Fact',
+    exampleLabel: 'Example',
+    docsLabel: 'Docs',
+    websiteLabel: 'Website',
+    evolvedFrom: 'Evolved From',
+    influenced: 'Influenced',
+    helloWorld: 'Hello World in'
+  },
+  pb: {
+    subtitle: 'Uma história visual das linguagens de programação',
+    searchPlaceholder: 'Pesquisar linguagem...',
+    noLanguagesFound: 'Nenhuma linguagem encontrada.',
+    instructions: 'Clique e arraste para rodar • Role para dar zoom • Clique num planeta para explorar',
+    viewOnGithub: 'Ver no GitHub',
+    about: 'Sobre',
+    curiousFact: 'Fato Curioso',
+    exampleLabel: 'Exemplo',
+    docsLabel: 'Docs',
+    websiteLabel: 'Site',
+    evolvedFrom: 'Evoluiu de',
+    influenced: 'Influenciou',
+    helloWorld: 'Hello World em'
+  },
+  pt: { // Fallback alternative just in case
+    subtitle: 'Uma história visual das linguagens de programação',
+    searchPlaceholder: 'Pesquisar linguagem...',
+    noLanguagesFound: 'Nenhuma linguagem encontrada.',
+    instructions: 'Clique e arraste para rodar • Role para dar zoom • Clique num planeta para explorar',
+    viewOnGithub: 'Ver no GitHub',
+    about: 'Sobre',
+    curiousFact: 'Fato Curioso',
+    exampleLabel: 'Exemplo',
+    docsLabel: 'Docs',
+    websiteLabel: 'Site',
+    evolvedFrom: 'Evoluiu de',
+    influenced: 'Influenciou',
+    helloWorld: 'Hello World em'
+  }
+};
 
 export function UI() {
-  const { selectedLanguage, setSelectedLanguage } = useStore();
+  const {
+    languages,
+    selectedLanguage,
+    setSelectedLanguage,
+    availableLocales,
+    currentLocale,
+    isLoading,
+    playbackSpeed,
+    setPlaybackSpeed
+  } = useStore();
+  const t = translations[currentLocale] || translations['en'];
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showLocales, setShowLocales] = useState(false);
 
-  const filteredLanguages = languages.filter(l => 
+  const filteredLanguages = languages.filter(l =>
     l.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -28,11 +88,20 @@ export function UI() {
     const children = languages.filter(l => l.parents.includes(selectedLanguage.id));
 
     return { parentLanguages: parents, childLanguages: children };
-  }, [selectedLanguage]);
+  }, [selectedLanguage, languages]);
 
   const handleClose = () => {
     setSelectedLanguage(null);
     setIsFlipped(false);
+  };
+
+  const currentFlag = (locale: string) => {
+    // Map some locales to emoji flags for visual flair
+    const flags: Record<string, string> = {
+      'en': '🇺🇸', 'pt': '🇧🇷', 'pb': '🇧🇷', 'es': '🇪🇸', 'fr': '🇫🇷', 'de': '🇩🇪',
+      'it': '🇮🇹', 'ja': '🇯🇵', 'ru': '🇷🇺', 'zh': '🇨🇳', 'kr': '🇰🇷'
+    };
+    return flags[locale] || '🌐';
   };
 
   return (
@@ -40,82 +109,162 @@ export function UI() {
       {/* Header / Title & Minimap */}
       <div className="absolute top-6 left-6 text-white flex flex-col pointer-events-none">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Code Origins</h1>
-          <p className="text-sm text-gray-400 mt-1">A visual history of programming languages</p>
+          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
+            Code Origins
+            {isLoading && <Loader2 size={24} className="animate-spin text-indigo-400" />}
+          </h1>
+          <p className="text-sm text-gray-400 mt-1">{t.subtitle}</p>
         </div>
         <Minimap />
       </div>
 
       {/* Timeline Slider */}
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 w-1/2 max-w-2xl pointer-events-auto">
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 w-1/2 max-w-2xl pointer-events-auto flex items-center justify-center">
         <TimelineSlider />
       </div>
 
-      {/* Search Bar */}
-      <div className="absolute top-6 right-6 pointer-events-auto w-64">
+      {/* Playback Controls (Bottom Center) */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 pointer-events-auto flex items-center justify-center">
+        <div className="flex items-center gap-1 bg-black/40 p-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-xl *:px-4 *:py-1.5 *:rounded-full *:text-xs *:font-bold *:transition-colors *:flex *:items-center *:justify-center">
+          <button
+            onClick={() => setPlaybackSpeed(playbackSpeed === 0 ? 1 : 0)}
+            className={playbackSpeed === 0 ? "bg-white/20 text-white" : "text-gray-400 hover:text-white hover:bg-white/5"}
+            title={playbackSpeed === 0 ? "Play" : "Pause"}
+          >
+            {playbackSpeed === 0 ? <Play size={16} className="ml-0.5" /> : <Pause size={16} />}
+          </button>
+
+          <div className="w-[1px] h-5 bg-white/10 mx-1"></div>
+
+          <button
+            onClick={() => setPlaybackSpeed(1)}
+            className={playbackSpeed === 1 ? "bg-indigo-500/40 text-indigo-300 ring-1 ring-indigo-500/50" : "text-gray-400 hover:text-white hover:bg-white/5"}
+            title="1x Speed"
+          >
+            &gt;
+          </button>
+          <button
+            onClick={() => setPlaybackSpeed(2)}
+            className={playbackSpeed === 2 ? "bg-indigo-500/40 text-indigo-300 ring-1 ring-indigo-500/50" : "text-gray-400 hover:text-white hover:bg-white/5"}
+            title="2x Speed"
+          >
+            &gt;&gt;
+          </button>
+          <button
+            onClick={() => setPlaybackSpeed(3)}
+            className={playbackSpeed === 3 ? "bg-indigo-500/40 text-indigo-300 ring-1 ring-indigo-500/50" : "text-gray-400 hover:text-white hover:bg-white/5"}
+            title="3x Speed"
+          >
+            &gt;&gt;&gt;
+          </button>
+        </div>
+      </div>
+
+      {/* Top Right Controls: Locales & Search */}
+      <div className="absolute top-6 right-6 pointer-events-auto flex gap-3">
+        {/* Locale Switcher */}
         <div className="relative">
+          <button
+            onClick={() => setShowLocales(!showLocales)}
+            className="flex items-center justify-center gap-2 h-10 px-3 bg-black/50 border border-white/10 rounded-xl text-gray-300 hover:text-white hover:bg-black/80 backdrop-blur-md transition-all sm:text-sm"
+          >
+            <span>{currentFlag(currentLocale)}</span>
+            <span className="uppercase font-medium min-w-5 text-center">{currentLocale}</span>
+          </button>
+
+          <AnimatePresence>
+            {showLocales && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute right-0 mt-2 w-32 bg-black/80 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden max-h-60 overflow-y-auto z-50 flex flex-col"
+              >
+                {availableLocales.map(loc => (
+                  <button
+                    key={loc}
+                    onClick={() => {
+                      loadLocaleData(loc);
+                      setShowLocales(false);
+                    }}
+                    className={`px-4 py-2 text-sm text-left transition-colors flex items-center gap-2
+                      ${loc === currentLocale ? 'bg-indigo-600 text-white font-bold' : 'text-gray-300 hover:bg-white/10 hover:text-white'}
+                    `}
+                  >
+                    <span>{currentFlag(loc)}</span>
+                    <span className="uppercase">{loc}</span>
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Search Bar */}
+        <div className="relative w-64">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search size={16} className="text-gray-400" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-3 py-2 border border-white/10 rounded-xl leading-5 bg-black/50 text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-black/80 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:text-sm backdrop-blur-md transition-all"
-            placeholder="Search languages..."
+            className="block w-full h-10 pl-10 pr-3 py-2 border border-white/10 rounded-xl leading-5 bg-black/50 text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-black/80 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:text-sm backdrop-blur-md transition-all"
+            placeholder={t.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+            disabled={isLoading}
           />
+
+          {/* Search Results Dropdown */}
+          <AnimatePresence>
+            {isSearchFocused && searchQuery && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute right-0 mt-2 w-full bg-black/80 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden max-h-60 overflow-y-auto z-50"
+              >
+                {filteredLanguages.length > 0 ? (
+                  filteredLanguages.map(lang => (
+                    <button
+                      key={lang.id}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white transition-colors flex justify-between items-center"
+                      onClick={() => {
+                        setSelectedLanguage(lang);
+                        setSearchQuery('');
+                        setIsSearchFocused(false);
+                      }}
+                    >
+                      <span className="font-medium">{lang.name}</span>
+                      <span className="text-xs opacity-60">{lang.year}</span>
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-4 py-3 text-sm text-gray-500">{t.noLanguagesFound}</div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        
-        {/* Search Results Dropdown */}
-        <AnimatePresence>
-          {isSearchFocused && searchQuery && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute mt-2 w-full bg-black/80 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden max-h-60 overflow-y-auto z-50"
-            >
-              {filteredLanguages.length > 0 ? (
-                filteredLanguages.map(lang => (
-                  <button
-                    key={lang.id}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white transition-colors flex justify-between items-center"
-                    onClick={() => {
-                      setSelectedLanguage(lang);
-                      setSearchQuery('');
-                      setIsSearchFocused(false);
-                    }}
-                  >
-                    <span className="font-medium">{lang.name}</span>
-                    <span className="text-xs opacity-60">{lang.year}</span>
-                  </button>
-                ))
-              ) : (
-                <div className="px-4 py-3 text-sm text-gray-500">No languages found.</div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* Instructions & Footer */}
-      <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end text-gray-400 text-sm pointer-events-none">
-        <p>Click and drag to rotate • Scroll to zoom • Click a planet to explore</p>
-        <a 
-          href="https://github.com/caioross/CodeOrigins" 
-          target="_blank" 
+      <div className="absolute bottom-4 left-6 right-6 flex justify-between items-end text-gray-400 text-xs pointer-events-none">
+        <p>{t.instructions}</p>
+        <a
+          href="https://github.com/caioross/CodeOrigins"
+          target="_blank"
           rel="noopener noreferrer"
-          className="pointer-events-auto flex items-center gap-2 hover:text-white transition-colors"
+          className="pointer-events-auto flex items-center gap-2 hover:text-white transition-colors text-sm"
         >
-          <Github size={20} />
-          <span>View on GitHub</span>
+          <Github size={16} />
+          <span>{t.viewOnGithub}</span>
         </a>
       </div>
 
       <AnimatePresence>
-        {selectedLanguage && (
+        {selectedLanguage && !isLoading && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -161,15 +310,15 @@ export function UI() {
 
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">About</h3>
-                    <p className="text-sm leading-relaxed text-gray-300">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">{t.about}</h3>
+                    <p className="text-sm leading-relaxed text-gray-300 mt-1 max-h-32 overflow-y-auto pr-2 custom-scrollbar">
                       {selectedLanguage.description}
                     </p>
                   </div>
 
                   {selectedLanguage.curious_fact && (
                     <div>
-                      <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">Curious Fact</h3>
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-indigo-400 mb-1">{t.curiousFact}</h3>
                       <p className="text-sm leading-relaxed text-gray-300">
                         {selectedLanguage.curious_fact}
                       </p>
@@ -182,7 +331,7 @@ export function UI() {
                       className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-2.5 text-sm font-medium hover:bg-purple-500 transition-colors"
                     >
                       <Code size={16} />
-                      Example
+                      {t.exampleLabel}
                     </button>
                     {selectedLanguage.docsUrl && (
                       <a
@@ -192,7 +341,7 @@ export function UI() {
                         className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium hover:bg-indigo-500 transition-colors"
                       >
                         <BookOpen size={16} />
-                        Docs
+                        {t.docsLabel}
                       </a>
                     )}
                     {selectedLanguage.siteUrl && (
@@ -203,7 +352,7 @@ export function UI() {
                         className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/20 transition-colors"
                       >
                         <ExternalLink size={16} />
-                        Website
+                        {t.websiteLabel}
                       </a>
                     )}
                   </div>
@@ -212,8 +361,8 @@ export function UI() {
 
               {/* Back Card */}
               <div className="absolute inset-0 overflow-hidden rounded-2xl bg-black/80 p-6 text-white shadow-2xl backdrop-blur-xl border border-white/10" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }} onClick={() => setIsFlipped(false)}>
-                <h3 className="text-lg font-bold mb-2 text-indigo-400">Hello World in {selectedLanguage.name}</h3>
-                <div className="bg-[#1e1e1e] rounded-lg p-4 text-sm font-mono overflow-auto h-full max-h-80">
+                <h3 className="text-lg font-bold mb-2 text-indigo-400">{t.helloWorld} {selectedLanguage.name}</h3>
+                <div className="bg-[#1e1e1e] rounded-lg p-4 text-sm font-mono overflow-auto h-full max-h-80 custom-scrollbar">
                   <SyntaxHighlighter language={selectedLanguage.id.toLowerCase()} style={vscDarkPlus} customStyle={{ background: 'transparent', padding: 0, margin: 0 }}>
                     {selectedLanguage.example || ''}
                   </SyntaxHighlighter>
@@ -225,20 +374,20 @@ export function UI() {
             <motion.div animate={{ opacity: isFlipped ? 0 : 1, transition: { delay: isFlipped ? 0 : 0.2 } }}>
               {/* Left Ear - Parents */}
               {parentLanguages.length > 0 && (
-                <motion.div 
+                <motion.div
                   className="absolute -left-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 items-end"
                   initial={{ x: 0 }}
                   animate={{ x: isFlipped ? '50%' : '-100%' }}
                   transition={{ type: 'spring', damping: 20, stiffness: 200 }}
                 >
-                  <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Evolved From</span>
+                  <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">{t.evolvedFrom}</span>
                   {parentLanguages.map(p => (
-                    <button 
+                    <button
                       key={p.id}
                       onClick={() => setSelectedLanguage(p)}
                       className="w-max bg-black/80 backdrop-blur-xl border border-white/10 rounded-lg px-3 py-1 text-sm text-white hover:bg-indigo-600 transition-colors flex items-center gap-2"
                     >
-                       <ChevronLeft size={16} /> {p.name}
+                      <ChevronLeft size={16} /> {p.name}
                     </button>
                   ))}
                 </motion.div>
@@ -252,9 +401,9 @@ export function UI() {
                   animate={{ x: isFlipped ? '-50%' : '100%' }}
                   transition={{ type: 'spring', damping: 20, stiffness: 200 }}
                 >
-                  <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Influenced</span>
+                  <span className="text-xs text-gray-400 uppercase tracking-wider font-semibold">{t.influenced}</span>
                   {childLanguages.map(c => (
-                    <button 
+                    <button
                       key={c.id}
                       onClick={() => setSelectedLanguage(c)}
                       className="w-max bg-black/80 backdrop-blur-xl border border-white/10 rounded-lg px-3 py-1 text-sm text-white hover:bg-indigo-600 transition-colors flex items-center gap-2"

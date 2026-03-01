@@ -2,6 +2,15 @@ import { create } from 'zustand';
 import { Language } from './data';
 
 interface AppState {
+  languages: Language[];
+  setLanguages: (langs: Language[]) => void;
+  availableLocales: string[];
+  setAvailableLocales: (locales: string[]) => void;
+  currentLocale: string;
+  setCurrentLocale: (locale: string) => void;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
+
   selectedLanguage: Language | null;
   setSelectedLanguage: (lang: Language | null) => void;
   hoveredLanguage: Language | null;
@@ -22,9 +31,20 @@ interface AppState {
   setCategoryFilter: (filter: string | null) => void;
   yearRange: [number, number];
   setYearRange: (range: [number, number]) => void;
+  playbackSpeed: number;
+  setPlaybackSpeed: (speed: number) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
+  languages: [],
+  setLanguages: (langs) => set({ languages: langs }),
+  availableLocales: [],
+  setAvailableLocales: (locales) => set({ availableLocales: locales }),
+  currentLocale: 'en',
+  setCurrentLocale: (locale) => set({ currentLocale: locale }),
+  isLoading: true,
+  setIsLoading: (loading) => set({ isLoading: loading }),
+
   selectedLanguage: null,
   setSelectedLanguage: (lang) => set({ selectedLanguage: lang }),
   hoveredLanguage: null,
@@ -45,6 +65,8 @@ export const useStore = create<AppState>((set) => ({
   setCategoryFilter: (filter) => set({ categoryFilter: filter }),
   yearRange: [1950, new Date().getFullYear()],
   setYearRange: (range) => set({ yearRange: range }),
+  playbackSpeed: 1,
+  setPlaybackSpeed: (speed) => set({ playbackSpeed: speed }),
 }));
 
 interface CameraState {

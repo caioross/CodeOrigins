@@ -14,49 +14,58 @@ export function Planet({ language }: PlanetProps) {
   const groupRef = useRef<THREE.Group>(null);
   const meshRef = useRef<THREE.Mesh>(null);
   const moonsRef = useRef<THREE.Group>(null);
-  const { setSelectedLanguage, selectedLanguage, setHoveredLanguage, hoveredLanguage, showNames, showMoons } = useStore();
-  
+  const { setSelectedLanguage, selectedLanguage, setHoveredLanguage, hoveredLanguage, showNames, showMoons, playbackSpeed } = useStore();
+
   const isSelected = selectedLanguage?.id === language.id;
   const isHovered = hoveredLanguage?.id === language.id;
-  
+
   // Calculate size based on usage (0.1 to 1.0 -> 0.5 to 2.5)
   const size = 0.5 + language.usage * 2;
-  
+
   // Calculate color based on docs (1 = Earth-like blue/green, 0 = Mars-like red/orange)
   const color = useMemo(() => {
     const earthColor = new THREE.Color('#2b82c9'); // Blue
     const marsColor = new THREE.Color('#c1440e'); // Red/Orange
-    return marsColor.lerp(earthColor, language.docs);
+    return marsColor.lerp(earthColor, language.docs || 0.5);
   }, [language.docs]);
 
-  // Initial random Y offset
-  const randomY = useMemo(() => (Math.random() - 0.5) * 2, []);
+  // Deterministic Y offset based on ID
+  const randomY = useMemo(() => {
+    return (((language.id.length % 10) / 10) - 0.5) * 2;
+  }, [language.id]);
 
-  useFrame((state) => {
+  // Use a local ref to track exact accumulated angle so that pausing/unpausing doesn't snap positions
+  const currentAngleRef = useRef((language.angle * Math.PI) / 180);
+
+  useFrame((state, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += 0.005;
+      meshRef.current.rotation.y += 0.5 * delta * playbackSpeed;
     }
     if (moonsRef.current) {
-      moonsRef.current.rotation.y -= 0.01; // Moons orbit
+      moonsRef.current.rotation.y -= 1.0 * delta * playbackSpeed; // Moons orbit
     }
-    
+
     if (groupRef.current) {
-      const time = state.clock.getElapsedTime();
       const radius = Math.max(0, (language.year - BASE_YEAR) * YEAR_SCALE);
-      
-      // Speed from 1 to 100 -> map to angular velocity
+
+      // Speed from 1 to 100 -> map to angular velocity base
       // 100 -> fast, 1 -> slow
       const speedFactor = (language.speed || 50) / 100;
-      const angularVelocity = speedFactor * 0.05; // Adjust multiplier for overall speed
-      
-      const currentAngleRad = (language.angle * Math.PI) / 180 + time * angularVelocity;
-      
+
+      // Calculate amount to move THIS frame based on delta time and playback speed
+      const angularVelocity = speedFactor * 0.1;
+      const angleDelta = angularVelocity * delta * playbackSpeed;
+
+      // Accumulate the angle
+      currentAngleRef.current += angleDelta;
+      const currentAngleRad = currentAngleRef.current;
+
       const baseX = Math.cos(currentAngleRad) * radius;
       const baseZ = Math.sin(currentAngleRad) * radius;
-      
+
       let inclinationDeg = 0;
       const category = (language.category || 'Generic').toLowerCase();
-      
+
       if (category === 'imperative') inclinationDeg = 0;
       else if (category === 'declarative') inclinationDeg = 10;
       else if (category === 'procedural') inclinationDeg = 20;
@@ -67,15 +76,15 @@ export function Planet({ language }: PlanetProps) {
       else if (category === 'reactive') inclinationDeg = 70;
       else if (category === 'event-driven') inclinationDeg = 80;
       else if (category === 'generic') inclinationDeg = 90;
-      
+
       const inclinationRad = (inclinationDeg * Math.PI) / 180;
-      
+
       const x = baseX;
       const y = -baseZ * Math.sin(inclinationRad) + randomY;
       const z = baseZ * Math.cos(inclinationRad);
-      
+
       groupRef.current.position.set(x, y, z);
-      
+
       // Update global map for Connections and Minimap
       languagePositions.set(language.id, [x, y, z]);
     }
@@ -100,9 +109,9 @@ export function Planet({ language }: PlanetProps) {
           document.body.style.cursor = 'auto';
         }}
       >
-        <meshStandardMaterial 
-          color={color} 
-          roughness={0.7} 
+        <meshStandardMaterial
+          color={color}
+          roughness={0.7}
           metalness={0.1}
           emissive={isSelected || isHovered ? new THREE.Color('#ffffff') : new THREE.Color('#000000')}
           emissiveIntensity={isSelected ? 0.3 : isHovered ? 0.1 : 0}

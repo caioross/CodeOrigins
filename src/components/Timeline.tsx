@@ -1,12 +1,26 @@
 import ReactSlider from 'react-slider';
 import { useStore } from '../store';
-import { allLanguages as languages } from '../data';
+// import { allLanguages as languages } from '../data';
 import { useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Timeline() {
-  const { yearRange, setYearRange } = useStore();
+  const { languages, selectedLanguage, hoveredLanguage, setSelectedLanguage, setHoveredLanguage, yearRange, setYearRange } = useStore();
 
-  const minYear = useMemo(() => Math.min(...languages.map(l => l.year)), []);
+  const sortedLanguages = useMemo(() => {
+    return languages
+      .filter(l => {
+        const minFilter = yearRange[0] <= 1700 ? -Infinity : yearRange[0];
+        return l.year >= minFilter && l.year <= yearRange[1];
+      })
+      .sort((a, b) => a.year - b.year);
+  }, [languages, yearRange]);
+
+  const years = Array.from(new Set(sortedLanguages.map(l => l.year))).sort();
+
+  if (languages.length === 0) return null;
+
+  const minYear = useMemo(() => Math.max(1700, Math.min(...languages.map(l => l.year))), [languages]);
   const maxYear = useMemo(() => new Date().getFullYear(), []);
 
   return (

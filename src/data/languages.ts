@@ -13,13 +13,13 @@ export interface Language {
   docs: number; // 0 to 1 (color: 1 = Earth, 0 = Mars)
   origin: string; // Country code for flag (e.g., 'US', 'GB', 'CH', 'NL', 'DK', 'JP')
   description: string;
-  connectionsExplanation: string;
+  connectionsExplanation?: string;
   docsUrl: string;
   siteUrl: string;
   parents: string[]; // IDs of parent languages
   moons: Moon[];
-  angle: number; // 0 to 360 degrees, for positioning
-  category?: Category;
+  angle?: number; // 0 to 360 degrees, for positioning, made optional for dynamic loader
+  category?: Category | string;
   speed: number; // 1 to 100
   curious_fact?: string;
   example?: string;

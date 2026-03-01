@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useState } from 'react';
 import { OrbitControls, Stars, Ring } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { allLanguages as languages } from '../data';
+// import { allLanguages as languages } from '../data';
 import { Planet } from './Planet';
 import { Connection } from './Connection';
 import { Particles } from './Particles';
@@ -10,43 +10,46 @@ import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
 // Calculate positions for all languages
-export const YEAR_SCALE = 3.0;
+export const YEAR_SCALE = 6.0;
 export const BASE_YEAR = 1950;
 
 export const languagePositions = new Map<string, [number, number, number]>();
 
-languages.forEach((lang) => {
-  const radius = Math.max(0, (lang.year - BASE_YEAR) * YEAR_SCALE);
-  const angleRad = (lang.angle * Math.PI) / 180;
-  
-  // Base position on the XZ plane
-  const baseX = Math.cos(angleRad) * radius;
-  const baseZ = Math.sin(angleRad) * radius;
-  
-  // Inclination angle based on category
-  let inclinationDeg = 0;
-  const category = (lang.category || 'Generic').toLowerCase();
-  
-  if (category === 'imperative') inclinationDeg = 0;
-  else if (category === 'declarative') inclinationDeg = 10;
-  else if (category === 'procedural') inclinationDeg = 20;
-  else if (category === 'structured') inclinationDeg = 30;
-  else if (category === 'object-oriented (oop)') inclinationDeg = 40;
-  else if (category === 'functional') inclinationDeg = 50;
-  else if (category === 'logical') inclinationDeg = 60;
-  else if (category === 'reactive') inclinationDeg = 70;
-  else if (category === 'event-driven') inclinationDeg = 80;
-  else if (category === 'generic') inclinationDeg = 90;
-  
-  const inclinationRad = (inclinationDeg * Math.PI) / 180;
-  
-  // Rotate around X axis
-  const x = baseX;
-  const y = -baseZ * Math.sin(inclinationRad) + (Math.random() - 0.5) * 2;
-  const z = baseZ * Math.cos(inclinationRad);
-  
-  languagePositions.set(lang.id, [x, y, z]);
-});
+export const calculateLanguagePositions = (languages: any[]) => {
+  languagePositions.clear();
+  languages.forEach((lang) => {
+    const radius = Math.max(0, (lang.year - BASE_YEAR) * YEAR_SCALE);
+    const angleRad = ((lang.angle || 0) * Math.PI) / 180;
+
+    // Base position on the XZ plane
+    const baseX = Math.cos(angleRad) * radius;
+    const baseZ = Math.sin(angleRad) * radius;
+
+    // Inclination angle based on category
+    let inclinationDeg = 0;
+    const category = (lang.category || 'Generic').toLowerCase();
+
+    if (category === 'imperative') inclinationDeg = 0;
+    else if (category === 'declarative') inclinationDeg = 10;
+    else if (category === 'procedural') inclinationDeg = 20;
+    else if (category === 'structured') inclinationDeg = 30;
+    else if (category === 'object-oriented (oop)') inclinationDeg = 40;
+    else if (category === 'functional') inclinationDeg = 50;
+    else if (category === 'logical') inclinationDeg = 60;
+    else if (category === 'reactive') inclinationDeg = 70;
+    else if (category === 'event-driven') inclinationDeg = 80;
+    else if (category === 'generic') inclinationDeg = 90;
+
+    const inclinationRad = (inclinationDeg * Math.PI) / 180;
+
+    // Translate slightly on Y instead of purely random so it's deterministic but scattered
+    const y = -baseZ * Math.sin(inclinationRad) + (((lang.id.length % 10) / 10) - 0.5) * 2;
+    const x = baseX;
+    const z = baseZ * Math.cos(inclinationRad);
+
+    languagePositions.set(lang.id, [x, y, z]);
+  });
+};
 
 function CameraController() {
   const { selectedLanguage, setSelectedLanguage } = useStore();
@@ -73,7 +76,7 @@ function CameraController() {
     if (mapTarget) {
       setIsAnimating(true);
       // We don't have a language ID for map targets, so we can use a special value
-      setAnimationTargetId('map_target'); 
+      setAnimationTargetId('map_target');
     } else if (!selectedLanguage) {
       setIsAnimating(false);
       setAnimationTargetId(null);
@@ -129,7 +132,7 @@ function CameraController() {
           controls.target.copy(currentTargetPos);
           camera.position.copy(desiredCamPos);
           controls.update();
-          
+
           setIsAnimating(false);
           setAnimationTargetId(null);
           controls.enabled = true;
@@ -150,16 +153,22 @@ function CameraController() {
 }
 
 export function SolarSystem() {
-  const { 
-    selectedLanguage, hoveredLanguage, 
+  const {
+    languages,
+    selectedLanguage, hoveredLanguage,
     showOrbits, showConnections,
     docsFilter, usageFilter, categoryFilter,
     yearRange
   } = useStore();
 
+  useEffect(() => {
+    calculateLanguagePositions(languages);
+  }, [languages]);
+
   const filteredLanguages = useMemo(() => {
     return languages.filter(lang => {
-      if (lang.year < yearRange[0] || lang.year > yearRange[1]) {
+      const minFilter = yearRange[0] <= 1700 ? -Infinity : yearRange[0];
+      if (lang.year < minFilter || lang.year > yearRange[1]) {
         return false;
       }
       if (docsFilter) {
@@ -178,7 +187,7 @@ export function SolarSystem() {
       }
       return true;
     });
-  }, [docsFilter, usageFilter, categoryFilter, yearRange]);
+  }, [languages, docsFilter, usageFilter, categoryFilter, yearRange]);
 
   // Generate orbit rings
   const orbits = useMemo(() => {
@@ -190,7 +199,7 @@ export function SolarSystem() {
       const gap = year - prevYear;
       return { year, radius, prevRadius, gap };
     });
-  }, []);
+  }, [languages]);
 
   return (
     <>
@@ -199,15 +208,15 @@ export function SolarSystem() {
       <ambientLight intensity={0.2} />
       <pointLight position={[0, 0, 0]} intensity={2} color="#ffffff" distance={100} decay={2} />
       <directionalLight position={[10, 20, 10]} intensity={1} />
-      
-      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-      
-      <OrbitControls 
+
+      <Stars radius={1000} depth={500} count={10000} factor={4} saturation={0} fade speed={1} />
+
+      <OrbitControls
         makeDefault
-        enablePan={true} 
-        enableZoom={true} 
+        enablePan={true}
+        enableZoom={true}
         enableRotate={true}
-        maxDistance={400}
+        maxDistance={1200}
         minDistance={5}
       />
 
@@ -221,21 +230,21 @@ export function SolarSystem() {
       {/* Orbit Rings for all 5 inclinations */}
       {showOrbits && orbits.map((orbit, index) => {
         if (orbit.radius <= 0) return null;
-        
+
         // Stagger the labels so they don't overlap as much
-        const labelAngle = (index * Math.PI) / 4; 
-        
+        const labelAngle = (index * Math.PI) / 4;
+
         const inclinations = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
 
         return (
           <group key={orbit.year}>
             {inclinations.map((inclinationDeg) => {
               const inclinationRad = (inclinationDeg * Math.PI) / 180;
-              
+
               // Calculate label position based on inclination
               const baseX = Math.cos(labelAngle) * orbit.radius;
               const baseZ = Math.sin(labelAngle) * orbit.radius;
-              
+
               const labelX = baseX;
               const labelY = -baseZ * Math.sin(inclinationRad);
               const labelZ = baseZ * Math.cos(inclinationRad);
@@ -243,8 +252,8 @@ export function SolarSystem() {
               return (
                 <group key={`${orbit.year}-${inclinationDeg}`}>
                   {/* The main orbit line */}
-                  <Ring 
-                    args={[orbit.radius, orbit.radius + 0.1, 64]} 
+                  <Ring
+                    args={[orbit.radius, orbit.radius + 0.1, 64]}
                     rotation={[-Math.PI / 2 + inclinationRad, 0, 0]}
                   >
                     <meshBasicMaterial color="#ffffff" transparent opacity={0.1} side={THREE.DoubleSide} />
@@ -258,9 +267,9 @@ export function SolarSystem() {
 
       {/* Planets */}
       {filteredLanguages.map((lang) => (
-        <Planet 
-          key={lang.id} 
-          language={lang} 
+        <Planet
+          key={lang.id}
+          language={lang}
         />
       ))}
 
@@ -269,15 +278,15 @@ export function SolarSystem() {
         return lang.parents.map((parentId) => {
           const parent = filteredLanguages.find(l => l.id === parentId);
           if (!parent) return null;
-          
-          const isHighlighted = 
-            selectedLanguage?.id === lang.id || 
+
+          const isHighlighted =
+            selectedLanguage?.id === lang.id ||
             selectedLanguage?.id === parentId ||
             hoveredLanguage?.id === lang.id ||
             hoveredLanguage?.id === parentId;
 
           return (
-            <Connection 
+            <Connection
               key={`${parentId}-${lang.id}`}
               startId={parentId}
               endId={lang.id}
