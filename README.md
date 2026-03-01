@@ -65,7 +65,7 @@ graph TD
     
     D1 -. Set View .-> B
     B -. Move Câmera/Órbita .-> E
-    D2 -. Filtra "Anos" .-> E1
+    D2 -. Filtra Anos .-> E1
 ```
 
 > **Curiosidade Técnica**: Em vez de renderizar milhares de `Mesh` React individuais e estrangular a Thread, a renderização de planetas secundários tira proveito pesado de `InstancedMesh` e do hook `useFrame` fora da árvore de reatividade comum. O `Zustand` serve como um buraco de minhoca comunicando dados velozmente entre a Camada React UI (DOM) e o ecossistema R3F/Threejs sem forçar re-renders.
