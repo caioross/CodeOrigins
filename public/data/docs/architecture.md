@@ -9,6 +9,25 @@ CodeOrigins is a Single Page Application developed in **React** and **Vite**, op
 1. **Atmospheric Layer (UI / DOM):** Contains the Tailwind panels, buttons, temporal sliders, and the interactive Minimap.
 2. **Sidereal Layer (WebGL/Canvas):** The pure simulation via `Three.js` + `@react-three/fiber` managing all the dense rendering of 3D meshes and vertices.
 
+```mermaid
+graph TD
+    classDef ui fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#fff;
+    classDef canvas fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#fff;
+    classDef store fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#fff;
+    
+    A[Zustand Store<br/>Central Memory]:::store
+    B{App}
+    C[React UI Layer<br/>HUD & HTML]:::ui
+    D[WebGL Three.js Canvas<br/>Sideral Space]:::canvas
+    
+    A --> B
+    B --> C
+    B --> D
+    
+    C -. User Action Updates .-> A
+    A -. Transient Updates .-> D
+```
+
 ## The Einstein-Rosen Bridge (Zustand)
 
 React suffers from rendering cascades when props change at the top of the tree. If an HTML slider updated the central React state encapsulating the 3D engine, extreme stuttering and sudden FPS drops would occur every time you moved the mouse.

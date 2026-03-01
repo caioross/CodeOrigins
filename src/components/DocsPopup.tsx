@@ -1,8 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import mermaid from 'mermaid';
 import { X, Book } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    fontFamily: 'monospace'
+});
+
+const Mermaid = ({ chart }: { chart: string }) => {
+    const [svg, setSvg] = useState<string>('');
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        mermaid.render(`mermaid-${Math.random().toString(36).substr(2, 9)}`, chart).then((result) => {
+            setSvg(result.svg);
+        });
+    }, [chart]);
+
+    return <div ref={ref} className="mermaid flex justify-center my-6" dangerouslySetInnerHTML={{ __html: svg }} />;
+};
 
 interface DocsPopupProps {
     isOpen: boolean;
@@ -103,15 +124,21 @@ export function DocsPopup({ isOpen, onClose }: DocsPopupProps) {
                                             strong: ({ node, ...props }) => <strong className="font-bold text-white" {...props} />,
                                             blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-indigo-500 pl-4 py-1 mb-4 text-gray-400 italic bg-white/5 rounded-r" {...props} />,
                                             code: ({ node, inline, className, children, ...props }: any) => {
-                                                const match = /language-(\w+)/.exec(className || '')
+                                                const match = /language-(\w+)/.exec(className || '');
+                                                const language = match?.[1];
+
+                                                if (language === 'mermaid') {
+                                                    return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+                                                }
+
                                                 return inline ?
                                                     <code className="bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-indigo-300" {...props}>{children}</code>
                                                     :
                                                     <div className="relative group mb-4">
-                                                        <div className="absolute top-0 right-0 px-2 py-1 text-xs text-gray-500 bg-white/5 rounded-tr-xl rounded-bl-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            {match?.[1]}
+                                                        <div className="absolute top-0 right-0 px-2 py-1 text-xs text-gray-400 bg-white/10 rounded-tr-xl rounded-bl-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            {language}
                                                         </div>
-                                                        <code className="block bg-black/50 p-4 rounded-xl text-sm font-mono overflow-auto border border-white/5" {...props}>{children}</code>
+                                                        <code className="block bg-black/80 p-4 rounded-xl text-sm font-mono overflow-auto border border-white/10 text-gray-200" {...props}>{children}</code>
                                                     </div>
                                             }
                                         }}
