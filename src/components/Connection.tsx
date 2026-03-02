@@ -39,17 +39,14 @@ export function Connection({ startId, endId, strength, isHighlighted }: Connecti
       const end = languagePositions.get(endId);
 
       if (start && end && lineRef.current.geometry) {
-        // Safe check to avoid NaN rendering logic on zero-distance curves during hydration early frames
+        const midX = (start[0] + end[0]) / 2;
+        const midY = (start[1] + end[1]) / 2;
+        const midZ = (start[2] + end[2]) / 2;
+
         const dist = Math.sqrt(
           Math.pow(end[0] - start[0], 2) +
           Math.pow(end[2] - start[2], 2)
         );
-
-        if (dist === 0) return;
-
-        const midX = (start[0] + end[0]) / 2;
-        const midY = (start[1] + end[1]) / 2;
-        const midZ = (start[2] + end[2]) / 2;
 
         const midPoint = new THREE.Vector3(midX, midY + dist * 0.3, midZ);
         const startV = new THREE.Vector3(...start);
