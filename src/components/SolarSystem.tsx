@@ -33,7 +33,7 @@ export const calculateLanguagePositions = (languages: any[]) => {
     else if (category === 'declarative') inclinationDeg = 10;
     else if (category === 'procedural') inclinationDeg = 20;
     else if (category === 'structured') inclinationDeg = 30;
-    else if (category === 'object-oriented (oop)') inclinationDeg = 40;
+    else if (category.includes('object-oriented')) inclinationDeg = 40;
     else if (category === 'functional') inclinationDeg = 50;
     else if (category === 'logical') inclinationDeg = 60;
     else if (category === 'reactive') inclinationDeg = 70;

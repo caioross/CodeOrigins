@@ -35,7 +35,7 @@ export function Planet({ language }: PlanetProps) {
   }, [language.id]);
 
   // Use a local ref to track exact accumulated angle so that pausing/unpausing doesn't snap positions
-  const currentAngleRef = useRef((language.angle * Math.PI) / 180);
+  const currentAngleRef = useRef(((language.angle || 0) * Math.PI) / 180);
 
   useFrame((state, delta) => {
     if (meshRef.current) {
@@ -70,7 +70,7 @@ export function Planet({ language }: PlanetProps) {
       else if (category === 'declarative') inclinationDeg = 10;
       else if (category === 'procedural') inclinationDeg = 20;
       else if (category === 'structured') inclinationDeg = 30;
-      else if (category === 'object-oriented') inclinationDeg = 40;
+      else if (category.includes('object-oriented')) inclinationDeg = 40;
       else if (category === 'functional') inclinationDeg = 50;
       else if (category === 'logical') inclinationDeg = 60;
       else if (category === 'reactive') inclinationDeg = 70;
@@ -94,7 +94,7 @@ export function Planet({ language }: PlanetProps) {
     <group ref={groupRef}>
       <Sphere
         ref={meshRef}
-        args={[size, 32, 32]}
+        args={[size, 16, 16]}
         onClick={(e) => {
           e.stopPropagation();
           setSelectedLanguage(language);
@@ -147,7 +147,7 @@ export function Planet({ language }: PlanetProps) {
 
             return (
               <group key={moon.name} position={[moonX, 0, moonZ]}>
-                <Sphere args={[moonSize, 16, 16]}>
+                <Sphere args={[moonSize, 8, 8]}>
                   <meshStandardMaterial color="#aaaaaa" roughness={0.9} />
                 </Sphere>
                 {showNames && (
