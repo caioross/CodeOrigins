@@ -10,6 +10,7 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { useEffect } from 'react';
 import { useStore } from './store';
 import { getAvailableLocales, loadLocaleData } from './services/localeLoader';
+import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
           <SolarSystem />
         </Canvas>
       </div>
+      <Analytics />
       <SpeedInsights />
     </div>
   );
