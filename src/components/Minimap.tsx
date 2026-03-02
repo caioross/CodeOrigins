@@ -303,74 +303,529 @@ export function Minimap() {
         <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-white/10">
           <span className="font-semibold text-gray-300 mb-1">Categories (Inclination)</span>
           <div
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Imperative' ? 'text-white font-bold' : ''}`}
-            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Imperative' ? null : 'Imperative')}
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Agent-Based' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Agent-Based' ? null : 'Agent-Based')}
           >
-            <div className="w-2 h-0.5 bg-white/50 rotate-0"></div>
-            <span>Imperative (0°)</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[0deg]"></div>
+            <span>Agent-Based (0°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Agent-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Agent-Oriented' ? null : 'Agent-Oriented')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[2.37deg]"></div>
+            <span>Agent-Oriented (2.37°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Analytical' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Analytical' ? null : 'Analytical')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[4.74deg]"></div>
+            <span>Analytical (4.74°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Array' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Array' ? null : 'Array')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[7.11deg]"></div>
+            <span>Array (7.11°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Array-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Array-Oriented' ? null : 'Array-Oriented')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[9.47deg]"></div>
+            <span>Array-Oriented (9.47°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Aspect-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Aspect-Oriented' ? null : 'Aspect-Oriented')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[14.21deg]"></div>
+            <span>Aspect-Oriented (14.21°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Assembly' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Assembly' ? null : 'Assembly')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[16.58deg]"></div>
+            <span>Assembly (16.58°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Asynchronous' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Asynchronous' ? null : 'Asynchronous')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[18.95deg]"></div>
+            <span>Asynchronous (18.95°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Business Process Management' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Business Process Management' ? null : 'Business Process Management')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[21.32deg]"></div>
+            <span>Business Process Management (21.32°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Cloud Storage' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Cloud Storage' ? null : 'Cloud Storage')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[23.68deg]"></div>
+            <span>Cloud Storage (23.68°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Compiled' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Compiled' ? null : 'Compiled')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[26.05deg]"></div>
+            <span>Compiled (26.05°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Component-Based' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Component-Based' ? null : 'Component-Based')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[28.42deg]"></div>
+            <span>Component-Based (28.42°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Concurrent' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Concurrent' ? null : 'Concurrent')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[30.79deg]"></div>
+            <span>Concurrent (30.79°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Constraint Logic Programming' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Constraint Logic Programming' ? null : 'Constraint Logic Programming')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[33.16deg]"></div>
+            <span>Constraint Logic Programming (33.16°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Constraint Programming' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Constraint Programming' ? null : 'Constraint Programming')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[35.53deg]"></div>
+            <span>Constraint Programming (35.53°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Context-Sensitive' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Context-Sensitive' ? null : 'Context-Sensitive')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[37.89deg]"></div>
+            <span>Context-Sensitive (37.89°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Creative' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Creative' ? null : 'Creative')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[40.26deg]"></div>
+            <span>Creative (40.26°)</span>
           </div>
           <div
             className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Declarative' ? 'text-white font-bold' : ''}`}
             onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Declarative' ? null : 'Declarative')}
           >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[10deg]"></div>
-            <span>Declarative (10°)</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[42.63deg]"></div>
+            <span>Declarative (42.63°)</span>
           </div>
           <div
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Procedural' ? 'text-white font-bold' : ''}`}
-            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Procedural' ? null : 'Procedural')}
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Dynamic' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Dynamic' ? null : 'Dynamic')}
           >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[20deg]"></div>
-            <span>Procedural (20°)</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[45deg]"></div>
+            <span>Dynamic (45°)</span>
           </div>
           <div
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Structured' ? 'text-white font-bold' : ''}`}
-            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Structured' ? null : 'Structured')}
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Educational' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Educational' ? null : 'Educational')}
           >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[30deg]"></div>
-            <span>Structured (30°)</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[47.37deg]"></div>
+            <span>Educational (47.37°)</span>
           </div>
           <div
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Object-Oriented' ? 'text-white font-bold' : ''}`}
-            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Object-Oriented' ? null : 'Object-Oriented')}
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Esoteric' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Esoteric' ? null : 'Esoteric')}
           >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[40deg]"></div>
-            <span>Object-Oriented (40°)</span>
-          </div>
-          <div
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Functional' ? 'text-white font-bold' : ''}`}
-            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Functional' ? null : 'Functional')}
-          >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[50deg]"></div>
-            <span>Functional (50°)</span>
-          </div>
-          <div
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Logical' ? 'text-white font-bold' : ''}`}
-            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Logical' ? null : 'Logical')}
-          >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[60deg]"></div>
-            <span>Logical (60°)</span>
-          </div>
-          <div
-            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Reactive' ? 'text-white font-bold' : ''}`}
-            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Reactive' ? null : 'Reactive')}
-          >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[70deg]"></div>
-            <span>Reactive (70°)</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[49.74deg]"></div>
+            <span>Esoteric (49.74°)</span>
           </div>
           <div
             className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Event-Driven' ? 'text-white font-bold' : ''}`}
             onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Event-Driven' ? null : 'Event-Driven')}
           >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-[80deg]"></div>
-            <span>Event-Driven (80°)</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[52.11deg]"></div>
+            <span>Event-Driven (52.11°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Evolutionary' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Evolutionary' ? null : 'Evolutionary')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[54.47deg]"></div>
+            <span>Evolutionary (54.47°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Formal' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Formal' ? null : 'Formal')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[56.84deg]"></div>
+            <span>Formal (56.84°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Formal Methods' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Formal Methods' ? null : 'Formal Methods')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[59.21deg]"></div>
+            <span>Formal Methods (59.21°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Functional' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Functional' ? null : 'Functional')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[61.58deg]"></div>
+            <span>Functional (61.58°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'FunctionalReactive' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'FunctionalReactive' ? null : 'FunctionalReactive')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[63.95deg]"></div>
+            <span>FunctionalReactive (63.95°)</span>
           </div>
           <div
             className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Generic' ? 'text-white font-bold' : ''}`}
             onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Generic' ? null : 'Generic')}
           >
-            <div className="w-2 h-0.5 bg-white/50 -rotate-90"></div>
-            <span>Generic (90°)</span>
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[66.32deg]"></div>
+            <span>Generic (66.32°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Graph' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Graph' ? null : 'Graph')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[68.68deg]"></div>
+            <span>Graph (68.68°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Graphics' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Graphics' ? null : 'Graphics')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[71.05deg]"></div>
+            <span>Graphics (71.05°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Hardware' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Hardware' ? null : 'Hardware')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[73.42deg]"></div>
+            <span>Hardware (73.42°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Hardware Description' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Hardware Description' ? null : 'Hardware Description')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[75.79deg]"></div>
+            <span>Hardware Description (75.79°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'High-Performance' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'High-Performance' ? null : 'High-Performance')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[78.16deg]"></div>
+            <span>High-Performance (78.16°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Imperative' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Imperative' ? null : 'Imperative')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[80.53deg]"></div>
+            <span>Imperative (80.53°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Interpreted' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Interpreted' ? null : 'Interpreted')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[82.89deg]"></div>
+            <span>Interpreted (82.89°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Lisp' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Lisp' ? null : 'Lisp')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[85.26deg]"></div>
+            <span>Lisp (85.26°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Logic' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Logic' ? null : 'Logic')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[87.63deg]"></div>
+            <span>Logic (87.63°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Logical' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Logical' ? null : 'Logical')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[90deg]"></div>
+            <span>Logical (90°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'LogicalReactive' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'LogicalReactive' ? null : 'LogicalReactive')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[92.37deg]"></div>
+            <span>LogicalReactive (92.37°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Low-Level' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Low-Level' ? null : 'Low-Level')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[94.74deg]"></div>
+            <span>Low-Level (94.74°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Mathematical' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Mathematical' ? null : 'Mathematical')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[97.11deg]"></div>
+            <span>Mathematical (97.11°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Meta-Programming' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Meta-Programming' ? null : 'Meta-Programming')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[99.47deg]"></div>
+            <span>Meta-Programming (99.47°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Minimalist' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Minimalist' ? null : 'Minimalist')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[101.84deg]"></div>
+            <span>Minimalist (101.84°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Model-Based' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Model-Based' ? null : 'Model-Based')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[104.21deg]"></div>
+            <span>Model-Based (104.21°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Multi-Paradigm' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Multi-Paradigm' ? null : 'Multi-Paradigm')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[106.58deg]"></div>
+            <span>Multi-Paradigm (106.58°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Network' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Network' ? null : 'Network')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[108.95deg]"></div>
+            <span>Network (108.95°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Numerical' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Numerical' ? null : 'Numerical')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[111.32deg]"></div>
+            <span>Numerical (111.32°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Object-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Object-Oriented' ? null : 'Object-Oriented')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[113.68deg]"></div>
+            <span>Object-Oriented (113.68°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Parallel' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Parallel' ? null : 'Parallel')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[116.05deg]"></div>
+            <span>Parallel (116.05°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Performance-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Performance-Oriented' ? null : 'Performance-Oriented')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[118.42deg]"></div>
+            <span>Performance-Oriented (118.42°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Procedural' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Procedural' ? null : 'Procedural')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[120.79deg]"></div>
+            <span>Procedural (120.79°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Quantum' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Quantum' ? null : 'Quantum')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[123.16deg]"></div>
+            <span>Quantum (123.16°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'QuantumComputing' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'QuantumComputing' ? null : 'QuantumComputing')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[125.53deg]"></div>
+            <span>QuantumComputing (125.53°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Reactive' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Reactive' ? null : 'Reactive')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[127.89deg]"></div>
+            <span>Reactive (127.89°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Real-Time' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Real-Time' ? null : 'Real-Time')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[130.26deg]"></div>
+            <span>Real-Time (130.26°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Rule-Based' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Rule-Based' ? null : 'Rule-Based')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[132.63deg]"></div>
+            <span>Rule-Based (132.63°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Scientific' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Scientific' ? null : 'Scientific')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[135deg]"></div>
+            <span>Scientific (135°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Scripting' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Scripting' ? null : 'Scripting')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[137.37deg]"></div>
+            <span>Scripting (137.37°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Service-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Service-Oriented' ? null : 'Service-Oriented')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[139.74deg]"></div>
+            <span>Service-Oriented (139.74°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Specialized' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Specialized' ? null : 'Specialized')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[142.11deg]"></div>
+            <span>Specialized (142.11°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Stack-Based' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Stack-Based' ? null : 'Stack-Based')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[144.47deg]"></div>
+            <span>Stack-Based (144.47°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Static Site Generator' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Static Site Generator' ? null : 'Static Site Generator')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[149.21deg]"></div>
+            <span>Static Site Generator (149.21°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Statistical' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Statistical' ? null : 'Statistical')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[151.58deg]"></div>
+            <span>Statistical (151.58°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'String-Oriented' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'String-Oriented' ? null : 'String-Oriented')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[153.95deg]"></div>
+            <span>String-Oriented (153.95°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Structured' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Structured' ? null : 'Structured')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[156.32deg]"></div>
+            <span>Structured (156.32°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Symbolic' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Symbolic' ? null : 'Symbolic')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[158.68deg]"></div>
+            <span>Symbolic (158.68°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Synchronous' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Synchronous' ? null : 'Synchronous')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[161.05deg]"></div>
+            <span>Synchronous (161.05°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Systems' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Systems' ? null : 'Systems')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[163.42deg]"></div>
+            <span>Systems (163.42°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Template' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Template' ? null : 'Template')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[165.79deg]"></div>
+            <span>Template (165.79°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Text Editor' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Text Editor' ? null : 'Text Editor')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[168.16deg]"></div>
+            <span>Text Editor (168.16°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Theoretical' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Theoretical' ? null : 'Theoretical')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[170.53deg]"></div>
+            <span>Theoretical (170.53°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Transformational' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Transformational' ? null : 'Transformational')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[172.89deg]"></div>
+            <span>Transformational (172.89°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Visual' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Visual' ? null : 'Visual')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[175.26deg]"></div>
+            <span>Visual (175.26°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Visual Programming' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Visual Programming' ? null : 'Visual Programming')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[177.63deg]"></div>
+            <span>Visual Programming (177.63°)</span>
+          </div>
+          <div
+            className={`flex items-center gap-2 cursor-pointer hover:text-white transition-colors ${categoryFilter === 'Web Development' ? 'text-white font-bold' : ''}`}
+            onClick={() => handleFilterChange(setCategoryFilter, categoryFilter === 'Web Development' ? null : 'Web Development')}
+          >
+            <div className="w-2 h-0.5 bg-white/50 -rotate-[180deg]"></div>
+            <span>Web Development (180°)</span>
           </div>
         </div>
       </div>
